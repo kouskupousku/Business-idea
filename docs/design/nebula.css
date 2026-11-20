@@ -1,0 +1,128 @@
+/* ==========================================================================
+   NEBULA: avaruusteeman design-järjestelmä (Claude + ChatGPT + Grok -sovellus)
+   --------------------------------------------------------------------------
+   Käyttö: lataa tämä tiedosto sovellukseen ja käytä muuttujia (var(--…)).
+   Fontit (SIL Open Font License, ilmaisia myös kaupalliseen käyttöön):
+     Space Grotesk (otsikot), Inter tai Geist (leipäteksti), JetBrains Mono tai Geist Mono (numerot/data)
+   Kontrasti (tarkistettu): --text (12–17:1), --text-muted (6,5–9:1), mallien värit,
+   --ion ja tilavärit (≥5,3:1) läpäisevät WCAG AA -tason kaikilla pinnoilla.
+   --text-faint (3,3–4,5:1) vain isolle tekstille, HUD-tunnisteille ja koristeisiin.
+   ========================================================================== */
+
+:root {
+  /* ---- Avaruus: taustat ja pinnat (tummimmasta vaaleimpaan) ---- */
+  --void:        #05060D;   /* sivun tausta, "tyhjiö" */
+  --deep:        #0A0E1F;   /* pääpaneelit */
+  --hull:        #10162B;   /* kortit, sarakkeet */
+  --module:      #161D36;   /* korostetut pinnat, hover */
+  --module-2:    #1E2747;   /* aktiivinen / valittu */
+
+  /* ---- Viivat: läpikuultavat, eivät harmaat ---- */
+  --line:        rgba(168, 186, 255, 0.10);
+  --line-strong: rgba(168, 186, 255, 0.18);
+  --line-glow:   rgba(94, 230, 255, 0.45);
+
+  /* ---- Teksti: "tähtivalo" ---- */
+  --text:        #E6EAFF;
+  --text-muted:  #A3ACD1;
+  --text-faint:  #6B75A6;
+
+  /* ---- Pääaksentti: "ionisini" (toiminnot, data, fokus) ---- */
+  --ion:         #5EE6FF;
+  --ion-soft:    rgba(94, 230, 255, 0.14);
+  /* Sumu-aksentit liukuväreihin (ei tekstiin) */
+  --nebula-violet:  #9B7BFF;
+  --nebula-magenta: #E36BFF;
+
+  /* ---- Mallit = taivaankappaleet ---- */
+  --claude:      #FF9E6B;   /* Tähti: lämmin oranssi */
+  --claude-soft: rgba(255, 158, 107, 0.14);
+  --gpt:         #3DDBB0;   /* Planeetta: smaragdi */
+  --gpt-soft:    rgba(61, 219, 176, 0.14);
+  --grok:        #8F9BFF;   /* Pulsari: sinivioletti */
+  --grok-soft:   rgba(143, 155, 255, 0.14);
+
+  /* ---- Tilat (HUD-logiikka: syaani = data, keltainen = varoitus, punainen = kriittinen) ---- */
+  --ok:          #45E3A0;
+  --warn:        #FFC861;
+  --crit:        #FF6B7A;
+
+  /* ---- Typografia ---- */
+  --font-display: "Space Grotesk", "Inter Display", Inter, system-ui, sans-serif;
+  --font-body:    Inter, "Geist", system-ui, sans-serif;
+  --font-mono:    "JetBrains Mono", "Geist Mono", ui-monospace, monospace;
+  --hud-tracking: 0.14em;   /* HUD-tunnisteet: VERSAALI + harva välistys */
+
+  /* ---- Muodot ---- */
+  --radius-sm: 8px;
+  --radius:    12px;
+  --radius-lg: 18px;
+
+  /* ---- Hehku: käytä säästeliäästi, vain tärkeimpään ---- */
+  --glow-ion:    0 0 0 1px rgba(94,230,255,.35), 0 0 24px rgba(94,230,255,.18);
+  --glow-claude: 0 0 22px rgba(255,158,107,.35);
+  --glow-gpt:    0 0 22px rgba(61,219,176,.35);
+  --glow-grok:   0 0 22px rgba(143,155,255,.40);
+  --shadow-deep: 0 30px 80px rgba(0,0,0,.55);
+
+  /* ---- Liike ---- */
+  --ease-orbit: cubic-bezier(.22, 1, .36, 1);
+  --dur-fast: 140ms;
+  --dur:      240ms;
+  --dur-slow: 600ms;
+
+  color-scheme: dark;
+}
+
+/* ---- Tausta: tähtikenttä + kaksi sumupilveä + hienojakoinen rae ---- */
+.nebula-bg {
+  background:
+    radial-gradient(900px 600px at 85% -10%, rgba(155,123,255,.16), transparent 60%),
+    radial-gradient(700px 500px at -10% 110%, rgba(94,230,255,.10), transparent 60%),
+    var(--void);
+}
+/* Rae estää liukuvärien raitaisuuden; pidä peittävyys hyvin pienenä */
+.nebula-grain::after {
+  content: ""; position: fixed; inset: 0; pointer-events: none; opacity: .035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---- Lasipaneeli: läpikuultava kerros, hiusviivareuna ---- */
+.panel {
+  background: linear-gradient(180deg, rgba(22,29,54,.72), rgba(10,14,31,.72));
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(14px);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.04), var(--shadow-deep);
+}
+
+/* ---- HUD-tunniste: pienet versaalit, harva välistys ---- */
+.hud-label {
+  font: 600 11px/1 var(--font-mono);
+  letter-spacing: var(--hud-tracking);
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+/* ---- Telemetrialuvut (aika, tokenit, hinta) ---- */
+.telemetry { font-family: var(--font-mono); font-variant-numeric: tabular-nums; color: var(--text-muted); }
+
+/* ---- Painikkeet ---- */
+.btn-primary {
+  background: linear-gradient(180deg, #7FEEFF, var(--ion)); color: #031018;
+  border: 0; border-radius: var(--radius-sm); font-weight: 600;
+  box-shadow: var(--glow-ion);
+}
+.btn-ghost {
+  background: rgba(255,255,255,.02); color: var(--text);
+  border: 1px solid var(--line-strong); border-radius: var(--radius-sm);
+}
+.btn-ghost:hover { border-color: var(--line-glow); }
+
+/* ---- Fokus: aina näkyvä ---- */
+:focus-visible { outline: 2px solid var(--ion); outline-offset: 2px; }
+
+/* ---- Vähennetty liike: tähdet ja kiertoradat pysähtyvät ---- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}

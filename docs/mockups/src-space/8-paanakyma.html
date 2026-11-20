@@ -1,0 +1,79 @@
+<!doctype html><html lang="fi"><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="space.css"><style>
+.app{display:grid;grid-template-columns:62px 1fr;flex:1;min-height:0}
+.rail{border-right:1px solid var(--line);display:flex;flex-direction:column;align-items:center;gap:10px;padding:14px 0;background:rgba(5,6,13,.45);position:relative}
+.ri{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;color:var(--text-faint);font-size:17px;position:relative}
+.ri.on{color:var(--ion);background:var(--ion-soft);box-shadow:inset 0 0 0 1px rgba(94,230,255,.35)}
+.ri .t{position:absolute;left:46px;font:600 9.5px var(--font-mono);letter-spacing:.12em;color:var(--text-faint);white-space:nowrap;display:none}
+.content{display:flex;flex-direction:column;min-width:0;position:relative}
+.hudbar{display:flex;align-items:center;gap:14px;padding:12px 18px;border-bottom:1px solid var(--line)}
+.mname{font-family:var(--font-display);font-size:15.5px;font-weight:600}
+.sig{display:flex;align-items:flex-end;gap:3px;height:16px}.sig i{width:4px;border-radius:1px;background:var(--ion);display:block}.sig i.o{background:var(--module-2)}
+.fuel{width:90px;height:7px;border-radius:4px;background:var(--module-2);overflow:hidden;display:flex}
+.lights{display:flex;gap:10px;align-items:center}
+.light{display:flex;align-items:center;gap:5px;font:600 10px var(--font-mono);letter-spacing:.1em;color:var(--text-faint)}
+.light i{width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 8px var(--ok)}
+.q{align-self:flex-end;margin:16px 18px 4px;padding:11px 15px;border-radius:14px 14px 4px 14px;background:linear-gradient(180deg,rgba(94,230,255,.12),rgba(94,230,255,.06));border:1px solid rgba(94,230,255,.28);font-size:14.5px;max-width:64%}
+.cols{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding:12px 18px;flex:1;min-height:0}
+.cap{display:flex;flex-direction:column;position:relative;border-radius:16px}
+.cap::before{content:"";position:absolute;left:18px;right:18px;top:-1px;height:2px;border-radius:2px}
+.cap.c::before{background:linear-gradient(90deg,transparent,var(--claude),transparent)}
+.cap.g::before{background:linear-gradient(90deg,transparent,var(--gpt),transparent)}
+.cap.x::before{background:linear-gradient(90deg,transparent,var(--grok),transparent)}
+.ch{display:flex;align-items:center;gap:11px;padding:13px 14px 11px;border-bottom:1px solid var(--line)}
+.ch b{font-family:var(--font-display);font-size:15px;font-weight:600;display:block;line-height:1.1}
+.ch .tel{margin-left:auto;text-align:right;font-size:11px;line-height:1.5}
+.body{padding:13px 15px;font-size:13.4px;color:#D5DAF2;flex:1}
+.body p{margin-bottom:9px}
+.dis{background:rgba(255,200,97,.12);border-bottom:1.5px dashed var(--warn);padding:0 2px;border-radius:2px}
+.cf{display:flex;gap:6px;padding:10px 12px;border-top:1px solid var(--line)}
+.cursor{display:inline-block;width:8px;height:15px;background:var(--grok);vertical-align:-2px;border-radius:2px;box-shadow:0 0 10px var(--grok)}
+.synth{margin:0 18px;padding:11px 14px;display:flex;align-items:center;gap:12px;font-size:13px}
+.comp{margin:12px 18px 16px;padding:12px 14px;display:flex;align-items:center;gap:10px;border-radius:16px;border:1px solid rgba(94,230,255,.3);background:linear-gradient(180deg,rgba(16,22,43,.9),rgba(10,14,31,.9));box-shadow:0 0 0 4px rgba(94,230,255,.05),0 0 30px rgba(94,230,255,.08)}
+.comp .ph{flex:1;color:var(--text-faint);font-size:14px}
+.slash{color:var(--ion);font-family:var(--font-mono);background:var(--ion-soft);padding:2px 7px;border-radius:6px;font-size:12.5px}
+</style></head><body>
+<div class="frame">
+<div class="head"><div class="num">8</div><h1>Päänäkymä: Mission Control</h1><p>Sama vierekkäinen näkymä avaruusteemassa. Mallit esiintyvät taivaankappaleina, ja luvut näkyvät telemetriana.</p></div>
+<div class="main"><div class="win">
+ <div class="tbar"><div class="logo"><i></i>Trio AI</div><span class="hud" style="margin-left:6px">Mission Control</span>
+  <div class="lights a" style="margin-left:auto;position:relative"><div class="pin cpin" style="left:-30px;top:-3px">3</div><span class="light"><i></i>CLAUDE</span><span class="light"><i></i>CHATGPT</span><span class="light"><i style="background:var(--warn);box-shadow:0 0 8px var(--warn)"></i>GROK · HIDAS</span></div></div>
+ <div class="app">
+  <div class="rail"><div class="pin cpin" style="left:40px;top:-6px">1</div>
+   <div class="ri on">◎</div><div class="ri">✦</div><div class="ri">✺</div><div class="ri">◇</div><div class="ri">⌕</div>
+   <div style="flex:1"></div><div class="ri">⚙</div></div>
+  <div class="content">
+   <div class="hudbar"><span class="hud">Missio</span><span class="mname">Kahvilan maksutavat</span>
+    <span class="chip on" style="margin-left:10px">Rinnakkain</span><span class="chip">Ristiintarkistus</span><span class="chip">Väittely</span>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:9px;position:relative"><div class="pin cpin" style="left:-30px;top:-3px">2</div><span class="hud">Luottamus</span><div class="sig"><i style="height:5px"></i><i style="height:8px"></i><i style="height:11px"></i><i class="o" style="height:14px"></i><i class="o" style="height:16px"></i></div><b style="font-family:var(--font-mono);color:var(--warn);font-size:13px">68 %</b></div>
+    <div style="display:flex;align-items:center;gap:9px;margin-left:14px"><span class="hud">Polttoaine</span><div class="fuel"><i style="width:14%;background:var(--claude)"></i><i style="width:11%;background:var(--gpt)"></i><i style="width:7%;background:var(--grok)"></i></div><span class="tel">3,20 / 10 €</span></div></div>
+   <div style="display:flex;flex-direction:column"><div class="q">Kannattaako pienen kahvilan siirtyä pelkkiin korttimaksuihin?</div></div>
+   <div class="cols">
+    <div class="cap c glass"><div class="ch"><svg width="34" height="34" viewBox="0 0 34 34"><defs><radialGradient id="s1"><stop offset="0" stop-color="#FFF4E8"/><stop offset=".45" stop-color="#FF9E6B"/><stop offset="1" stop-color="#FF9E6B" stop-opacity="0"/></radialGradient></defs><circle cx="17" cy="17" r="16" fill="url(#s1)"/><circle cx="17" cy="17" r="6" fill="#FFE3CC"/></svg>
+      <div><b>Claude</b><span class="hud">Kirjoittaja</span></div><span class="tel a" style="position:relative"><span class="pin cpin" style="right:-14px;top:-26px">4</span>✓ 4,1 s<br>1 240 tok · 0,9 snt</span></div>
+     <div class="body"><p>Monelle kahvilalle kyllä: kassan laskeminen ja rahankuljetus jäävät pois ja jono liikkuu nopeammin.</p><p>Riski on asiakkaissa, jotka maksavat mieluiten käteisellä, <span class="dis">erityisesti iäkkäät kanta-asiakkaat</span>. Kokeile ensin kuukauden ajan.</p><p>Tarkista myös maksupäätteen kuukausi- ja tapahtumamaksut ennen päätöstä.</p></div>
+     <div class="cf"><span class="btn">▲</span><span class="btn">▼</span><span class="btn">↳ Jatka tästä</span><span class="btn">⇄ Kysy toiselta</span></div></div>
+    <div class="cap g glass"><div class="ch"><svg width="34" height="34" viewBox="0 0 34 34"><defs><radialGradient id="p1" cx=".35" cy=".35"><stop offset="0" stop-color="#C8FFEF"/><stop offset=".5" stop-color="#3DDBB0"/><stop offset="1" stop-color="#0D5745"/></radialGradient></defs><circle cx="17" cy="17" r="9" fill="url(#p1)"/><ellipse cx="17" cy="17" rx="15" ry="4.5" fill="none" stroke="#9EF5DD" stroke-width="1.5" transform="rotate(-18 17 17)"/></svg>
+      <div><b>ChatGPT</b><span class="hud">Ideoija</span></div><span class="tel">✓ 3,2 s<br>880 tok · 0,6 snt</span></div>
+     <div class="body"><p>Kyllä, jos valtaosa asiakkaista maksaa jo kortilla. Hyötyjä ovat nopeus, turvallisuus ja helpompi kirjanpito.</p><p><span class="dis a" style="position:relative">Käteisen menetys on yleensä vähäistä<span class="pin cpin" style="right:-6px;top:-26px">5</span></span>, kunhan asiasta kerrotaan selvästi.</p><p>Vinkki: lisää lähimaksu ja mobiilimaksu, niin jono liikkuu vielä nopeammin.</p></div>
+     <div class="cf"><span class="btn">▲</span><span class="btn">▼</span><span class="btn">↳ Jatka tästä</span><span class="btn">⇄ Kysy toiselta</span></div></div>
+    <div class="cap x glass"><div class="ch"><svg width="34" height="34" viewBox="0 0 34 34"><defs><radialGradient id="q1"><stop offset="0" stop-color="#fff"/><stop offset=".35" stop-color="#C9CEFF"/><stop offset="1" stop-color="#8F9BFF" stop-opacity="0"/></radialGradient><linearGradient id="bm" x1="0" x2="1"><stop offset="0" stop-color="#8F9BFF" stop-opacity=".1"/><stop offset=".5" stop-color="#8F9BFF" stop-opacity=".8"/><stop offset="1" stop-color="#8F9BFF" stop-opacity=".1"/></linearGradient></defs><polygon points="1,22 33,12 33,14 1,24" fill="url(#bm)"/><circle cx="17" cy="17" r="12" fill="url(#q1)"/><circle cx="17" cy="17" r="3.5" fill="#fff"/></svg>
+      <div><b>Grok</b><span class="hud">Tiedustelija</span></div><span class="tel" style="color:var(--grok)">◌ striimaa…<br>410 tok · 0,4 snt</span></div>
+     <div class="body"><p>Trendi on selvä: korttimaksujen osuus kasvaa joka vuosi.</p><p>Mutta <span class="dis">moni kahvila on palannut ottamaan käteistä</span>, kun osa asiakkaista jäi pois. Paras malli voi olla "kortti ensisijaisesti<span class="cursor"></span></p></div>
+     <div class="cf"><span class="btn">■ Pysäytä</span></div></div>
+   </div>
+   <div class="synth glass"><span class="hud" style="color:var(--ion)">Synteesi</span><span>2/3 mallia suosittelee siirtymää. <b style="color:var(--warn)">1 erimielisyys</b> käteisasiakkaiden määrästä.</span><span style="margin-left:auto" class="btn">Näytä tähtikartalla ✦</span><span class="btn p">Avaa synteesi</span></div>
+   <div class="comp a"><div class="pin cpin" style="left:-10px;top:-10px">6</div><span class="slash">/väittely</span><span class="ph">Kirjoita viesti, @ yhdelle mallille, / komennoille</span><span class="btn">⊕</span><span class="btn">🎙</span><span class="btn p">Laukaise ↗</span></div>
+  </div>
+ </div>
+</div>
+<div class="notes"><h2>// Mitä tämä tekee</h2>
+ <div class="note glass"><div class="pin">1</div><div><b>Navigointipalkki</b><span>Chat ◎, agenttikartta ✦, tiedostogalaksi ✺, missiot ◇ ja haku. Ikonit ovat yhtenäisiä tähtisymboleja.</span></div></div>
+ <div class="note glass"><div class="pin">2</div><div><b>HUD-mittarit</b><span>Luottamussignaali (mallien yksimielisyys) ja polttoainemittari (kuukauden budjetti malleittain) ovat aina näkyvissä.</span></div></div>
+ <div class="note glass"><div class="pin">3</div><div><b>Palvelujen tilavalot</b><span>Vihreä tarkoittaa, että palvelu toimii, keltainen, että se on hidas ja punainen, että se on alhaalla. Silloin sovellus ehdottaa varamallia.</span></div></div>
+ <div class="note glass"><div class="pin">4</div><div><b>Kapselit ja telemetria</b><span>Jokaisella mallilla on oma tunnuksensa, rooli ja tarkat luvut: aika, tokenit ja hinta.</span></div></div>
+ <div class="note glass"><div class="pin">5</div><div><b>Erimielisyydet katkoviivalla</b><span>Keltainen katkoviiva on sama varoitusväri kuin HUD-mittareissa, joten järjestelmä on johdonmukainen.</span></div></div>
+ <div class="note glass"><div class="pin">6</div><div><b>Laukaisualusta</b><span>Viestikenttä hohtaa kevyesti, slash-komennot näkyvät merkkeinä ja lähetysnappi on "Laukaise".</span></div></div>
+</div></div></div>
+<script src="stars.js"></script></body></html>

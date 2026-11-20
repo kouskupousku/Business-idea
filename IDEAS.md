@@ -1,17 +1,64 @@
-# Ominaisuusideat: Claude + ChatGPT + Grok -yhteissovellus
+# Claude + ChatGPT + Grok: tuotesuunnitelma ja ideapankki
 
 > **Ohje Claudelle (lue ensin):**
-> Tämä tiedosto on ideapankki sovellukseen, jossa Claude (Anthropic), ChatGPT (OpenAI) ja Grok (xAI) toimivat samassa sovelluksessa ja tekevät yhteistyötä.
-> 1. Tutustu ensin olemassa olevaan koodiin: rakenne, käytetyt kirjastot, miten mallien API-kutsut on tehty ja mitä alla olevista ominaisuuksista on jo toteutettu.
-> 2. Kerro käyttäjälle lyhyesti, mitkä ideat ovat jo valmiina, mitkä osittain ja mitkä puuttuvat.
-> 3. Ehdota toteutusjärjestys (aloita ⭐-merkityistä) ja toteuta ominaisuudet **yksi kerrallaan**. Varmista jokaisen jälkeen, että sovellus toimii, ennen kuin siirryt seuraavaan.
-> 4. Noudata projektin olemassa olevia käytäntöjä (kieli, kehys, tiedostorakenne, tyyli). Älä vaihda teknologioita kysymättä.
-> 5. API-avaimet pidetään aina ympäristömuuttujissa (`.env`), ei koskaan koodissa eikä gitissä.
+> Tämä tiedosto on sovelluksen tuotesuunnitelma ja ideapankki. Sovelluksessa Claude (Anthropic), ChatGPT (OpenAI) ja Grok (xAI) toimivat yhdessä.
+> 1. **Lue osio 0 (tuotevisio) ensin.** Se määrää suunnan kaikille muille päätöksille.
+> 2. Tutustu olemassa olevaan koodiin: rakenne, kirjastot, miten mallien API-kutsut on tehty ja mitä tämän tiedoston ominaisuuksista on jo toteutettu.
+> 3. Kerro käyttäjälle lyhyesti, mitkä ideat ovat jo valmiina, mitkä osittain ja mitkä puuttuvat.
+> 4. Ehdota toteutusjärjestys (ks. osio 10) ja toteuta ominaisuudet **yksi kerrallaan**. Varmista jokaisen jälkeen, että sovellus toimii.
+> 5. Noudata projektin olemassa olevia käytäntöjä (kieli, kehys, tiedostorakenne). Älä vaihda teknologioita kysymättä.
+> 6. API-avaimet pidetään aina ympäristömuuttujissa (`.env`), ei koskaan koodissa eikä gitissä.
+> 7. Osioissa **6** (110 ideaa) ja **8** (50 ideaa) **sinä päätät itse**, mitkä ideat ovat järkeviä (ks. osion 6 ohje). Näytä valintasi käyttäjälle ennen toteutusta.
+> 8. **Ulkoasu on päätetty: avaruusteema** (osio 9). Se ei ole valinnainen. Käytä tiedostoa `docs/design/nebula.css` ja mallikuvia 6–9.
+> 9. Mallikuvien 1–5 **toiminnot** pätevät edelleen, mutta niiden **ulkoasu** tehdään Nebula-tyylillä (kuva 8 näyttää miten).
 
-> 6. Osiossa **6** on laaja ideapankki (110 ideaa). **Sinä saat itse päättää, mitkä niistä ovat järkeviä** (ks. osion 6 ohje).
-> 7. Osiossa **7** on mallikuvat viidestä tärkeimmästä ulkoasuideasta (`docs/mockups/`). Niiden HTML/CSS-lähdekoodi on kansiossa `docs/mockups/src/`, ja sitä voi käyttää ulkoasun pohjana (värit, asettelu, komponentit).
+## Sisällys
+0. Tuotevisio ja laatuperiaatteet
+1.–5. Perusominaisuudet (yhteistyötilat, muisti, kustannukset, käyttöliittymä, bisnes)
+6. Ideapankki: 110 ideaa (#1–#110), Claude päättää
+7. Mallikuvat 1–5 (toiminnot)
+8. 50 game changer -ideaa (#111–#160), Claude päättää
+9. Avaruusteema: Nebula-design-järjestelmä, agenttikartta ja tiedostokartta (mallikuvat 6–9)
+10. Vaiheistettu toteutussuunnitelma
+11. Avoimen lähdekoodin esikuvat
+12. Tekniset huomiot
 
-⭐ = suositeltu toteutettavaksi ensimmäisenä
+⭐ = suositeltu toteutettavaksi ensimmäisenä · ⚡ = game changer
+
+---
+
+## 0. Tuotevisio ja laatuperiaatteet
+
+### Visio yhdellä lauseella
+**Ainoa tekoälysovellus, jossa kolme maailman parasta tekoälyä tarkistaa toistensa työn. Saat vastauksen, johon voi luottaa, ja näet, miten siihen päädyttiin.**
+
+### Kolme tukipilaria
+Jokaisen uuden ominaisuuden pitää vahvistaa vähintään yhtä näistä. Jos se ei vahvista mitään, sitä ei tehdä.
+1. **Luottamus:** mallit tarkistavat toisensa, erimielisyydet näytetään avoimesti, ja luotettavuus mitataan (ristiintarkistus, konsensusmittari, lähteet).
+2. **Tulokset:** käyttäjä saa valmiin lopputuloksen, ei pelkkää keskustelua (missiot, dokumentit, raportit, tehtävälistat).
+3. **Hallinta ja läpinäkyvyys:** käyttäjä näkee, mitä mallit tekevät, mitä se maksaa ja mihin data menee (agenttikartta, kustannukset, yksityisyys).
+
+### Kenelle
+Ensisijaisesti yrittäjät, pienyritykset ja kaikki, jotka tekevät päätöksiä tekoälyn avulla ja joille väärä vastaus tulee kalliiksi. Toissijaisesti tehokäyttäjät, jotka haluavat vertailla malleja.
+
+### Miten menestystä mitataan
+- **Pohjantähtimittari:** valmiiden, käyttäjän hyväksymien missioiden määrä viikossa.
+- **Tukimittarit:** ristiintarkistettujen vastausten osuus, 👍-palautteen osuus, kulut per valmis missio, palaavat käyttäjät viikoittain.
+
+### Laatukriteerit ("valmis, kun…")
+Ominaisuus on valmis vasta, kun:
+- se toimii, vaikka yksi kolmesta palvelusta olisi alhaalla,
+- sillä on automaattiset testit tärkeimmille poluille,
+- se toimii mobiilissa ja näppäimistöllä ja täyttää WCAG AA -kontrastit,
+- se noudattaa Nebula-design-järjestelmää (osio 9),
+- kulut ja virheet näkyvät seurannassa,
+- mikään salaisuus (API-avain) ei päädy selaimeen tai gitiin.
+
+### Mitä EI tehdä
+- Ei kopioida muiden sovellusten ulkoasua eikä käytetä OpenAI:n, Anthropicin tai xAI:n logoja. Malleille on omat tunnukset (tähti, planeetta ja pulsari, ks. osio 9). Nimiä käytetään vain kertomaan, mikä malli vastasi.
+- Ei teeskennellä varmuutta: jos mallit ovat eri mieltä, se sanotaan.
+- Ei ominaisuuksia, jotka eivät tue kolmea tukipilaria.
+- "Trio AI" mallikuvissa on vain työnimi. Lopullisen nimen päättää käyttäjä.
 
 ---
 
@@ -297,9 +344,9 @@ Valmiita "yhden napin" työnkulkuja, joissa malleilla on valmiiksi mietityt rool
 
 ---
 
-## 7. Ulkoasun mallikuvat: 5 tärkeintä
+## 7. Mallikuvat 1–5: tärkeimmät toiminnot
 
-Kuvat ovat kansiossa `docs/mockups/` ja niiden HTML-lähteet kansiossa `docs/mockups/src/`. Värit: Claude = oranssi `#E58A63`, ChatGPT = vihreä `#19B48C`, Grok = sininen-violetti `#8B98FF`. Kuvat ovat suuntaa-antavia luonnoksia. Sovita ne olemassa olevaan ulkoasuun, äläkä kopioi pikselintarkasti.
+Kuvat ovat kansiossa `docs/mockups/` ja niiden HTML-lähteet kansiossa `docs/mockups/src/`. Värit: Claude = oranssi `#E58A63`, ChatGPT = vihreä `#19B48C`, Grok = sininen-violetti `#8B98FF`. Kuvat ovat suuntaa-antavia luonnoksia. **Huom:** näiden kuvien toiminnot pätevät, mutta ulkoasu tehdään avaruusteemalla (osio 9 ja kuva 8). Mallien lopulliset värit ovat osion 9 värit.
 
 | # | Kuva | Mitä muuttaa | Liittyvät ideat (osiot 1–5 · #-numerot osiosta 6) |
 |---|---|---|---|
@@ -311,19 +358,186 @@ Kuvat ovat kansiossa `docs/mockups/` ja niiden HTML-lähteet kansiossa `docs/moc
 
 ---
 
-## Ehdotettu toteutusjärjestys
+## 8. 50 game changer -ideaa (#111–#160), Claude päättää
 
-1. **4.1 Vierekkäinen näkymä** (pohja kaikelle muulle, jos ei vielä ole)
-2. **3.1 Kustannuslaskuri** (näkyvyys kuluihin heti alusta)
-3. **1.1 Ristiintarkistus**
-4. **2.1 Automaattinen reititin**
-5. **1.2 Väittely**
-6. **3.3 Palaute** → **3.2 Tilastot**
-7. Loput yhteistyötilat (1.3–1.7)
-8. Muisti ja projektit (2.2–2.4)
-9. Bisnesominaisuudet (5.x) ja loput käyttöliittymäparannukset (4.2–4.4)
+> **Ohje Claudelle:** samat säännöt kuin osiossa 6: jaa ideat ryhmiin "toteuta nyt", "myöhemmin" ja "ei kannata", perustele lyhyesti ja näytä jako käyttäjälle ennen toteutusta. Nämä ideat on suunniteltu nimenomaan tähän sovellukseen, ja ⚡-merkityt muuttavat eniten sitä, mikä sovellus on. Arvioi jokaista osion 0 kolmea tukipilaria vasten: luottamus, tulokset sekä hallinta ja läpinäkyvyys.
 
-## Valmiita avoimen lähdekoodin projekteja: esikuvat ja lainattavat osat
+### A. Ydinkonsepti: missiot ja luotettavat vastaukset
+111. ⚡ **Missiot chattien rinnalle:** käyttäjä antaa tavoitteen (esim. "Tee kevään markkinointisuunnitelma"). Mallit suunnittelevat työn, jakavat sen keskenään ja palauttavat valmiin lopputuloksen. Missiolla on tila, loki, kulut ja lopputulos. Tämä muuttaa sovelluksen chatista työkaluksi. [L]
+112. **Missiopohjien kirjasto:** valmiit pohjat, ja myöhemmin myös käyttäjien jakamat pohjat arvioineen. [M]
+113. ⚡ **Hiljainen vahti:** halpa malli seuraa keskustelua taustalla ja puuttuu vain, kun se huomaa virheen, vanhentuneen tiedon tai riskin (esim. "Grok: tämä luku on vuodelta 2023, uudempi on…"). Asetukset: pois, vain kriittiset tai kaikki. [M]
+114. ⚡ **Oletusten paljastus:** jokainen malli listaa vastauksensa oletukset (esim. "oletan 200 asiakasta päivässä"). Käyttäjä voi muuttaa oletusta, ja vastaus lasketaan uudelleen. [M]
+115. **Mitä jos -säätimet:** skenaarioita säädetään liukusäätimillä (budjetti, aikataulu, riskitaso), ja mallit arvioivat tilanteen uudelleen. [L]
+116. ⚡ **Erimielisyyden juurisyy:** kun mallit ovat eri mieltä, sovellus selittää miksi: eri oletus, eri tietolähde, eri määritelmä tai eri ajankohdan tieto. Käyttäjä ymmärtää, kumpaan uskoa. [M]
+117. **Varmistettu-merkki:** annetaan vain, kun kaikki kolme ovat samaa mieltä ja lähteet löytyivät. Merkki on harvinainen, ja siksi arvokas. [S]
+
+### B. Oppiminen ja personointi
+118. ⚡ **Oppiva henkilökohtainen reititin:** seuraa, mitä käyttäjä hyväksyy ja hylkää eri tehtävätyypeissä, ja painottaa malleja sen mukaan (esim. "Sinun sähköposteissasi Claude voittaa 8/10"). [M]
+119. ⚡ **Oma testisarja:** käyttäjä merkitsee hyviä vastauksia "kultaisiksi". Kun uusi malliversio julkaistaan, sovellus ajaa sarjan ja ehdottaa vaihtoa, jos uusi on parempi tai halvempi. [L]
+120. **Mallitutka:** seuraa palveluntarjoajien uusia malleja ja hintamuutoksia ja ilmoittaa niistä ylläpitäjälle. [M]
+121. **Päätöspäiväkirja:** tärkeät päätökset tallennetaan. 30 päivän päästä sovellus kysyy, miten kävi, ja käyttää vastausta mallien painotukseen. [M]
+122. **Muisti, jonka käyttäjä näkee:** sivu "mitä mallit tietävät minusta". Jokaisen muiston voi muokata tai poistaa, ja näkyvissä on, mikä malli on käyttänyt mitäkin. [M]
+123. **Brändiäänipaketti:** lataa brändiohje, niin kaikki mallit kirjoittavat sen tyylillä ja tarkistajamalli valvoo tyyliä. [M]
+124. **"Selitä kuin…" -tasosäädin:** aloittelijasta asiantuntijaan, kaikille malleille kerralla. [S]
+
+### C. Liiketoiminnan supervoimat
+125. ⚡ **Asiakassimulaatio:** mallit esittävät eri asiakaspersoonia ja reagoivat tuotteeseen, hintaan tai mainokseen. Tuloksena on minimarkkinatutkimus minuuteissa. Merkitään aina selvästi simulaatioksi, ei oikeaksi tutkimukseksi. [M]
+126. **Pitch-harjoitus:** mallit esittävät sijoittajia, kysyvät vaikeita kysymyksiä (myös äänellä) ja pisteyttävät esityksen. [M]
+127. **Red team:** kilpailija, sijoittaja ja asiakas hyökkäävät liiketoimintasuunnitelmaa vastaan. [S]
+128. **Due diligence -raportti yhdellä klikkauksella:** koko missiosta tulee PDF, jossa on luotettavuusmerkinnät ja lähteet. [M]
+129. **Toimenpiteet tehtäviksi:** vastauksista poimitaan tehtävät, vastuuhenkilöt ja määräpäivät, ja ne voi viedä kalenteriin, Trelloon tai Notioniin. [M]
+130. **Aamubriiffi:** joka aamu Grok kerää uutiset, Claude tiivistää ne ja ChatGPT ehdottaa toimenpiteitä käyttäjän projekteihin. [M]
+
+### D. Kustannukset ja hallinta
+131. ⚡ **Budjettiautopilotti:** käyttäjä asettaa rajan (esim. enintään 2 € päivässä). Sovellus valitsee halvemmat mallit ja tilat automaattisesti ja näyttää säästön. [M]
+132. **Hinta-arvio ennen laukaisua:** "Tämä missio maksaa noin 0,08 € ja kestää 40 s", ja halvempi vaihtoehto yhdellä klikkauksella. [S]
+133. **Säästömittari:** paljonko reititys ja välimuisti säästivät verrattuna siihen, että kaikki kolme vastaisivat aina. [S]
+134. **Pimennys:** kun palvelu on alhaalla, sen taivaankappale pimenee kartalla ja työ siirtyy automaattisesti varamallille. [S]
+
+### E. Yksityisyys ja luottamus
+135. ⚡ **Sumutila (henkilötietojen suojaus):** nimet, henkilötunnukset, tilinumerot ja sähköpostit korvataan paikkamerkeillä ennen kuin mitään lähetetään malleille. Oikeat tiedot palautetaan näkyviin vasta käyttäjän ruudulla. Ratkaiseva yrityskäytössä. [M]
+136. **Kotiplaneetta:** paikallinen malli (esim. Ollaman kautta) neljänneksi miehistön jäseneksi arkaluonteisiin tehtäviin. [L]
+137. **Läpinäkyvyysloki:** jokaisesta vastauksesta näkee, mitä dataa lähti millekin palvelulle. [M]
+
+### F. Käyttökokemus avaruusteemassa
+138. **Laukaisusekvenssi on käyttöönotto:** ensikäynnillä valitaan miehistö (mallit), budjetti ja ensimmäinen missio, ja lopuksi lyhyt laukaisuanimaatio. [M]
+139. **Painovoimakonteksti:** raahaa tiedosto tai muistiinpano mallin taivaankappaleen kiertoradalle, niin se menee vain kyseisen mallin kontekstiin. [M]
+140. **Aikakonetoisto:** kelaa missio ja näe vaihe vaiheelta, miten vastaukseen päädyttiin (agenttikartan aikajana). [M]
+141. **Tähtikuviomuisti:** keskustelut ryhmittyvät automaattisesti aiheittain tähtikuvioiksi, joita voi selata. [L]
+142. **Mission Control -näppäimistötila:** kaikki toiminnot pikanäppäimillä ja HUD näkyvissä, kuin lennonjohdossa. [M]
+143. **Ambient-tila:** hiljaiset avaruusäänet ja hidas tähtiliike keskittymisen tueksi. Oletuksena pois. [S]
+144. **Jaettavat missioraportit:** kaunis julkinen sivu avaruustyylillä. Kasvattaa sovelluksen tunnettuutta. [M]
+
+### G. Tiimit ja ekosysteemi
+145. ⚡ **Tiimihuone:** useampi ihminen ja kolme tekoälyä samassa missiossa. Jokainen näkee kartan, voi kommentoida ja ohjata. [L]
+146. **Kättelyprotokolla:** mallit välittävät tietoa toisilleen jäsennellyssä muodossa (JSON: tehtävä, oletukset, lähteet, varmuus), mikä vähentää väärinymmärryksiä. Agenttikartan komeetat ovat näitä paketteja. [M]
+147. **Liitännäiset:** uusi malli (esim. Gemini, Mistral tai paikallinen malli) lisätään uutena taivaankappaleena ilman muutoksia ydinkoodiin. [L]
+148. **Komentorivi ja API tehokäyttäjille,** esim. `trio ask --mode=debate "…"`. [M]
+149. **Vienti muihin työkaluihin:** tulos suoraan Notioniin, Google Docsiin, sähköpostiluonnokseksi tai Slackiin. [M]
+
+### H. Laatu ja kestävyys
+150. **Muotosopimus:** käyttäjä määrää muodon (taulukko, enintään 100 sanaa, JSON), ja tarkistajamalli varmistaa ja korjaa sen automaattisesti. [S]
+151. **Kehotelaboratorio:** sama kehote useana versiona kaikille malleille, tulokset ruudukossa. [M]
+152. **Vanhenemisvahti:** aikasidonnaiset vastaukset tarkistetaan automaattisesti uudelleen (esim. 30 päivän välein), ja käyttäjälle ilmoitetaan, jos tieto muuttui. [M]
+153. **Käännöstarkistus:** kun vastaus käännetään suomeksi, toinen malli tarkistaa käännöksen. [S]
+154. **Korkean kontrastin teema "Deep Space HC"** saavutettavuuden tueksi. [S]
+155. **Suorituskykybudjetti:** ensimmäinen näkymä alle 2 sekunnissa, tähtitausta ei kuormita prosessoria merkittävästi ja kartat toimivat sujuvasti vähintään 500 solmulla. [M]
+156. **Palautuminen kesken mission:** jos selain kaatuu, missio jatkuu palvelimella ja tila palautuu. [M]
+
+### I. Kasvu ja käyttöönotto
+157. **Maltilliset saavutukset,** esim. "Ensimmäinen missio" tai "10 ristiintarkistusta", ei häiritsevää pelillistämistä. [S]
+158. **Miehistön profiilikortit:** jokaisella mallilla on kortti, jossa näkyvät sen vahvuudet, hinta, nopeus ja käyttäjän oma tilasto. [S]
+159. **Harjoitusmissiot:** valmiit opetusmissiot esittelevät uudelle käyttäjälle jokaisen tilan. [S]
+160. **Mallien kemia:** mittaa, mitkä mallit tuottavat yhdessä parhaat väittelyt ja tarkistukset, ja suosittelee miehistöä. [M]
+
+---
+
+## 9. Avaruusteema: Nebula-design-järjestelmä
+
+> **Käyttäjän päätös:** sovelluksen ulkoasu on **avaruusteemainen**, uniikki ja ammattimainen. Tämä osio ei ole valinnainen.
+> **Claude:** ota käyttöön `docs/design/nebula.css` (värit, fontit, efektit valmiina CSS-muuttujina) ja käytä mallikuvia 6–9 ja niiden HTML-lähteitä (`docs/mockups/src-space/`) pohjana. Jos projektissa on Tailwind tai muu teemajärjestelmä, siirrä tokenit sen konfiguraatioon.
+
+### 9.1 Periaatteet
+Inspiraationa ovat elokuvien HUD- ja FUI-käyttöliittymät, mutta oikeaan käyttöön sovitettuina.
+- **Kaikella on tarkoitus.** Koriste ilman tehtävää jätetään pois. Elokuvissa käyttöliittymä näkyy pari sekuntia, mutta tätä sovellusta käytetään tunteja, joten luettavuus menee aina efektien edelle.
+- **Yksi aksentti:** ionisini `#5EE6FF` on toimintoja, dataa ja fokusta varten. Sumuvärit (violetti ja magenta) ovat vain taustoissa.
+- **HUD-värilogiikka:** syaani tarkoittaa dataa, keltainen varoitusta ja punainen kriittistä. Sama logiikka toistuu kaikkialla.
+- **Hehku on palkinto:** vain pääpainike, aktiivinen tila ja tärkein luku saavat hehkua.
+- **Teksti on aina paneelin päällä,** ei suoraan tähtitaivaan tai sumun päällä.
+- **Liike kertoo tilasta** (striimaus, viestit, käynnissä olevat tehtävät), ei ole pelkkää koristetta. Kaikki liike pysähtyy, jos käyttäjä on valinnut vähennetyn liikkeen (`prefers-reduced-motion`).
+
+### 9.2 Värit
+Kaikki on valmiina tiedostossa `docs/design/nebula.css`. Kontrastit on tarkistettu laskemalla.
+
+| Rooli | Token | Arvo | Kontrasti hull-pintaa vasten |
+|---|---|---|---|
+| Tausta / pinnat | `--void` `--deep` `--hull` `--module` `--module-2` | #05060D → #1E2747 | – |
+| Teksti | `--text` / `--text-muted` / `--text-faint` | #E6EAFF / #A3ACD1 / #6B75A6 | 15:1 / 8:1 / 4:1 (faint vain isolle tekstille) |
+| Aksentti | `--ion` | #5EE6FF | 12:1 |
+| Claude = **tähti** | `--claude` | #FF9E6B | 8,8:1 |
+| ChatGPT = **planeetta** | `--gpt` | #3DDBB0 | 10:1 |
+| Grok = **pulsari** | `--grok` | #8F9BFF | 7:1 |
+| Tilat | `--ok` `--warn` `--crit` | #45E3A0 #FFC861 #FF6B7A | ≥ 6,5:1 |
+
+### 9.3 Typografia (kaikki ilmaisia, SIL Open Font License)
+- **Otsikot:** Space Grotesk (Google Fonts). Tekninen ja avaruudellinen, mutta luettava.
+- **Leipäteksti:** Inter tai Geist. Selkeä pienissäkin koossa.
+- **Telemetria ja numerot:** JetBrains Mono tai Geist Mono, tasalevyiset numerot (`font-variant-numeric: tabular-nums`).
+- **HUD-tunnisteet:** mono, VERSAALIT, 0,14em välistys, 10–11 px.
+- Vältä varsinaisia "scifi-fontteja" (esim. Orbitron) leipätekstissä, koska ne heikentävät luettavuutta pienissä koissa. Logossa niitä voi harkita.
+
+### 9.4 Tausta ja efektit
+- **Kerrokset alhaalta ylös:** void-väri → 1–2 pehmeää sumupilveä (radial-gradient) → tähtikenttä → hienojakoinen rae (noin 3 % peittävyys, estää liukuvärien raitaisuuden) → lasipaneelit (`backdrop-filter: blur(12–14px)`, hiusviivareuna `rgba(168,186,255,.10)`).
+- **Tähtikenttä:** kevyt canvas (oma pieni skripti, ks. `docs/mockups/src-space/stars.js`) tai tsParticles + `@tsparticles/preset-stars`. Kun vähennetty liike on päällä, piirretään yksi pysähtynyt kuva. Huom: CSS:n `prefers-reduced-motion` ei pysäytä JavaScriptin animaatiosilmukkaa, joten tarkista asetus `matchMedia`-kutsulla ennen kuin käynnistät silmukan.
+- **Reunat:** läpikuultava valkoinen (6–10 %) harmaan sijaan. Hover nostaa reunan ionisiniseksi.
+- **Ikonit:** ohut viiva (Lucide tai Phosphor, 1,5 px). Navigoinnissa tähtisymbolit: ◎ chat, ✦ agenttikartta, ✺ galaksi, ◇ missiot.
+- **Äänet (valinnainen, oletuksena pois):** hiljaiset ja lyhyet, aina mykistettävissä. Esim. [UI SFX](https://github.com/romainsimon/uisfx/wiki) (koodi MIT, äänet CC0).
+- **Avaruuskuvat (jos käytetään):** NASA:n kuvia saa yleensä käyttää ilman lupaa, kunhan lähde mainitaan eikä anneta ymmärtää, että NASA suosittelee tuotetta. NASA:n logoja ei saa käyttää. Hubble- ja ESA-kuvilla on omat ehtonsa (osa CC BY), joten tarkista jokainen kuva erikseen.
+
+### 9.5 Mallien tunnukset
+Omat tunnukset, ei yritysten logoja:
+- **Claude = tähti:** lämmin oranssi ydin ja korona.
+- **ChatGPT = planeetta:** smaragdinvihreä pallo ja kallistunut rengas.
+- **Grok = pulsari:** kirkas valkoinen ydin ja kaksi sinivioletista sädettä.
+Tunnukset näkyvät kapseleiden otsikoissa, agenttikartalla, merkeissä ja kulumittareissa. Malli tunnistetaan aina myös nimestä, ei pelkästä väristä tai muodosta.
+
+### 9.6 Agenttikartta: tähtikartta (kuva 6)
+**Mitä se näyttää:** reaaliajassa, mitä jokainen malli tekee, mitä mallit lähettävät toisilleen ja paljonko se maksaa.
+- **Solmut:** missio (ydin keskellä), mallit (taivaankappaleet kiertoradoilla) ja alitehtävät (kiertolaiset mallin ympärillä: vihreä on valmis, syaani käynnissä ja harmaa jonossa).
+- **Reitit:** viestit kulkevat komeettoina liukuväriviivaa pitkin lähettäjän väristä vastaanottajan väriin. Tunnisteessa näkyy sisältö ja koko (esim. "luonnos v2 · 1 240 tok"). Katkoviiva tarkoittaa lähdeviittausta.
+- **Paneelit:** missio ja vaiheet (vasen yläkulma), telemetria (oikea yläkulma: tokenit, vasteaika, hinta ja luottamus), selite ja aikajana (alhaalla), josta tapahtumia voi kelata taaksepäin.
+- **Tilat:** valmis ✓ vihreä, käynnissä ◌ syaani ja animoitu, odottaa harmaa, virhe punainen ja palvelu alhaalla = pimennys (#134).
+- **Toteutus:** [React Flow](https://reactflow.dev) (omat solmut ja animoidut reitit) tai sen päälle rakennetut AI SDK:n [Workflow-komponentit](https://ai-sdk.dev/elements/components/workflow). Asettelu kiinteillä kiertoradoilla tai Dagre-kirjastolla. Kevyempi vaihtoehto on oma SVG, kuten mallikuvan lähteessä.
+- **Tietomalli:** `events[]` (aikaleima, lähettäjä, vastaanottaja, tyyppi, tokenit, hinta) → kartta ja aikajana piirretään samasta tapahtumalistasta. Näin aikakone toimii ilmaiseksi.
+- **Saavutettavuus:** "Näytä listana" -vaihtoehto, joka näyttää samat tapahtumat tekstinä. Komeetat pysähtyvät, jos vähennetty liike on päällä.
+
+### 9.7 Tiedostokartta: galaksi (kuva 7)
+**Mitä se näyttää:** kaikki tiedostot ja keskustelut tähtinä ja niiden väliset yhteydet.
+- **Tähti** on tiedosto tai keskustelu. Koko kertoo käyttömäärän, kirkkaus sen, milloin sitä viimeksi käytettiin, ja väri tiedostotyypin.
+- **Sumupilvi** on projekti. Saman projektin tiedostot ovat samassa värillisessä pilvessä.
+- **Tähtikuviot** ovat yhteyksiä: tiedostoja, joita on käytetty samassa keskustelussa tai jotka viittaavat toisiinsa.
+- **Valinta:** klikkaus lukitsee tähtäimen, ja kortti näyttää tiedot ja mitkä mallit lukivat tiedoston.
+- **Painovoimakonteksti:** tiedosto raahataan alapalkkiin, ja kontekstissa olevaa tiedostoa kiertää rata, jonka kuut kertovat, mitkä mallit sen lukivat. Tokenimittari näyttää, paljonko kontekstia on jäljellä.
+- **Toteutus:** [react-force-graph](https://github.com/vasturiano/react-force-graph) (2D/3D, sama tekijä kuin 3d-force-graph) tai d3-force. Aloita 2D:llä: se on luettavampi ja kevyempi, ja 3D voi tulla valinnaiseksi "tutkimustilaksi". Esikuvia: Obsidianin Stellar Graph- ja Agentage Galaxy -lisäosat.
+- **Saavutettavuus ja suorituskyky:** tavallinen listanäkymä on aina saatavilla, haku ja suodatus himmentävät muut tähdet ja kartan pitää toimia sujuvasti vähintään 500 tiedostolla.
+
+### 9.8 Mallikuvat 6–9
+Kuvat: `docs/mockups/`. HTML-lähteet (käytä suoraan pohjana): `docs/mockups/src-space/`.
+
+| # | Kuva | Mitä näyttää |
+|---|---|---|
+| 6 | ![Agenttikartta](docs/mockups/6-agenttikartta.png) | Missio keskellä, mallit taivaankappaleina, komeetat viesteinä, alitehtävät kiertolaisina, telemetria, aikakone |
+| 7 | ![Tiedostokartta](docs/mockups/7-tiedostokartta.png) | Tiedostot tähtinä, projektit sumupilvinä, tähtikuviot yhteyksinä, tähtäin ja tietokortti, painovoimakonteksti |
+| 8 | ![Mission Control](docs/mockups/8-paanakyma.png) | Päänäkymä avaruusteemassa: navigointipalkki, HUD-mittarit (luottamus ja polttoaine), tilavalot, kapselit, laukaisualusta |
+| 9 | ![Nebula](docs/mockups/9-design-jarjestelma.png) | Koko design-järjestelmä yhdellä sivulla: värit, fontit, komponentit, efektit, ikonit, liike, äänet |
+
+
+## 10. Vaiheistettu toteutussuunnitelma
+
+> **Claude:** sovita tämä siihen, mitä koodissa jo on, ja niihin ideoihin, jotka valitsit osioista 6 ja 8. Jokaisen vaiheen lopussa sovelluksen pitää olla käyttökelpoinen.
+
+**Vaihe 0: Perusta**
+- Yhteinen rajapinta kaikille malleille, striimaus, rinnakkaiskutsut, aikarajat, uudelleenyritykset ja varamalli (osio 12, #77–#80).
+- API-avaimet turvaan palvelimelle (#91).
+- Nebula-design-järjestelmä: tokenit, fontit, tähtitausta ja lasipaneelit (osio 9).
+
+**Vaihe 1: Ydin, jonka pitää olla erinomainen**
+- Mission Control -päänäkymä (kuva 8), jossa vierekkäiset vastaukset (4.1).
+- Kustannuslaskuri ja polttoainemittari (3.1).
+- Ristiintarkistus ja konsensusmittari (1.1, 1.6, kuva 2).
+
+**Vaihe 2: Tämä erottaa sovelluksen kilpailijoista**
+- Agenttikartta (kuva 6) ja aikakone.
+- Väittely (1.2) ja automaattinen reititin (2.1).
+- Missiot chattien rinnalle (#111), jos valitsit sen.
+
+**Vaihe 3: Työkalut ja muisti**
+- Tiedostot ja tiedostokartta (kuva 7), projektit ja muisti (2.2–2.4), verkkohaku ja lähteet.
+
+**Vaihe 4: Liiketoiminta**
+- Kirjautuminen, krediitit ja maksut, tiimit sekä lakiasiat (EU:n tekoälyasetus, GDPR).
+
+## 11. Avoimen lähdekoodin esikuvat ja lainattavat osat
 
 > **Ohje Claudelle:** käytä näitä ensisijaisesti **mallina ja inspiraationa**. Ennen kuin kopioit koodia suoraan, tarkista projektin lisenssi:
 > - **MIT / Apache-2.0:** kopiointi sallittu, kunhan alkuperäinen lisenssi- ja tekijänoikeusmerkintä säilytetään.
@@ -363,7 +577,7 @@ Kuvat ovat kansiossa `docs/mockups/` ja niiden HTML-lähteet kansiossa `docs/moc
 
 ---
 
-## Tekniset huomiot
+## 12. Tekniset huomiot
 
 - Tee jokaiselle mallille yhteinen rajapinta (esim. `sendMessage(model, messages, options)` → `{ text, inputTokens, outputTokens, latency }`), jolloin yhteistyötilat on helppo rakentaa sen päälle eikä niiden tarvitse tietää, mitä API:a kulloinkin käytetään.
 - Kutsu malleja rinnakkain aina kun mahdollista (esim. `Promise.all` / `asyncio.gather`).

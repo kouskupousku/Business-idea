@@ -1,0 +1,143 @@
+<!doctype html><html lang="fi"><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="space.css"><style>
+.map{position:relative;flex:1;min-height:0}
+svg.sky{position:absolute;inset:0;width:100%;height:100%}
+.cl{font-family:var(--font-mono);font-size:11px;letter-spacing:.16em}
+.fl{font-family:var(--font-body);font-size:11.5px;fill:var(--text-muted)}
+.fl.b{fill:var(--text);font-size:12.5px;font-weight:600}
+.side{position:absolute;left:16px;top:16px;width:236px;padding:14px}
+.search{display:flex;align-items:center;gap:8px;padding:8px 11px;border-radius:9px;border:1px solid var(--line-strong);color:var(--text-faint);font-size:12.5px;margin:9px 0 12px;background:rgba(5,6,13,.5)}
+.frow{display:flex;align-items:center;gap:8px;padding:6px 2px;font-size:12.5px;color:var(--text-muted)}
+.frow .n{margin-left:auto;font-family:var(--font-mono);font-size:11.5px;color:var(--text-faint)}
+.frow i{width:9px;height:9px;border-radius:50%;display:block}
+.tog{display:flex;align-items:center;gap:9px;font-size:12.5px;color:var(--text-muted);margin-top:8px}
+.sw{width:28px;height:16px;border-radius:999px;background:var(--module-2);position:relative;flex:none}
+.sw.on{background:var(--ion)} .sw::after{content:"";position:absolute;top:2px;left:2px;width:12px;height:12px;border-radius:50%;background:#fff}
+.sw.on::after{left:14px;background:#031018}
+.detail{position:absolute;right:16px;top:16px;width:262px;padding:15px}
+.detail h3{font-family:var(--font-display);font-size:16px;font-weight:600;margin:8px 0 2px;word-break:break-all}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:5px 12px;font-size:12px;margin:10px 0;color:var(--text-muted)}
+.kv b{color:var(--text);font-weight:500;font-family:var(--font-mono);font-size:11.5px;text-align:right}
+.ub{display:grid;grid-template-columns:62px 1fr 28px;gap:8px;align-items:center;font-size:12px;margin:5px 0}
+.ub .bar{height:6px;border-radius:3px;background:var(--module-2);overflow:hidden}
+.ub .bar i{display:block;height:100%}
+.dock{position:absolute;left:16px;right:16px;bottom:16px;padding:12px 14px;display:flex;align-items:center;gap:10px}
+.fchip{display:inline-flex;align-items:center;gap:7px;padding:6px 10px;border-radius:9px;background:rgba(94,230,255,.08);border:1px solid rgba(94,230,255,.35);font-size:12px;white-space:nowrap}
+.drop{padding:6px 12px;border-radius:9px;border:1px dashed var(--line-strong);color:var(--text-faint);font-size:12px;white-space:nowrap}
+.gauge{width:120px;height:6px;border-radius:3px;background:var(--module-2);overflow:hidden}
+.zoom{position:absolute;right:16px;bottom:84px;display:flex;flex-direction:column;gap:6px}
+.zoom span{width:32px;height:32px;display:grid;place-items:center;border-radius:9px;font-size:15px}
+</style></head><body>
+<div class="frame">
+<div class="head"><div class="num">7</div><h1>Tiedostokartta: galaksi</h1><p>Kaikki tiedostot ja keskustelut tähtinä. Projektit muodostavat sumupilviä, ja toisiinsa liittyvät tiedostot yhdistyvät tähtikuvioiksi.</p></div>
+<div class="main"><div class="win">
+ <div class="tbar"><div class="logo"><i></i>Trio AI</div><span class="hud" style="margin-left:6px">Galaksi · Tiedostot</span>
+  <span style="margin-left:auto" class="tel">81 tähteä · 3 sumua · 46 yhteyttä</span></div>
+ <div class="map">
+  <svg class="sky" viewBox="0 0 1184 796" preserveAspectRatio="xMidYMid meet" id="g">
+   <defs>
+    <filter id="b30" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="38"/></filter>
+    <filter id="b3" x="-200%" y="-200%" width="500%" height="500%"><feGaussianBlur stdDeviation="3"/></filter>
+    <radialGradient id="sg"><stop offset="0" stop-color="#fff"/><stop offset=".35" stop-color="#fff" stop-opacity=".85"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+   </defs>
+   <!-- sumupilvet = projektit -->
+   <ellipse cx="430" cy="380" rx="200" ry="150" fill="#9B7BFF" opacity=".22" filter="url(#b30)"/>
+   <ellipse cx="480" cy="410" rx="120" ry="90" fill="#E36BFF" opacity=".10" filter="url(#b30)"/>
+   <ellipse cx="710" cy="200" rx="150" ry="100" fill="#5EE6FF" opacity=".16" filter="url(#b30)"/>
+   <ellipse cx="750" cy="575" rx="160" ry="95" fill="#FFC861" opacity=".12" filter="url(#b30)"/>
+   <text x="330" y="222" class="cl" fill="#C3B2FF">BUSINESS-IDEA</text>
+   <text x="650" y="96" class="cl" fill="#9FF0FF">MARKKINOINTI</text>
+   <text x="672" y="686" class="cl" fill="#FFDCA0">SOPIMUKSET &amp; TALOUS</text>
+   <g id="lines"></g><g id="fstars"></g>
+   <!-- valittu tiedosto: tähtäin -->
+   <g transform="translate(430 370)">
+    <circle r="26" fill="none" stroke="#5EE6FF" stroke-width="1.5"/>
+    <circle r="34" fill="none" stroke="#5EE6FF" stroke-opacity=".35" stroke-dasharray="3 5"/>
+    <g stroke="#5EE6FF" stroke-width="1.5"><line x1="-44" y1="0" x2="-30" y2="0"/><line x1="30" y1="0" x2="44" y2="0"/><line x1="0" y1="-44" x2="0" y2="-30"/><line x1="0" y1="30" x2="0" y2="44"/></g>
+    <circle r="16" fill="url(#sg)"/><circle r="5.5" fill="#fff"/>
+    <!-- kontekstin kiertorata + kuut -->
+    <ellipse rx="58" ry="20" fill="none" stroke="rgba(94,230,255,.4)"/>
+    <circle cx="-50" cy="10" r="4" fill="#FF9E6B"/><circle cx="46" cy="-12" r="4" fill="#3DDBB0"/><circle cx="20" cy="19" r="3.5" fill="#8F9BFF"/>
+   </g>
+   <text x="430" y="430" text-anchor="middle" class="fl b">Liiketoimintasuunnitelma_v3.pdf</text>
+   <!-- toinen kontekstissa oleva -->
+   <g transform="translate(720 200)"><ellipse rx="40" ry="14" fill="none" stroke="rgba(94,230,255,.4)"/><circle cx="-34" cy="8" r="3.5" fill="#FF9E6B"/><circle r="12" fill="url(#sg)"/><circle r="4.5" fill="#fff"/></g>
+   <text x="720" y="242" text-anchor="middle" class="fl b">Kampanjasuunnitelma.docx</text>
+   <g transform="translate(720 570)"><ellipse rx="38" ry="13" fill="none" stroke="rgba(94,230,255,.4)"/><circle cx="32" cy="-7" r="3.5" fill="#3DDBB0"/><circle r="11" fill="url(#sg)"/><circle r="4" fill="#fff"/></g>
+   <text x="720" y="608" text-anchor="middle" class="fl b">Budjetti_2027.xlsx</text>
+  </svg>
+
+  <div class="side glass"><div class="pin cpin" style="left:-10px;top:-10px">6</div><span class="hud">Haku ja suodatus</span>
+   <div class="search">⌕ Hae tiedostoista… <span style="margin-left:auto" class="hud">/</span></div>
+   <div class="frow"><i style="background:#FFC861"></i>PDF-dokumentit<span class="n">12</span></div>
+   <div class="frow"><i style="background:#3DDBB0"></i>Taulukot<span class="n">5</span></div>
+   <div class="frow"><i style="background:#E36BFF"></i>Kuvat<span class="n">9</span></div>
+   <div class="frow"><i style="background:#E6EAFF"></i>Tekstit ja muistiot<span class="n">21</span></div>
+   <div class="frow"><i style="background:#5EE6FF"></i>Keskustelut<span class="n">34</span></div>
+   <div style="height:1px;background:var(--line);margin:8px 0"></div>
+   <div class="tog"><span class="sw on"></span>Näytä tähtikuviot</div>
+   <div class="tog"><span class="sw"></span>Vain kontekstissa olevat</div>
+   <div class="tog"><span class="sw on"></span>Kirkkaus = viimeksi käytetty</div></div>
+
+  <div class="detail glass"><div class="pin cpin" style="right:-10px;top:-10px">4</div><span class="hud">Valittu tähti</span>
+   <h3>Liiketoimintasuunnitelma_v3.pdf</h3><span class="tel">PDF · 24 sivua · 1,8 Mt</span>
+   <div class="kv"><span>Projekti</span><b style="color:#C3B2FF">Business-idea</b><span>Käytetty</span><b>14× · tänään 09:12</b><span>Tokeneita</span><b>11 200</b><span>Yhteydet</span><b>5 tiedostoa</b></div>
+   <span class="hud">Kuka luki</span>
+   <div class="ub"><span>Claude</span><div class="bar"><i style="width:64%;background:var(--claude)"></i></div><span class="tel">9×</span></div>
+   <div class="ub"><span>ChatGPT</span><div class="bar"><i style="width:29%;background:var(--gpt)"></i></div><span class="tel">4×</span></div>
+   <div class="ub"><span>Grok</span><div class="bar"><i style="width:8%;background:var(--grok)"></i></div><span class="tel">1×</span></div>
+   <div style="display:flex;gap:7px;margin-top:12px;flex-wrap:wrap"><span class="btn p">⊕ Kontekstiin</span><span class="btn">Avaa</span><span class="btn">Kysy tästä</span></div></div>
+
+  <div class="zoom"><span class="glass">＋</span><span class="glass">－</span><span class="glass">⌖</span></div>
+
+  <div class="dock glass"><div class="pin cpin" style="left:-10px;top:-10px">5</div><span class="hud">Kontekstissa</span>
+   <span class="fchip"><i class="dotc" style="background:#FFC861"></i>Liiketoimintasuunnitelma_v3.pdf</span>
+   <span class="fchip"><i class="dotc" style="background:#E6EAFF"></i>Kampanjasuunnitelma.docx</span>
+   <span class="fchip"><i class="dotc" style="background:#3DDBB0"></i>Budjetti_2027.xlsx</span>
+   <span class="drop">⤓ Raahaa tähti tähän</span>
+   <span style="margin-left:auto" class="tel">18 400 / 200 000 tok</span><div class="gauge"><div style="width:9%;height:100%;background:var(--ion)"></div></div></div>
+
+  <div class="pin cpin" style="left:290px;top:186px">1</div>
+  <div class="pin cpin" style="left:560px;top:250px">2</div>
+  <div class="pin cpin" style="left:580px;top:470px">3</div>
+ </div>
+</div>
+<div class="notes"><h2>// Mitä tämä tekee</h2>
+ <div class="note glass"><div class="pin">1</div><div><b>Projektit ovat sumupilviä</b><span>Saman projektin tiedostot ja keskustelut kerääntyvät samaan värilliseen pilveen.</span></div></div>
+ <div class="note glass"><div class="pin">2</div><div><b>Tähden koko ja kirkkaus</b><span>Iso tähti on paljon käytetty, kirkas tähti äskettäin käytetty. Väri kertoo tiedostotyypin.</span></div></div>
+ <div class="note glass"><div class="pin">3</div><div><b>Tähtikuviot ovat yhteyksiä</b><span>Viiva yhdistää tiedostot, joita on käytetty samassa keskustelussa tai jotka viittaavat toisiinsa.</span></div></div>
+ <div class="note glass"><div class="pin">4</div><div><b>Klikkaa tähteä</b><span>Tähtäin lukittuu, ja kortti kertoo koon, käyttömäärät ja mitkä mallit tiedostoa lukivat.</span></div></div>
+ <div class="note glass"><div class="pin">5</div><div><b>Painovoima-konteksti</b><span>Raahaa tähti alapalkkiin, niin se tulee mallien käyttöön. Kontekstissa olevaa tiedostoa kiertää rata, ja kuut kertovat, mikä malli sen luki. Tokenimittari varoittaa ennen kuin raja tulee vastaan.</span></div></div>
+ <div class="note glass"><div class="pin">6</div><div><b>Haku ja suodattimet</b><span>Etsi nimellä tai sisällöllä ja suodata tyypin mukaan. Kartta himmentää kaiken muun.</span></div></div>
+</div></div></div>
+<script src="stars.js"></script>
+<script>
+(function(){const NS='http://www.w3.org/2000/svg';let s=4242;const r=()=>(s=(s*16807)%2147483647)/2147483647;
+const T=['#FFC861','#3DDBB0','#E36BFF','#E6EAFF','#5EE6FF','#E6EAFF','#5EE6FF'];
+const clusters=[{x:430,y:380,rx:185,ry:130,n:30,names:['Kilpailija-analyysi.pdf','SWOT_muistio.md','Asiakashaastattelut','Hinnoittelu.xlsx']},
+{x:720,y:200,rx:150,ry:85,n:20,names:['Instagram-kuvat','Brändiopas.pdf','Somekalenteri']},
+{x:760,y:575,rx:150,ry:80,n:18,names:['Vuokrasopimus.pdf','Kassavirta.xlsx','Toimittajasopimus']},
+{x:330,y:650,rx:90,ry:50,n:8,names:[]},{x:1000,y:620,rx:60,ry:60,n:6,names:[]}];
+const pts=[];const S=document.getElementById('fstars'),L=document.getElementById('lines');
+const add=(t,a)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e};
+clusters.forEach((c,ci)=>{const local=[];for(let i=0;i<c.n;i++){const a=r()*6.283,d=Math.sqrt(r());const x=c.x+Math.cos(a)*c.rx*d,y=c.y+Math.sin(a)*c.ry*d;
+ if(Math.hypot(x-430,(y-370)*1.6)<70&&ci==0)continue;const size=1.2+Math.pow(r(),3)*5;const col=T[(r()*T.length)|0];const br=.35+r()*.65;
+ const p={x,y,size,col,br,ci};local.push(p);pts.push(p);}
+ local.sort((a,b)=>b.size-a.size);
+ // tähtikuviot: yhdistä isoimmat
+ for(let i=0;i<Math.min(local.length-1,ci<3?7:2);i++){const a=local[i],b=local[i+1];L.appendChild(add('line',{x1:a.x,y1:a.y,x2:b.x,y2:b.y,stroke:'rgba(168,186,255,.22)','stroke-width':1}));}
+ c.names.forEach((nm,i)=>{const p=local[i];if(!p)return;p.label=nm;});});
+// muutama projektien välinen yhteys
+[[0,1],[0,2]].forEach(([a,b])=>{const A=pts.find(p=>p.ci==a&&p.label),B=pts.find(p=>p.ci==b&&p.label);L.appendChild(add('line',{x1:A.x,y1:A.y,x2:B.x,y2:B.y,stroke:'rgba(94,230,255,.25)','stroke-dasharray':'3 6'}));});
+// linja valittuun
+const sel={x:430,y:370};pts.filter(p=>p.ci==0&&p.label).slice(0,3).forEach(p=>L.appendChild(add('line',{x1:sel.x,y1:sel.y,x2:p.x,y2:p.y,stroke:'rgba(94,230,255,.45)','stroke-width':1.2})));
+const boxes=[{l:330,r:530,t:417,b:436},{l:640,r:800,t:229,b:248},{l:660,r:780,t:595,b:614},{l:390,r:470,t:330,b:410}];
+pts.sort((a,b)=>(b.label?1:0)-(a.label?1:0));
+pts.forEach(p=>{const g=add('g',{});g.appendChild(add('circle',{cx:p.x,cy:p.y,r:p.size*3.2,fill:p.col,opacity:(.18*p.br).toFixed(2),filter:'url(#b3)'}));
+ g.appendChild(add('circle',{cx:p.x,cy:p.y,r:p.size,fill:p.col,opacity:p.br.toFixed(2)}));
+ if(p.label){const w=p.label.length*6.4;const cand=[{x:p.x+p.size+7,y:p.y+4,a:'start',l:p.x+p.size+7},{x:p.x-p.size-7,y:p.y+4,a:'end',l:p.x-p.size-7-w},{x:p.x,y:p.y-p.size-8,a:'middle',l:p.x-w/2},{x:p.x,y:p.y+p.size+16,a:'middle',l:p.x-w/2}];
+  const ok=c=>!boxes.some(b=>c.l<b.r&&c.l+w>b.l&&c.y-11<b.b&&c.y+3>b.t);const c=cand.find(ok);
+  if(c){boxes.push({l:c.l,r:c.l+w,t:c.y-11,b:c.y+3});const t=add('text',{x:c.x,y:c.y,class:'fl','text-anchor':c.a});t.textContent=p.label;g.appendChild(t);}}S.appendChild(g);});
+})();
+</script></body></html>
