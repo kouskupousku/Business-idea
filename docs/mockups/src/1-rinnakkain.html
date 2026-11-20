@@ -1,0 +1,54 @@
+<!doctype html><html lang="fi"><head><meta charset="utf-8"><link rel="stylesheet" href="style.css"><style>
+.tabs{display:flex;gap:6px;padding:12px 18px;border-bottom:1px solid var(--border);align-items:center}
+.tab{padding:7px 13px;border-radius:8px;color:var(--muted);font-size:13px}
+.tab.on{background:var(--panel3);color:var(--text);font-weight:600}
+.q{margin:16px 18px 6px;align-self:flex-end;background:var(--panel3);border-radius:12px 12px 4px 12px;padding:10px 14px;max-width:62%;font-size:14.5px}
+.cols{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:12px 18px;flex:1;min-height:0}
+.col{border:1px solid var(--border);border-radius:12px;background:var(--panel);display:flex;flex-direction:column}
+.col.c{border-top:3px solid var(--claude)} .col.g{border-top:3px solid var(--gpt)} .col.x{border-top:3px solid var(--grok)}
+.ch{display:flex;align-items:center;gap:9px;padding:11px 13px;border-bottom:1px solid var(--border)}
+.ch b{font-size:14px} .ch .st{margin-left:auto;font-size:11.5px}
+.body{padding:12px 14px;font-size:13.5px;color:#d6d9e0;flex:1}
+.body p{margin-bottom:9px}
+.dis{background:rgba(245,184,74,.16);border-bottom:2px solid var(--warn);border-radius:3px;padding:0 2px}
+.cf{display:flex;align-items:center;gap:6px;padding:9px 12px;border-top:1px solid var(--border);font-size:12px;color:var(--muted)}
+.cf .meta{margin-left:auto}
+.live{color:var(--grok)}
+.bottom{padding:12px 18px 16px}
+.mention{background:var(--grok-bg);color:var(--grok);padding:2px 7px;border-radius:6px;font-weight:600}
+</style></head><body><div class="frame">
+<div class="head"><div class="num">1</div><h1>Vierekkäinen näkymä</h1><p>Kaikki kolme vastaavat samaan aikaan omissa sarakkeissaan, ja kohdat, joista ne ovat eri mieltä, näkyvät heti.</p></div>
+<div class="main"><div class="win">
+  <div class="titlebar"><i></i><i></i><i></i><span>Trio AI · Kahvilan maksutavat</span></div>
+  <div class="tabs"><div class="tab on">Rinnakkain</div><div class="tab">Ristiintarkistus</div><div class="tab">Väittely</div><div class="tab">Äänestys</div><div class="tab">Synteesi</div>
+    <span style="margin-left:auto" class="chip a"><div class="pin callout r">6</div>Yksimielisyys <b style="color:var(--warn)">68 %</b></span></div>
+  <div style="display:flex;flex-direction:column"><div class="q">Kannattaako pienen kahvilan siirtyä pelkkiin korttimaksuihin?</div></div>
+  <div class="cols">
+    <div class="col c"><div class="ch a"><div class="pin callout">1</div><div class="av c">C</div><b>Claude</b><span class="st faint">valmis · 4,1 s</span></div>
+      <div class="body"><p>Monelle kahvilalle kyllä: kassan laskeminen ja rahankuljetus jäävät pois ja jono liikkuu nopeammin.</p>
+      <p class="a"><span class="pin callout r" style="top:14px;right:-22px">3</span>Riski on asiakkaissa, jotka maksavat mieluiten käteisellä, <span class="dis">erityisesti iäkkäät kanta-asiakkaat</span>. Kokeile ensin kuukauden ajan ja seuraa myyntiä.</p>
+      <p>Tarkista myös maksupäätteen kuukausi- ja tapahtumamaksut.</p></div>
+      <div class="cf"><span class="btn">👍</span><span class="btn">👎</span><span class="btn">↳ Jatka tästä</span><span class="meta mono a"><div class="pin callout r" style="top:-30px;right:6px">4</div>0,9 snt</span></div></div>
+    <div class="col g"><div class="ch"><div class="av g">G</div><b>ChatGPT</b><span class="st faint">valmis · 3,2 s</span></div>
+      <div class="body"><p>Kyllä, jos valtaosa asiakkaista maksaa jo kortilla. Hyötyjä ovat nopeus, turvallisuus ja helpompi kirjanpito.</p>
+      <p><span class="dis">Käteisen menetys on yleensä vähäistä</span>, kunhan asiasta kerrotaan selvästi ovessa ja kassalla.</p>
+      <p>Vinkki: lisää lähimaksu ja mobiilimaksu.</p></div>
+      <div class="cf"><span class="btn a"><div class="pin callout">5</div>👍</span><span class="btn">👎</span><span class="btn">↳ Jatka tästä</span><span class="meta mono">0,6 snt</span></div></div>
+    <div class="col x"><div class="ch"><div class="av x">X</div><b>Grok</b><span class="st live a"><div class="pin callout">2</div>● kirjoittaa…</span></div>
+      <div class="body"><p>Trendi on selvä: korttimaksujen osuus kasvaa joka vuosi.</p>
+      <p>Mutta <span class="dis">moni kahvila on palannut ottamaan käteistä</span>, kun osa asiakkaista jäi pois. Paras malli voi olla "kortti ensisijaisesti, käteinen<span class="cursor"></span></p></div>
+      <div class="cf"><span class="btn">■ Pysäytä</span><span class="meta mono live">0,4 snt…</span></div></div>
+  </div>
+  <div class="bottom"><div class="composer"><span class="mention a"><div class="pin callout r">7</div>@grok</span><span class="ph">miksi palasivat käteiseen?</span>
+    <span class="chip on"><span class="av sm c">C</span><span class="av sm g">G</span><span class="av sm x">X</span> 3 mallia</span><div class="send">↑</div></div></div>
+
+</div>
+<div class="notes"><h2>Mitä tämä tekee</h2>
+  <div class="note"><div class="pin">1</div><div><b>Jokaisella mallilla oma väri</b><span>Väri, kirjain ja nimi kertovat heti, kuka vastasi. Samat värit toistuvat tilastoissa ja kuluissa.</span></div></div>
+  <div class="note"><div class="pin">2</div><div><b>Striimaus</b><span>Teksti ilmestyy heti eikä vasta valmiina. Valmiit sarakkeet näyttävät vastausajan.</span></div></div>
+  <div class="note"><div class="pin">3</div><div><b>Erimielisyydet korostetaan</b><span>Keltaisella alleviivatut kohdat ovat asioita, joista mallit sanovat eri asiaa. Ne kannattaa tarkistaa.</span></div></div>
+  <div class="note"><div class="pin">4</div><div><b>Hinta per vastaus</b><span>Kulut näkyvät sentin tarkkuudella, joten budjetti ei yllätä.</span></div></div>
+  <div class="note"><div class="pin">5</div><div><b>Palaute ja haarautus</b><span>Peukku opettaa reititintä, ja "Jatka tästä" avaa uuden keskustelun valitusta vastauksesta.</span></div></div>
+  <div class="note"><div class="pin">6</div><div><b>Tilat ja yksimielisyys</b><span>Yhteistyötila vaihtuu yhdellä klikkauksella. Mittari kertoo, kuinka samaa mieltä mallit olivat.</span></div></div>
+  <div class="note"><div class="pin">7</div><div><b>@-maininta</b><span>Jatkokysymyksen voi osoittaa vain yhdelle mallille, mikä säästää kuluja.</span></div></div>
+</div></div></div></body></html>

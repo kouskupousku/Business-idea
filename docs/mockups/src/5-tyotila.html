@@ -1,0 +1,66 @@
+<!doctype html><html lang="fi"><head><meta charset="utf-8"><link rel="stylesheet" href="style.css"><style>
+.app{display:grid;grid-template-columns:400px 1fr;flex:1;min-height:0}
+.chat{border-right:1px solid var(--border);padding:16px;display:flex;flex-direction:column;gap:12px}
+.msg{font-size:13.3px;padding:10px 12px;border-radius:12px;background:var(--panel);border:1px solid var(--border)}
+.msg.me{background:var(--panel3);border:none;align-self:flex-end;max-width:85%}
+.msg .h{display:flex;align-items:center;gap:7px;font-weight:600;font-size:12.5px;margin-bottom:5px}
+.doclink{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;background:var(--panel2);border:1px solid #3b4354;margin-top:8px;font-size:13px}
+.canvas{display:flex;flex-direction:column;min-width:0}
+.cbar{display:flex;align-items:center;gap:8px;padding:11px 18px;border-bottom:1px solid var(--border)}
+.ver{display:flex;gap:4px;margin-left:12px}
+.ver span{padding:4px 9px;border-radius:7px;font-size:12px;color:var(--muted);border:1px solid var(--border)}
+.ver span.on{background:var(--panel3);color:var(--text)}
+.doc{padding:26px 250px 20px 52px;font-size:14.5px;line-height:1.65;color:#dcdfe6;position:relative}
+.doc h2{font-family:"Inter Display";font-size:24px;margin-bottom:14px;color:var(--text)}
+.doc h4{font-size:15px;margin:14px 0 6px;color:var(--text)}
+.para{position:relative;padding-left:4px}
+.para:before{content:"";position:absolute;left:-18px;top:4px;bottom:4px;width:4px;border-radius:3px}
+.para.c:before{background:var(--claude)} .para.g:before{background:var(--gpt)} .para.x:before{background:var(--grok)}
+.sel{background:rgba(122,162,255,.28);border-radius:3px;box-shadow:0 0 0 2px rgba(122,162,255,.28)}
+.tb{position:absolute;display:flex;gap:4px;padding:5px;background:#252b38;border:1px solid #3b4354;border-radius:10px;box-shadow:0 12px 30px rgba(0,0,0,.5);z-index:4}
+.tb span{padding:6px 10px;border-radius:7px;font-size:12.5px;white-space:nowrap}
+.tb span.hi{background:var(--panel3)}
+.cmt{position:absolute;right:16px;width:210px;background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:10px 12px;font-size:12.3px;color:var(--muted)}
+.cmt .h{display:flex;gap:6px;align-items:center;color:var(--text);font-weight:600;margin-bottom:4px}
+.legendw{display:flex;gap:14px;font-size:12px;color:var(--muted);margin-left:auto;align-items:center}
+.legendw i{display:inline-block;width:10px;height:4px;border-radius:2px;margin-right:5px;vertical-align:middle}
+</style></head><body><div class="frame">
+<div class="head"><div class="num">5</div><h1>Työtila: chat + dokumentti rinnakkain</h1><p>Pitkä teksti avautuu omaan paneeliinsa, jossa sitä muokataan yhdessä mallien kanssa. Näet, mikä malli kirjoitti minkäkin osan.</p></div>
+<div class="main"><div class="win">
+  <div class="titlebar"><i></i><i></i><i></i><span>Trio AI · Markkinointisuunnitelma</span></div>
+  <div class="app">
+    <div class="chat">
+      <div class="msg me">Tee kahvilalle markkinointisuunnitelma kevääksi. Claude kirjoittaa, ChatGPT ideoi kampanjat ja Grok tarkistaa trendit.</div>
+      <div class="msg"><div class="h"><span class="av sm c">C</span>Claude <span class="faint" style="font-weight:400">· kokosi dokumentin</span></div>Valmis! Tein rungon. ChatGPT lisäsi kampanjaideat ja Grok ajankohtaiset trendit.
+        <div class="doclink">📄 <b>Markkinointisuunnitelma</b><span class="faint" style="margin-left:auto">v3 · avattu →</span></div></div>
+      <div class="msg"><div class="h"><span class="av sm x">X</span>Grok</div>Lisäsin osion "Mitä somessa nyt puhutaan". Kauramaitolattet ja take away -kuppien kierrätys ovat nousussa.</div>
+      <div class="msg me">Tee kampanjaosiosta lyhyempi ja rennompi.</div>
+      <div style="margin-top:auto" class="composer"><span class="ph">Pyydä muutosta dokumenttiin…</span><div class="send">↑</div></div>
+    </div>
+    <div class="canvas">
+      <div class="cbar"><b>📄 Markkinointisuunnitelma</b>
+        <div class="ver a"><div class="pin callout">4</div><span>v1</span><span>v2</span><span class="on">v3</span></div>
+        <div class="legendw a"><div class="pin callout">2</div><span><i style="background:var(--claude)"></i>Claude</span><span><i style="background:var(--gpt)"></i>ChatGPT</span><span><i style="background:var(--grok)"></i>Grok</span></div>
+        <span class="btn a" style="margin-left:14px"><div class="pin callout r">5</div>⬇ Vie PDF / Word</span></div>
+      <div class="doc">
+        <h2>Kahvila Aamukaste · kevät</h2>
+        <div class="para c">Tavoite on kasvattaa arkiaamujen asiakasmäärää 20 % ja saada lisää kanta-asiakkaita toimistoista lähistöltä.</div>
+        <h4>Kampanjat</h4>
+        <div class="para g a"><div class="pin callout" style="left:-50px;top:2px">1</div><span class="sel">Leimakortti, jossa joka kuudes kahvi on ilmainen. Lisäksi "Tuo kollega" -aamut tiistaisin, jolloin toinen kahvi on puoleen hintaan.</span> Instagramissa julkaistaan viikoittain kuva päivän leivonnaisesta.</div>
+        <div class="tb a" style="left:120px;top:254px"><div class="pin callout r">3</div><span class="hi">✨ Paranna</span><span>✂ Lyhennä</span><span>😊 Rennompi</span><span>🌐 Käännä</span><span>↗ Kysy Grokilta</span><span>💬 Kommentoi</span></div>
+        <h4 style="margin-top:62px">Mitä somessa nyt puhutaan</h4>
+        <div class="para x">Kasvipohjaiset maidot ja kestävät take away -ratkaisut kiinnostavat. Kannattaa korostaa kierrätettäviä kuppeja ja omaa mukia (–20 snt).</div>
+        <h4>Budjetti</h4>
+        <div class="para c">Kokonaisbudjetti 600 € / kk: some-mainonta 300 €, leimakortit ja painotuotteet 150 €, tapahtumat 150 €.</div>
+        <div class="cmt" style="top:400px"><div class="h"><span class="av sm g">G</span>ChatGPT ehdottaa</div>Lisää budjettiin 50 € paikallisille vaikuttajille?<div style="margin-top:7px;display:flex;gap:6px"><span class="btn" style="padding:3px 8px">✓ Hyväksy</span><span class="btn" style="padding:3px 8px">✕</span></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="notes"><h2>Mitä tämä tekee</h2>
+  <div class="note"><div class="pin">1</div><div><b>Dokumentti omassa paneelissa</b><span>Pitkät tekstit, suunnitelmat ja koodi eivät huku chattiin. Chat on vasemmalla ja työ oikealla.</span></div></div>
+  <div class="note"><div class="pin">2</div><div><b>Kuka kirjoitti mitä</b><span>Värillinen reunaviiva kertoo, minkä mallin tekstiä kappale on.</span></div></div>
+  <div class="note"><div class="pin">3</div><div><b>Muokkaa vain valittua kohtaa</b><span>Maalaa teksti ja valitse toiminto: paranna, lyhennä tai kysy toiselta mallilta. Muu teksti pysyy ennallaan.</span></div></div>
+  <div class="note"><div class="pin">4</div><div><b>Versiot tallessa</b><span>Jokainen muutos on oma versionsa, ja vanhaan voi palata yhdellä klikkauksella.</span></div></div>
+  <div class="note"><div class="pin">5</div><div><b>Valmis jaettavaksi</b><span>Vienti PDF:ksi tai Wordiksi. Mallien ehdotukset näkyvät kommentteina, jotka voi hyväksyä tai hylätä.</span></div></div>
+</div></div></div></body></html>

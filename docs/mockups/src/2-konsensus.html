@@ -1,0 +1,53 @@
+<!doctype html><html lang="fi"><head><meta charset="utf-8"><link rel="stylesheet" href="style.css"><style>
+.wrap{padding:22px 34px;display:flex;flex-direction:column;gap:16px;overflow:hidden}
+.q{align-self:flex-end;background:var(--panel3);border-radius:12px 12px 4px 12px;padding:10px 14px;font-size:14.5px}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:18px 20px}
+.meter-head{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.meter-head h3{font-size:16px}
+.big{font-family:"Inter Display";font-size:34px;font-weight:800;color:var(--warn);margin-left:auto;line-height:1}
+.bar{height:12px;border-radius:999px;background:var(--panel3);display:flex;overflow:hidden;gap:3px}
+.bar div{height:100%}
+.legend{display:flex;gap:18px;margin-top:10px;font-size:12.5px;color:var(--muted)}
+.dot{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:6px}
+.claims{display:flex;flex-direction:column;gap:10px}
+.claim{display:grid;grid-template-columns:34px 1fr auto;gap:12px;align-items:start;background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:13px 16px}
+.claim.ok{border-left:4px solid var(--ok)} .claim.warn{border-left:4px solid var(--warn)} .claim.err{border-left:4px solid var(--err)}
+.ic{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;font-weight:800;font-size:15px}
+.ok .ic{background:rgba(62,207,142,.15);color:var(--ok)} .warn .ic{background:rgba(245,184,74,.15);color:var(--warn)} .err .ic{background:rgba(240,106,106,.15);color:var(--err)}
+.claim b{font-size:14.5px;display:block;margin-bottom:3px}
+.claim .why{font-size:13px;color:var(--muted)}
+.who{display:flex;gap:4px;align-items:center}
+.who .av{opacity:1} .who .av.off{opacity:.25}
+.tag{font-size:11.5px;padding:3px 8px;border-radius:6px;font-weight:600;margin-left:8px}
+.tag.ok{background:rgba(62,207,142,.15);color:var(--ok)} .tag.warn{background:rgba(245,184,74,.15);color:var(--warn)} .tag.err{background:rgba(240,106,106,.15);color:var(--err)}
+.banner{display:flex;gap:12px;align-items:center;background:rgba(245,184,74,.08);border:1px solid rgba(245,184,74,.35);border-radius:12px;padding:12px 16px;font-size:13.5px}
+.expand{margin-top:10px;background:var(--panel2);border-radius:10px;padding:10px 12px;font-size:13px;display:grid;gap:7px}
+.expand div{display:flex;gap:8px;align-items:flex-start}
+</style></head><body><div class="frame">
+<div class="head"><div class="num">2</div><h1>Konsensusmittari ja väitteiden tarkistus</h1><p>Vastaus pilkotaan väitteiksi, ja jokainen malli tarkistaa ne. Näet heti, mihin voi luottaa ja mikä pitää tarkistaa.</p></div>
+<div class="main"><div class="win">
+  <div class="titlebar"><i></i><i></i><i></i><span>Trio AI · Ristiintarkistus</span></div>
+  <div class="wrap">
+    <div class="q">Kannattaako pienen kahvilan siirtyä pelkkiin korttimaksuihin? <span class="faint">(ristiintarkistus)</span></div>
+    <div class="card a"><div class="pin callout">1</div>
+      <div class="meter-head"><h3>Mallien yksimielisyys</h3><span class="chip">4 väitettä tarkistettu</span><div class="big">68 %</div></div>
+      <div class="bar"><div style="width:50%;background:var(--ok)"></div><div style="width:25%;background:var(--warn)"></div><div style="width:25%;background:var(--err)"></div></div>
+      <div class="legend"><span><i class="dot" style="background:var(--ok)"></i>Kaikki samaa mieltä · 2</span><span><i class="dot" style="background:var(--warn)"></i>Erimielisyys · 1</span><span><i class="dot" style="background:var(--err)"></i>Virhe löydetty · 1</span><span style="margin-left:auto">Vastaaja: <b style="color:var(--claude)">Claude</b> · Tarkistajat: <b style="color:var(--gpt)">ChatGPT</b>, <b style="color:var(--grok)">Grok</b></span></div>
+    </div>
+    <div class="claims">
+      <div class="claim ok a"><div class="pin callout">2</div><div class="ic">✓</div><div><b>Korttimaksut nopeuttavat jonoa ja vähentävät kassan laskemista.<span class="tag ok">3/3 samaa mieltä</span></b><div class="why">Kaikki mallit mainitsivat saman hyödyn.</div></div><div class="who"><span class="av sm c">C</span><span class="av sm g">G</span><span class="av sm x">X</span></div></div>
+      <div class="claim ok"><div class="ic">✓</div><div><b>Osa asiakkaista maksaa mieluummin käteisellä.<span class="tag ok">3/3 samaa mieltä</span></b><div class="why">Mallit olivat eri mieltä vain siitä, kuinka suuri tämä ryhmä on.</div></div><div class="who"><span class="av sm c">C</span><span class="av sm g">G</span><span class="av sm x">X</span></div></div>
+      <div class="claim warn a"><div class="pin callout">3</div><div class="ic">!</div><div><b>Käteisen menetys jää yleensä vähäiseksi.<span class="tag warn">2/3 · erimielisyys</span></b><div class="why">Grok on eri mieltä. Klikkaa nähdäksesi perustelut.</div>
+        <div class="expand"><div><span class="av sm x">X</span><span><b style="color:var(--grok)">Grok:</b> "Riippuu asiakaskunnasta. Esim. vanhusten palvelutalon vieressä vaikutus voi olla iso."</span></div><div><span class="av sm g">G</span><span><b style="color:var(--gpt)">ChatGPT:</b> "Samaa mieltä Clauden kanssa, kun muutoksesta tiedotetaan etukäteen."</span></div></div></div><div class="who"><span class="av sm c">C</span><span class="av sm g">G</span><span class="av sm x off">X</span></div></div>
+      <div class="claim err a"><div class="pin callout">4</div><div class="ic">✕</div><div><b>Korttimaksujen kulut ovat aina alle 0,5 %.<span class="tag err">Virhe · 2 tarkistajaa</span></b><div class="why">Kulut vaihtelevat maksupäätteen, sopimuksen ja korttityypin mukaan. "Aina" ei pidä paikkaansa.</div></div><div class="who"><span class="av sm c off">C</span><span class="av sm g">G</span><span class="av sm x">X</span></div></div>
+    </div>
+    <div class="banner a"><div class="pin callout">5</div><b style="color:var(--warn)">Huom.</b><span>Mallit olivat osittain eri mieltä. Tarkista lukuarvot ja lakiasiat luotettavasta lähteestä ennen päätöksiä.</span><span class="btn" style="margin-left:auto">🔎 Etsi lähteet</span><span class="btn primary">Korjattu vastaus</span></div>
+  </div>
+</div>
+<div class="notes"><h2>Mitä tämä tekee</h2>
+  <div class="note"><div class="pin">1</div><div><b>Yksi luku luotettavuudelle</b><span>Mittari näyttää, kuinka samaa mieltä mallit ovat. Tutkimusten mukaan mallien välinen erimielisyys paljastaa virheitä paremmin kuin mallin oma arvio varmuudestaan.</span></div></div>
+  <div class="note"><div class="pin">2</div><div><b>Väite kerrallaan</b><span>Vastaus pilkotaan väitteiksi, ja jokainen merkitään: ✓ samaa mieltä, ! erimielisyys, ✕ virhe.</span></div></div>
+  <div class="note"><div class="pin">3</div><div><b>Näe kuka sanoi mitä</b><span>Avaa erimielisyys, niin näet jokaisen mallin perustelun. Himmennetty kuvake on malli, joka ei ollut samaa mieltä.</span></div></div>
+  <div class="note"><div class="pin">4</div><div><b>Virheet kiinni ennen sinua</b><span>Tarkistajamallit huomaavat liioittelut ja väärät faktat.</span></div></div>
+  <div class="note"><div class="pin">5</div><div><b>Rehellinen varoitus ja korjaus</b><span>Kun mallit ovat eri mieltä, sovellus kehottaa tarkistamaan asian ja tarjoaa korjatun version yhdellä klikkauksella.</span></div></div>
+</div></div></div></body></html>

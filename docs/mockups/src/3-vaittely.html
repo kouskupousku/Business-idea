@@ -1,0 +1,58 @@
+<!doctype html><html lang="fi"><head><meta charset="utf-8"><link rel="stylesheet" href="style.css"><style>
+.top{padding:16px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:16px}
+.topic{font-size:16px;font-weight:700}
+.steps{display:flex;align-items:center;gap:8px;margin-left:auto}
+.step{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--muted)}
+.step i{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:11px;font-weight:800;background:var(--panel3);color:var(--muted)}
+.step.done i{background:var(--ok);color:#0b0d12} .step.now i{background:var(--accent);color:#0b0d12;box-shadow:0 0 0 4px rgba(122,162,255,.25)} .step.now{color:var(--text);font-weight:600}
+.line{width:28px;height:2px;background:var(--border)}
+.sides{display:grid;grid-template-columns:1fr 1fr;padding:12px 24px 0;gap:24px}
+.side{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;font-weight:700;font-size:14px}
+.side.pro{background:var(--claude-bg);color:var(--claude)} .side.con{background:var(--gpt-bg);color:var(--gpt);justify-content:flex-end}
+.side small{font-weight:500;color:var(--muted);font-size:12px}
+.arena{position:relative;padding:14px 24px;display:flex;flex-direction:column;gap:10px;flex:1;min-height:0}
+.arena:before{content:"";position:absolute;left:50%;top:6px;bottom:6px;width:2px;background:var(--border)}
+.turn{width:calc(50% - 26px);background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:11px 14px;font-size:13.3px;position:relative}
+.turn.pro{border-left:3px solid var(--claude)} .turn.con{align-self:flex-end;border-right:3px solid var(--gpt)}
+.turn .rd{font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;display:flex;gap:8px}
+.turn.typing{opacity:.85}
+.turn + .turn{margin-top:-34px}
+.dots{display:inline-flex;gap:4px}.dots i{width:6px;height:6px;border-radius:50%;background:var(--gpt);display:block;opacity:.6}
+.judge{margin:0 24px 18px;border:1px solid rgba(139,152,255,.45);background:linear-gradient(180deg,rgba(139,152,255,.10),rgba(139,152,255,.03));border-radius:14px;padding:14px 18px;display:grid;grid-template-columns:1fr 300px;gap:20px}
+.judge h3{font-size:15px;display:flex;align-items:center;gap:9px;margin-bottom:6px}
+.judge p{font-size:13.3px;color:#d6d9e0}
+.score{display:flex;flex-direction:column;gap:8px;justify-content:center}
+.srow{display:grid;grid-template-columns:70px 1fr 30px;gap:8px;align-items:center;font-size:12.5px}
+.sbar{height:9px;background:var(--panel3);border-radius:999px;overflow:hidden}
+.ctrls{display:flex;gap:8px;margin-top:10px}
+</style></head><body><div class="frame">
+<div class="head"><div class="num">3</div><h1>Väittelyareena</h1><p>Kaksi mallia väittelee eri puolilta ja kolmas toimii tuomarina. Hyvä isoihin päätöksiin, joissa tarvitaan molemmat näkökulmat.</p></div>
+<div class="main"><div class="win">
+  <div class="titlebar"><i></i><i></i><i></i><span>Trio AI · Väittely</span></div>
+  <div class="top"><span class="topic">Pitäisikö startupin kouluttaa oma tekoälymalli vai käyttää valmiita rajapintoja?</span>
+    <div class="steps a"><div class="pin callout">1</div><div class="step done"><i>✓</i>Avaus</div><div class="line"></div><div class="step done"><i>✓</i>Kierros 1</div><div class="line"></div><div class="step now"><i>2</i>Kierros 2/2</div><div class="line"></div><div class="step"><i>⚖</i>Tuomio</div></div></div>
+  <div class="sides"><div class="side pro a"><div class="pin callout">2</div><span class="av c">C</span>PUOLESTA: oma malli <small>· Claude</small></div><div class="side con"><small>ChatGPT ·</small> VASTAAN: valmiit rajapinnat <span class="av g">G</span></div></div>
+  <div class="arena">
+    <div class="turn pro"><div class="rd"><span>Avaus</span></div>Oma malli on kilpailuetu, jota muut eivät voi kopioida, ja data pysyy omissa käsissä.</div>
+    <div class="turn con"><div class="rd"><span>Avaus</span></div>Koulutus maksaa paljon ja vie kuukausia. Valmiit rajapinnat päivittyvät ilmaiseksi, ja tiimi voi keskittyä tuotteeseen.</div>
+    <div class="turn pro a"><div class="pin callout r">3</div><div class="rd"><span>Kierros 1</span><span>↩ vastaa: "kuukausia"</span></div>Pienen mallin hienosäätö on nopeaa. Kaikkea ei tarvitse kouluttaa alusta asti.</div>
+    <div class="turn con"><div class="rd"><span>Kierros 1</span></div>Silloin ylläpito, arviointi ja infra jäävät silti tiimin vastuulle. Ilman koneoppimisosaajaa se on riski.</div>
+    <div class="turn pro"><div class="rd"><span>Kierros 2</span></div>Hybridi on mahdollinen: aloita rajapinnoilla, kerää dataa ja vaihda omaan malliin vasta, kun volyymi tekee siitä halvempaa.</div>
+    <div class="turn con typing"><div class="rd"><span>Kierros 2</span></div><span class="dots"><i></i><i></i><i></i></span> <span class="muted">ChatGPT kirjoittaa vastinetta…</span></div>
+  </div>
+  <div class="judge a"><div class="pin callout">4</div>
+    <div><h3><span class="av x">X</span>Tuomari: Grok <span class="chip">alustava</span></h3>
+      <p><b>Suositus: aloita valmiilla rajapinnoilla.</b> VASTAAN-puoli perusteli kustannukset ja riskit vahvemmin. PUOLESTA-puolen hybridimalli oli väittelyn paras yksittäinen idea, ja se kannattaa ottaa suunnitelmaan.</p>
+      <div class="ctrls"><span class="btn">＋ Lisää kierros</span><span class="btn">⇄ Vaihda roolit</span><span class="btn">✋ Väliintulo</span><span class="btn primary a">Tee toimintasuunnitelma<div class="pin callout r">5</div></span></div></div>
+    <div class="score"><div class="srow"><span style="color:var(--claude)">Puolesta</span><div class="sbar"><div style="width:58%;height:100%;background:var(--claude)"></div></div><b>5,8</b></div>
+      <div class="srow"><span style="color:var(--gpt)">Vastaan</span><div class="sbar"><div style="width:74%;height:100%;background:var(--gpt)"></div></div><b>7,4</b></div>
+      <div class="faint" style="font-size:12px">Pisteet: perustelujen laatu, faktat, vastineet</div></div>
+  </div>
+</div>
+<div class="notes"><h2>Mitä tämä tekee</h2>
+  <div class="note"><div class="pin">1</div><div><b>Edistyminen näkyy</b><span>Vaiheet näyttävät, missä kohtaa väittely on. Kierrosmäärä on rajattu, jotta väittely ei karkaa aiheesta.</span></div></div>
+  <div class="note"><div class="pin">2</div><div><b>Selkeät puolet</b><span>Puolesta vasemmalla, vastaan oikealla, ja kummallakin mallilla oma värinsä. Roolit valitaan itse.</span></div></div>
+  <div class="note"><div class="pin">3</div><div><b>Oikeat vastineet</b><span>Puheenvuoro kertoo, mihin väitteeseen se vastaa, joten keskustelua on helppo seurata.</span></div></div>
+  <div class="note"><div class="pin">4</div><div><b>Tuomari ja pisteet</b><span>Kolmas malli antaa perustellun suosituksen ja pisteyttää puolet. Väittelyn parhaat ideat nostetaan esiin.</span></div></div>
+  <div class="note"><div class="pin">5</div><div><b>Sinä ohjaat</b><span>Lisää kierros, vaihda roolit tai puutu väittelyyn omalla kommentilla. Lopuksi tuloksesta saa toimintasuunnitelman.</span></div></div>
+</div></div></div></body></html>
