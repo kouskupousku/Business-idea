@@ -9,8 +9,8 @@
 > 5. Noudata projektin olemassa olevia käytäntöjä (kieli, kehys, tiedostorakenne). Älä vaihda teknologioita kysymättä.
 > 6. API-avaimet pidetään aina ympäristömuuttujissa (`.env`), ei koskaan koodissa eikä gitissä.
 > 7. Osioissa **6** (110 ideaa) ja **8** (50 ideaa) **sinä päätät itse**, mitkä ideat ovat järkeviä (ks. osion 6 ohje). Näytä valintasi käyttäjälle ennen toteutusta.
-> 8. **Ulkoasu on päätetty: avaruusteema** (osio 9). Se ei ole valinnainen. Käytä tiedostoa `docs/design/nebula.css` ja mallikuvia 6–9.
-> 9. Mallikuvien 1–5 **toiminnot** pätevät edelleen, mutta niiden **ulkoasu** tehdään Nebula-tyylillä (kuva 8 näyttää miten).
+> 8. **Ulkoasu on päätetty: realistinen avaruus, Deep Field** (osio 9). Se ei ole valinnainen. Lähtökohtana on valmis 3D-moottori ja prototyypit kansiossa `docs/space3d/` sekä mallikuvat 10–13.
+> 9. Mallikuvien 1–5 **toiminnot** pätevät edelleen, mutta niiden **ulkoasu** tehdään Deep Field -tyylillä (kuva 11 näyttää miten).
 
 ## Sisällys
 0. Tuotevisio ja laatuperiaatteet
@@ -18,7 +18,7 @@
 6. Ideapankki: 110 ideaa (#1–#110), Claude päättää
 7. Mallikuvat 1–5 (toiminnot)
 8. 50 game changer -ideaa (#111–#160), Claude päättää
-9. Avaruusteema: Nebula-design-järjestelmä, agenttikartta ja tiedostokartta (mallikuvat 6–9)
+9. Ulkoasu: Deep Field, realistinen 3D-avaruus, agenttikartta, päänäkymä ja tiedostogalaksi (mallikuvat 10–13)
 10. Vaiheistettu toteutussuunnitelma
 11. Avoimen lähdekoodin esikuvat
 12. Tekniset huomiot
@@ -50,7 +50,7 @@ Ominaisuus on valmis vasta, kun:
 - se toimii, vaikka yksi kolmesta palvelusta olisi alhaalla,
 - sillä on automaattiset testit tärkeimmille poluille,
 - se toimii mobiilissa ja näppäimistöllä ja täyttää WCAG AA -kontrastit,
-- se noudattaa Nebula-design-järjestelmää (osio 9),
+- se noudattaa Deep Field -ulkoasua (osio 9),
 - kulut ja virheet näkyvät seurannassa,
 - mikään salaisuus (API-avain) ei päädy selaimeen tai gitiin.
 
@@ -346,7 +346,7 @@ Valmiita "yhden napin" työnkulkuja, joissa malleilla on valmiiksi mietityt rool
 
 ## 7. Mallikuvat 1–5: tärkeimmät toiminnot
 
-Kuvat ovat kansiossa `docs/mockups/` ja niiden HTML-lähteet kansiossa `docs/mockups/src/`. Värit: Claude = oranssi `#E58A63`, ChatGPT = vihreä `#19B48C`, Grok = sininen-violetti `#8B98FF`. Kuvat ovat suuntaa-antavia luonnoksia. **Huom:** näiden kuvien toiminnot pätevät, mutta ulkoasu tehdään avaruusteemalla (osio 9 ja kuva 8). Mallien lopulliset värit ovat osion 9 värit.
+Kuvat ovat kansiossa `docs/mockups/` ja niiden HTML-lähteet kansiossa `docs/mockups/src/`. Värit: Claude = oranssi `#E58A63`, ChatGPT = vihreä `#19B48C`, Grok = sininen-violetti `#8B98FF`. Kuvat ovat suuntaa-antavia luonnoksia. **Huom:** näiden kuvien toiminnot pätevät, mutta ulkoasu tehdään realistisella Deep Field -tyylillä (osio 9 ja kuva 11). Mallien lopulliset värit ovat osion 9 värit.
 
 | # | Kuva | Mitä muuttaa | Liittyvät ideat (osiot 1–5 · #-numerot osiosta 6) |
 |---|---|---|---|
@@ -432,84 +432,95 @@ Kuvat ovat kansiossa `docs/mockups/` ja niiden HTML-lähteet kansiossa `docs/moc
 
 ---
 
-## 9. Avaruusteema: Nebula-design-järjestelmä
+## 9. Ulkoasu: Deep Field (realistinen avaruus)
 
-> **Käyttäjän päätös:** sovelluksen ulkoasu on **avaruusteemainen**, uniikki ja ammattimainen. Tämä osio ei ole valinnainen.
-> **Claude:** ota käyttöön `docs/design/nebula.css` (värit, fontit, efektit valmiina CSS-muuttujina) ja käytä mallikuvia 6–9 ja niiden HTML-lähteitä (`docs/mockups/src-space/`) pohjana. Jos projektissa on Tailwind tai muu teemajärjestelmä, siirrä tokenit sen konfiguraatioon.
+> **Käyttäjän päätös:** sovelluksen tunnelma on **realistinen avaruus**: ei lelumaisuutta, ei neonia, ei piirroshahmomaisia planeettoja. Tämä osio ei ole valinnainen.
+> **Claude:** lähtökohtana on kansio `docs/space3d/`. Siinä on valmis, toimiva three.js-3D-moottori ja kolme interaktiivista prototyyppiä. Siirrä ne sovellukseen. Jos projekti käyttää Reactia, käytä `@react-three/fiber`-kirjastoa tai kääri moottori komponentiksi. Muuten käytä three.js:ää suoraan. Älä kirjoita varjostimia alusta, vaan lähde liikkeelle olemassa olevista ja paranna niitä.
+>
+> *Vanha neon-tyyli (Nebula v1) on arkistossa `docs/archive/nebula-v1/`. Sen ulkoasua ei käytetä, mutta toimintojen ideat (komeetat viesteinä, kiertolaiset alitehtävinä, aikakone, painovoimakonteksti) ovat edelleen voimassa ja on toteutettu tässä realistisessa tyylissä.*
 
-### 9.1 Periaatteet
-Inspiraationa ovat elokuvien HUD- ja FUI-käyttöliittymät, mutta oikeaan käyttöön sovitettuina.
-- **Kaikella on tarkoitus.** Koriste ilman tehtävää jätetään pois. Elokuvissa käyttöliittymä näkyy pari sekuntia, mutta tätä sovellusta käytetään tunteja, joten luettavuus menee aina efektien edelle.
-- **Yksi aksentti:** ionisini `#5EE6FF` on toimintoja, dataa ja fokusta varten. Sumuvärit (violetti ja magenta) ovat vain taustoissa.
-- **HUD-värilogiikka:** syaani tarkoittaa dataa, keltainen varoitusta ja punainen kriittistä. Sama logiikka toistuu kaikkialla.
-- **Hehku on palkinto:** vain pääpainike, aktiivinen tila ja tärkein luku saavat hehkua.
-- **Teksti on aina paneelin päällä,** ei suoraan tähtitaivaan tai sumun päällä.
-- **Liike kertoo tilasta** (striimaus, viestit, käynnissä olevat tehtävät), ei ole pelkkää koristetta. Kaikki liike pysähtyy, jos käyttäjä on valinnut vähennetyn liikkeen (`prefers-reduced-motion`).
+### 9.1 Periaate: kaksi kerrosta
+1. **3D-maailma (tunnelma):** fysikaalisesti perusteltu avaruus, joka renderöidään reaaliajassa: tähtitaivas, Linnunrata, tähti, planeetta, pulsari, avaruusasema ja galaksi.
+2. **Käyttöliittymä (työ):** hillitty kuin oikean avaruusaluksen tai lennonjohdon näyttö. Tummat lasipaneelit, hiusviivat, valkoinen teksti ja tarkat luvut. **Väriä käytetään vain mallien tunnistamiseen ja hälytyksiin** (NASA:n ihmisen ja järjestelmän vuorovaikutuksen ohjeiden periaate). Käyttöliittymä ei hehku. Hehku kuuluu vain taivaankappaleille.
 
-### 9.2 Värit
-Kaikki on valmiina tiedostossa `docs/design/nebula.css`. Kontrastit on tarkistettu laskemalla.
+### 9.2 Tiedostot (`docs/space3d/`)
+| Tiedosto | Mitä se on |
+|---|---|
+| `engine.js` | 3D-moottori: tähtitaivas, Linnunrata ja sumut, tähti, planeetta, ilmakehä, pulsari, avaruusasema, viestiyhteydet, galaksi, tähtijoukot, bloom ja jälkikäsittely. Kommentit suomeksi. |
+| `scene-agent.js` + `agent-map.html` | **Agenttikartta** (interaktiivinen: vedä = pyöritä, rullaa = zoomaa) |
+| `scene-horizon.js` + `mission-control.html` | **Päänäkymä**, jonka taustalla on planeetan horisontti |
+| `scene-galaxy.js` + `galaxy.html` | **Tiedostogalaksi** (interaktiivinen) |
+| `design-system.html` | Design-järjestelmä yhdellä sivulla |
+| `ui.css` | Käyttöliittymän tokenit ja komponentit (paneelit, segmenttivalitsin, painikkeet, 3D-tunnisteet) |
+| `avatar.html` + `assets/avatar-*.png` | Mallien tunnuskuvat, jotka on renderöity samalla moottorilla |
 
-| Rooli | Token | Arvo | Kontrasti hull-pintaa vasten |
-|---|---|---|---|
-| Tausta / pinnat | `--void` `--deep` `--hull` `--module` `--module-2` | #05060D → #1E2747 | – |
-| Teksti | `--text` / `--text-muted` / `--text-faint` | #E6EAFF / #A3ACD1 / #6B75A6 | 15:1 / 8:1 / 4:1 (faint vain isolle tekstille) |
-| Aksentti | `--ion` | #5EE6FF | 12:1 |
-| Claude = **tähti** | `--claude` | #FF9E6B | 8,8:1 |
-| ChatGPT = **planeetta** | `--gpt` | #3DDBB0 | 10:1 |
-| Grok = **pulsari** | `--grok` | #8F9BFF | 7:1 |
-| Tilat | `--ok` `--warn` `--crit` | #45E3A0 #FFC861 #FF6B7A | ≥ 6,5:1 |
+Sivut avataan paikallisen palvelimen kautta, koska ES-moduulit eivät toimi `file://`-osoitteella. Esim. `python3 -m http.server` repon juuressa ja selaimessa `http://localhost:8000/docs/space3d/agent-map.html`. Lisäämällä osoitteeseen `?still` saa pysäytyskuvan.
 
-### 9.3 Typografia (kaikki ilmaisia, SIL Open Font License)
-- **Otsikot:** Space Grotesk (Google Fonts). Tekninen ja avaruudellinen, mutta luettava.
-- **Leipäteksti:** Inter tai Geist. Selkeä pienissäkin koossa.
-- **Telemetria ja numerot:** JetBrains Mono tai Geist Mono, tasalevyiset numerot (`font-variant-numeric: tabular-nums`).
-- **HUD-tunnisteet:** mono, VERSAALIT, 0,14em välistys, 10–11 px.
-- Vältä varsinaisia "scifi-fontteja" (esim. Orbitron) leipätekstissä, koska ne heikentävät luettavuutta pienissä koissa. Logossa niitä voi harkita.
+### 9.3 Käyttöliittymän tokenit (`ui.css`)
+| Rooli | Arvo | Kontrasti paneelia vasten |
+|---|---|---|
+| Tausta | `#000000` (3D-avaruus) | – |
+| Lasipaneeli | `rgba(7,9,13,.62)` + `backdrop-filter: blur(18px)` + reuna `rgba(255,255,255,.09)` | – |
+| Teksti / toissijainen / tunniste | `#E8EBF0` / `#9BA3B1` / `#6A7280` | 16,3:1 / 7,7:1 / 4,0:1 (vain iso) |
+| Toiminto | valkoinen tausta, musta teksti | 21:1 |
+| Claude · ChatGPT · Grok | `#F0A878` · `#7FD1BC` · `#AAB4FF` | 9,8 · 10,9 · 9,9:1 |
+| OK · varoitus · kriittinen | `#57D18E` · `#F2B44C` · `#F25A5F` | 10,1 · 10,6 · 5,9:1 |
 
-### 9.4 Tausta ja efektit
-- **Kerrokset alhaalta ylös:** void-väri → 1–2 pehmeää sumupilveä (radial-gradient) → tähtikenttä → hienojakoinen rae (noin 3 % peittävyys, estää liukuvärien raitaisuuden) → lasipaneelit (`backdrop-filter: blur(12–14px)`, hiusviivareuna `rgba(168,186,255,.10)`).
-- **Tähtikenttä:** kevyt canvas (oma pieni skripti, ks. `docs/mockups/src-space/stars.js`) tai tsParticles + `@tsparticles/preset-stars`. Kun vähennetty liike on päällä, piirretään yksi pysähtynyt kuva. Huom: CSS:n `prefers-reduced-motion` ei pysäytä JavaScriptin animaatiosilmukkaa, joten tarkista asetus `matchMedia`-kutsulla ennen kuin käynnistät silmukan.
-- **Reunat:** läpikuultava valkoinen (6–10 %) harmaan sijaan. Hover nostaa reunan ionisiniseksi.
-- **Ikonit:** ohut viiva (Lucide tai Phosphor, 1,5 px). Navigoinnissa tähtisymbolit: ◎ chat, ✦ agenttikartta, ✺ galaksi, ◇ missiot.
-- **Äänet (valinnainen, oletuksena pois):** hiljaiset ja lyhyet, aina mykistettävissä. Esim. [UI SFX](https://github.com/romainsimon/uisfx/wiki) (koodi MIT, äänet CC0).
-- **Avaruuskuvat (jos käytetään):** NASA:n kuvia saa yleensä käyttää ilman lupaa, kunhan lähde mainitaan eikä anneta ymmärtää, että NASA suosittelee tuotetta. NASA:n logoja ei saa käyttää. Hubble- ja ESA-kuvilla on omat ehtonsa (osa CC BY), joten tarkista jokainen kuva erikseen.
+**Fontit** (SIL Open Font License, ilmaisia): **Inter** käyttöliittymään ja **JetBrains Mono** dataan (tasalevyiset numerot). Tunnisteet ovat 10 px:n VERSAALEJA 0,16em:n välistyksellä. Kulmat ovat pieniä (6–8 px), mikä antaa insinöörimäisen eikä pehmoisen vaikutelman.
 
-### 9.5 Mallien tunnukset
-Omat tunnukset, ei yritysten logoja:
-- **Claude = tähti:** lämmin oranssi ydin ja korona.
-- **ChatGPT = planeetta:** smaragdinvihreä pallo ja kallistunut rengas.
-- **Grok = pulsari:** kirkas valkoinen ydin ja kaksi sinivioletista sädettä.
-Tunnukset näkyvät kapseleiden otsikoissa, agenttikartalla, merkeissä ja kulumittareissa. Malli tunnistetaan aina myös nimestä, ei pelkästä väristä tai muodosta.
+### 9.4 Realismin säännöt (toteutettu `engine.js`:ssä)
+1. **Tähtien värit lasketaan fysiikasta:** mustan kappaleen lämpötilasta 2 900–28 000 K, ja jakauma on painotettu K- ja G-tähtiin. Himmeät tähdet sekoitetaan valkoiseen, koska silmä näkee ne vähemmän värikkäinä.
+2. **Kirkkaus potenssijakaumalla:** tuhansia himmeitä ja vain muutama kirkas tähti. Tähtiä on enemmän Linnunradan tason lähellä.
+3. **JWST-diffraktiopiikit (6 + 2)** vain noin 1 %:ssa kirkkaimmista tähdistä. Ne ovat aina ruudun suuntaisia, koska kyse on kuvatason ilmiöstä.
+4. **Tähti:** granulaatio (konvektiosolut), supergranulaatio, auringonpilkut, kvadraattinen reunatummuminen, fakulat ja korona virtausjuovineen.
+5. **Planeetta:** domain warping -mantereet, meren syvyysvaihtelu, peiliheijastus merestä, pilvivyöt, napajäätiköt, pehmeä terminaattori, rengas ja planeetan varjo renkaassa sekä kaupunkien valot yöpuolella.
+6. **Ilmakehä säteenkululla:** 8 näytettä kuoren läpi, tiheys pienenee eksponentiaalisesti korkeuden mukaan, Rayleigh-sironta (sininen) ja Mie-sironta (lämmin halo vastavalossa). Sama malli toimii kaukaa (ohut reuna) ja horisonttinäkymässä.
+7. **HDR-valaistus:** bloom vain yli 1,0:n kirkkauksille, sitten ACES-sävytys, filmirae (näkyy enemmän valoisissa kohdissa), vinjetti ja hienovarainen kromaattinen aberraatio.
+8. **Ei täyttövaloa:** avaruudessa varjot ovat lähes mustia, ja valo tulee tähdestä.
+9. **Oma bloom (`SoftBloomPass`):** three.js:n `UnrealBloomPass` tuottaa joillakin laitteilla (esim. ohjelmistorenderöijät) neliömäisiä artefakteja. Moottorin oma bloom tekee alasskaalauksen, sumennuksen ja ylösskaalauksen täsmällisillä pikselihauilla, joten tulos on sama kaikilla laitteilla.
 
-### 9.6 Agenttikartta: tähtikartta (kuva 6)
-**Mitä se näyttää:** reaaliajassa, mitä jokainen malli tekee, mitä mallit lähettävät toisilleen ja paljonko se maksaa.
-- **Solmut:** missio (ydin keskellä), mallit (taivaankappaleet kiertoradoilla) ja alitehtävät (kiertolaiset mallin ympärillä: vihreä on valmis, syaani käynnissä ja harmaa jonossa).
-- **Reitit:** viestit kulkevat komeettoina liukuväriviivaa pitkin lähettäjän väristä vastaanottajan väriin. Tunnisteessa näkyy sisältö ja koko (esim. "luonnos v2 · 1 240 tok"). Katkoviiva tarkoittaa lähdeviittausta.
-- **Paneelit:** missio ja vaiheet (vasen yläkulma), telemetria (oikea yläkulma: tokenit, vasteaika, hinta ja luottamus), selite ja aikajana (alhaalla), josta tapahtumia voi kelata taaksepäin.
-- **Tilat:** valmis ✓ vihreä, käynnissä ◌ syaani ja animoitu, odottaa harmaa, virhe punainen ja palvelu alhaalla = pimennys (#134).
-- **Toteutus:** [React Flow](https://reactflow.dev) (omat solmut ja animoidut reitit) tai sen päälle rakennetut AI SDK:n [Workflow-komponentit](https://ai-sdk.dev/elements/components/workflow). Asettelu kiinteillä kiertoradoilla tai Dagre-kirjastolla. Kevyempi vaihtoehto on oma SVG, kuten mallikuvan lähteessä.
-- **Tietomalli:** `events[]` (aikaleima, lähettäjä, vastaanottaja, tyyppi, tokenit, hinta) → kartta ja aikajana piirretään samasta tapahtumalistasta. Näin aikakone toimii ilmaiseksi.
-- **Saavutettavuus:** "Näytä listana" -vaihtoehto, joka näyttää samat tapahtumat tekstinä. Komeetat pysähtyvät, jos vähennetty liike on päällä.
+### 9.5 Mallien tunnukset: oikeat 3D-renderöinnit
+Mallit ovat taivaankappaleita, ja niiden tunnuskuvat renderöidään samalla moottorilla (`avatar.html`). Yritysten logoja ei käytetä.
+- **Claude = tähti** (K-tyyppi, 5 100 K)
+- **ChatGPT = valtamerimaailma** (ilmakehä ja rengas)
+- **Grok = pulsari** (neutronitähti, säteet ja dipolikenttä)
+- **Missio = avaruusasema** (moduulit, ristikko, aurinkopaneelit ja radiaattorit)
 
-### 9.7 Tiedostokartta: galaksi (kuva 7)
-**Mitä se näyttää:** kaikki tiedostot ja keskustelut tähtinä ja niiden väliset yhteydet.
-- **Tähti** on tiedosto tai keskustelu. Koko kertoo käyttömäärän, kirkkaus sen, milloin sitä viimeksi käytettiin, ja väri tiedostotyypin.
-- **Sumupilvi** on projekti. Saman projektin tiedostot ovat samassa värillisessä pilvessä.
-- **Tähtikuviot** ovat yhteyksiä: tiedostoja, joita on käytetty samassa keskustelussa tai jotka viittaavat toisiinsa.
-- **Valinta:** klikkaus lukitsee tähtäimen, ja kortti näyttää tiedot ja mitkä mallit lukivat tiedoston.
-- **Painovoimakonteksti:** tiedosto raahataan alapalkkiin, ja kontekstissa olevaa tiedostoa kiertää rata, jonka kuut kertovat, mitkä mallit sen lukivat. Tokenimittari näyttää, paljonko kontekstia on jäljellä.
-- **Toteutus:** [react-force-graph](https://github.com/vasturiano/react-force-graph) (2D/3D, sama tekijä kuin 3d-force-graph) tai d3-force. Aloita 2D:llä: se on luettavampi ja kevyempi, ja 3D voi tulla valinnaiseksi "tutkimustilaksi". Esikuvia: Obsidianin Stellar Graph- ja Agentage Galaxy -lisäosat.
-- **Saavutettavuus ja suorituskyky:** tavallinen listanäkymä on aina saatavilla, haku ja suodatus himmentävät muut tähdet ja kartan pitää toimia sujuvasti vähintään 500 tiedostolla.
+### 9.6 Agenttikartta (kuva 10, `agent-map.html`)
+- Missio on avaruusasema keskellä, ja mallit kiertävät sitä taivaankappaleina omilla radoillaan.
+- Viestit kulkevat valopulsseina kaarevia reittejä pitkin lähettäjän värillä. Katkoviiva tarkoittaa lähdeviittausta.
+- 3D-tunnisteet ovat NASA Eyes -tyylisiä: tähtäinkulmat kohteen ympärillä, johtoviiva, nimi, rooli ja tila. Tunnisteet seuraavat kappaleita kameran liikkuessa, kääntyvät toiselle puolelle ruudun reunalla ja väistävät toisiaan.
+- Paneelit: missio ja vaiheet sekä tapahtumaloki (vasen), telemetria, yksimielisyys ja budjetti (oikea) sekä aikajana kaistoittain (alhaalla). Aikajanalla voi kelata tapahtumia taaksepäin.
+- Tietomalli on sama kuin aiemmin: `events[]` → sekä kartta että aikajana piirretään samasta tapahtumalistasta.
 
-### 9.8 Mallikuvat 6–9
-Kuvat: `docs/mockups/`. HTML-lähteet (käytä suoraan pohjana): `docs/mockups/src-space/`.
+### 9.7 Päänäkymä (kuva 11, `mission-control.html`)
+- Taustalla on planeetan horisontti kiertoradalta: ilmakehän sininen reuna, nouseva tähti ja kaupunkien valot yöpuolella.
+- Kolme vastauskapselia on lasipaneeleina horisontin yläpuolella. Synteesi ja viestikenttä ovat alhaalla.
+- Puhelimella kapselit pinoutuvat ja ovat vieritettäviä.
+
+### 9.8 Tiedostogalaksi (kuva 12, `galaxy.html`)
+- Spiraaligalaksi: logaritmiset haarat, pölykaistat, ydin ja tähtienmuodostusalueet.
+- **Projektit ovat oikeita tähtijoukkotyyppejä:** vaaleanpunainen H II -alue (aktiivinen projekti), sininen nuori joukko ja kellertävä pallomainen joukko (vanha, vakiintunut).
+- Tiedostot ovat kirkkaita tähtiä joukkojen sisällä. Tähtikuviot yhdistävät yhdessä käytetyt tiedostot ja katkoviiva projektien väliset yhteydet.
+- Valittu tiedosto saa tähtäimen ja tietokortin. Alapalkki näyttää kontekstin ja tokenimittarin.
+
+### 9.9 Suorituskyky, saavutettavuus ja varasuunnitelma
+- **Ilman WebGL:ää** (tai hyvin heikolla laitteella) näytetään valmiiksi renderöity pysäytyskuva taustana (`?still`-tilassa renderöity). Käyttöliittymä toimii silti kokonaan.
+- **Vähennetty liike:** animaatiot pysähtyvät, ja näkymä renderöidään yhtenä kuvana.
+- Pikselitiheys rajataan enintään kahteen, renderöinti pysäytetään, kun välilehti ei ole näkyvissä, ja tähtien ja galaksin pisteiden määrää vähennetään mobiilissa.
+- Pystynäytöllä kamera siirtyy automaattisesti kauemmas, jotta kaikki kappaleet mahtuvat kuvaan.
+- **Jokaisella 3D-näkymällä on listanäkymä**, jossa sama tieto on tekstinä ruudunlukijoille ja näppäimistökäyttäjille.
+- Tekstikontrastit täyttävät WCAG AA -tason (taulukko 9.3).
+
+### 9.10 Mallikuvat 10–13
+Kuvat ovat renderöity suoraan prototyypeistä (`docs/space3d/`), eivät piirretty erikseen.
 
 | # | Kuva | Mitä näyttää |
 |---|---|---|
-| 6 | ![Agenttikartta](docs/mockups/6-agenttikartta.png) | Missio keskellä, mallit taivaankappaleina, komeetat viesteinä, alitehtävät kiertolaisina, telemetria, aikakone |
-| 7 | ![Tiedostokartta](docs/mockups/7-tiedostokartta.png) | Tiedostot tähtinä, projektit sumupilvinä, tähtikuviot yhteyksinä, tähtäin ja tietokortti, painovoimakonteksti |
-| 8 | ![Mission Control](docs/mockups/8-paanakyma.png) | Päänäkymä avaruusteemassa: navigointipalkki, HUD-mittarit (luottamus ja polttoaine), tilavalot, kapselit, laukaisualusta |
-| 9 | ![Nebula](docs/mockups/9-design-jarjestelma.png) | Koko design-järjestelmä yhdellä sivulla: värit, fontit, komponentit, efektit, ikonit, liike, äänet |
+| 10 | ![Agenttikartta](docs/mockups/10-agenttikartta-3d.jpg) | Avaruusasema, tähti, planeetta ja pulsari kiertoradoilla, valopulssit, telemetria, aikajana |
+| 11 | ![Päänäkymä](docs/mockups/11-paanakyma-3d.jpg) | Mission Control: vastauskapselit planeetan horisontin yllä |
+| 12 | ![Tiedostogalaksi](docs/mockups/12-tiedostogalaksi-3d.jpg) | Spiraaligalaksi, projektit tähtijoukkoina, tiedostot tähtinä |
+| 13 | ![Deep Field](docs/mockups/13-deep-field.jpg) | Design-järjestelmä: miehistö, värit, fontit, komponentit, realismin säännöt |
 
 
 ## 10. Vaiheistettu toteutussuunnitelma
@@ -519,20 +530,20 @@ Kuvat: `docs/mockups/`. HTML-lähteet (käytä suoraan pohjana): `docs/mockups/s
 **Vaihe 0: Perusta**
 - Yhteinen rajapinta kaikille malleille, striimaus, rinnakkaiskutsut, aikarajat, uudelleenyritykset ja varamalli (osio 12, #77–#80).
 - API-avaimet turvaan palvelimelle (#91).
-- Nebula-design-järjestelmä: tokenit, fontit, tähtitausta ja lasipaneelit (osio 9).
+- Deep Field: 3D-moottori (`docs/space3d/engine.js`), `ui.css`-tokenit, fontit ja pysäytyskuva varasuunnitelmaksi (osio 9).
 
 **Vaihe 1: Ydin, jonka pitää olla erinomainen**
-- Mission Control -päänäkymä (kuva 8), jossa vierekkäiset vastaukset (4.1).
+- Mission Control -päänäkymä (kuva 11), jossa vierekkäiset vastaukset (4.1).
 - Kustannuslaskuri ja polttoainemittari (3.1).
 - Ristiintarkistus ja konsensusmittari (1.1, 1.6, kuva 2).
 
 **Vaihe 2: Tämä erottaa sovelluksen kilpailijoista**
-- Agenttikartta (kuva 6) ja aikakone.
+- 3D-agenttikartta (kuva 10) ja aikakone.
 - Väittely (1.2) ja automaattinen reititin (2.1).
 - Missiot chattien rinnalle (#111), jos valitsit sen.
 
 **Vaihe 3: Työkalut ja muisti**
-- Tiedostot ja tiedostokartta (kuva 7), projektit ja muisti (2.2–2.4), verkkohaku ja lähteet.
+- Tiedostot ja tiedostogalaksi (kuva 12), projektit ja muisti (2.2–2.4), verkkohaku ja lähteet.
 
 **Vaihe 4: Liiketoiminta**
 - Kirjautuminen, krediitit ja maksut, tiimit sekä lakiasiat (EU:n tekoälyasetus, GDPR).

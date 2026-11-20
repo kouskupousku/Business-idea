@@ -1,0 +1,108 @@
+<!doctype html><html lang="fi"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tiedostogalaksi</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="ui.css">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<style>
+.side{position:absolute;left:20px;top:64px;width:260px;padding:16px}
+.search{display:flex;align-items:center;gap:8px;padding:9px 11px;border-radius:6px;border:1px solid var(--hair-strong);color:var(--tx-3);font-size:12.5px;margin:12px 0 14px;background:rgba(0,0,0,.35)}
+.kb{margin-left:auto;font:10.5px var(--f-mono);border:1px solid var(--hair-strong);border-radius:4px;padding:1px 5px;color:var(--tx-3)}
+.fr{display:flex;align-items:center;gap:10px;padding:7px 0;font-size:12.5px;color:var(--tx-2)}
+.fr .n{margin-left:auto;font:11.5px var(--f-mono);color:var(--tx-3)}
+.cb{width:13px;height:13px;border-radius:3px;border:1px solid var(--hair-strong)}
+.cb.on{background:var(--white);border-color:var(--white)}
+.pr{display:flex;align-items:center;gap:10px;padding:7px 0;font-size:12.5px}
+.pr i{width:8px;height:8px;border-radius:50%}
+.detail{position:absolute;right:20px;top:64px;width:300px;padding:16px}
+.detail h3{font-size:15px;font-weight:600;margin:8px 0 3px;word-break:break-all}
+.kvs{display:grid;grid-template-columns:auto 1fr;gap:7px 14px;font-size:12px;color:var(--tx-2);margin:14px 0}
+.kvs b{color:var(--tx);font:500 11.5px var(--f-mono);text-align:right}
+.ub{display:grid;grid-template-columns:26px 62px 1fr 26px;gap:8px;align-items:center;font-size:12px;margin:7px 0}
+.ub .bar{height:3px;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden}
+.ub .bar i{display:block;height:100%;background:var(--white)}
+.dock{position:absolute;left:20px;right:20px;bottom:18px;padding:12px 14px;display:flex;align-items:center;gap:10px}
+.fchip{display:inline-flex;align-items:center;gap:8px;padding:7px 11px;border-radius:6px;border:1px solid var(--hair-strong);font-size:12px;white-space:nowrap;background:rgba(255,255,255,.04)}
+.fchip small{font:10.5px var(--f-mono);color:var(--tx-3)}
+.drop{padding:7px 12px;border-radius:6px;border:1px dashed var(--hair-strong);color:var(--tx-3);font-size:12px;white-space:nowrap}
+.gauge{width:130px;height:3px;border-radius:2px;background:rgba(255,255,255,.1);overflow:hidden}
+#labels{position:absolute;inset:0;pointer-events:none}
+.plabel{position:absolute;transform:translate(-50%,0);font:500 10px/1 var(--f-ui);letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.75);white-space:nowrap;text-shadow:0 1px 8px #000}
+.flabel{position:absolute;transform:translate(10px,-50%);font-size:11.5px;color:rgba(232,235,240,.82);white-space:nowrap;text-shadow:0 1px 6px #000,0 0 2px #000}
+@media (max-width:1180px){ .side{display:none} }
+@media (max-width:820px){ .detail{display:none} .dock{left:10px;right:10px;flex-wrap:wrap} .dock .fchip:nth-child(n+3),.drop,.gauge{display:none} .crumb,.stat{display:none} .top{padding:0 12px} }
+</style></head><body>
+<canvas class="space" id="c"></canvas>
+<div class="ui">
+  <div id="labels"></div>
+  <div class="top">
+    <span class="mark">TRIO</span><span class="crumb">Tiedostot / <b>Galaksi</b></span>
+    <div class="seg" style="margin-left:12px"><span class="on">Galaksi</span><span>Lista</span><span>Aikajana</span></div>
+    <div class="stat" style="margin-left:auto"><span class="num">81 tiedostoa · 3 projektia · 46 yhteyttä</span><span class="btn">Lataa tiedosto</span></div>
+  </div>
+  <div class="side pnl">
+    <span class="lbl">Haku ja suodatus</span>
+    <div class="search">Hae nimellä tai sisällöllä…<span class="kb">/</span></div>
+    <div class="fr"><i class="cb on"></i>PDF-dokumentit<span class="n">12</span></div>
+    <div class="fr"><i class="cb on"></i>Taulukot<span class="n">5</span></div>
+    <div class="fr"><i class="cb on"></i>Tekstit ja muistiot<span class="n">21</span></div>
+    <div class="fr"><i class="cb"></i>Kuvat<span class="n">9</span></div>
+    <div class="fr"><i class="cb on"></i>Keskustelut<span class="n">34</span></div>
+    <div class="sep" style="margin:10px 0 12px"></div>
+    <span class="lbl">Projektit</span>
+    <div class="pr" style="margin-top:8px"><i style="background:#F07A93"></i>Business-idea<span class="num" style="margin-left:auto;color:var(--tx-3)">31</span></div>
+    <div class="pr"><i style="background:#7FA6FF"></i>Markkinointi<span class="num" style="margin-left:auto;color:var(--tx-3)">27</span></div>
+    <div class="pr"><i style="background:#F2C27A"></i>Sopimukset &amp; talous<span class="num" style="margin-left:auto;color:var(--tx-3)">23</span></div>
+    <div class="sep" style="margin:10px 0 10px"></div>
+    <div class="fr" style="color:var(--tx-3);font-size:11.5px">Kirkkaus = viimeksi käytetty · koko = käyttömäärä</div>
+  </div>
+  <div class="detail pnl">
+    <span class="lbl">Valittu tiedosto</span>
+    <h3>Liiketoimintasuunnitelma_v3.pdf</h3>
+    <span class="num" style="color:var(--tx-2);font-size:11.5px">PDF · 24 sivua · 1,8 Mt</span>
+    <div class="kvs"><span>Projekti</span><b>Business-idea</b><span>Käytetty</span><b>14× · tänään 09:12</b><span>Tokeneita</span><b>11 200</b><span>Yhteydet</span><b>5 tiedostoa</b></div>
+    <span class="lbl">Luettu</span>
+    <div class="ub"><i class="av claude" style="width:22px;height:22px"></i><span>Claude</span><div class="bar"><i style="width:64%"></i></div><span class="num">9×</span></div>
+    <div class="ub"><i class="av gpt" style="width:22px;height:22px"></i><span>ChatGPT</span><div class="bar"><i style="width:29%"></i></div><span class="num">4×</span></div>
+    <div class="ub"><i class="av grok" style="width:22px;height:22px"></i><span>Grok</span><div class="bar"><i style="width:8%"></i></div><span class="num">1×</span></div>
+    <div style="display:flex;gap:8px;margin-top:14px"><span class="btn pri">Lisää kontekstiin</span><span class="btn">Avaa</span><span class="btn">Kysy</span></div>
+  </div>
+  <div class="dock pnl">
+    <span class="lbl" style="margin-right:4px">Konteksti</span>
+    <span class="fchip">Liiketoimintasuunnitelma_v3.pdf <small>11,2k</small></span>
+    <span class="fchip">Kampanjasuunnitelma.docx <small>4,1k</small></span>
+    <span class="fchip">Budjetti_2027.xlsx <small>3,1k</small></span>
+    <span class="drop">Pudota tiedosto tähän</span>
+    <span class="num" style="margin-left:auto;color:var(--tx-2)">18 400 / 200 000 tok</span><div class="gauge"><i style="display:block;height:100%;width:9%;background:var(--white)"></i></div>
+  </div>
+</div>
+<script type="module">
+import { buildGalaxyScene } from './scene-galaxy.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import * as E from './engine.js';
+const { THREE } = E;
+const q = new URLSearchParams(location.search);
+const W = innerWidth, H = innerHeight, pr = +q.get('pr') || Math.min(devicePixelRatio, 2);
+const S = buildGalaxyScene(document.getElementById('c'), { width: W, height: H, pixelRatio: pr });
+const L = document.getElementById('labels');
+const projLabels = S.projects.map((p) => { const d = document.createElement('div'); d.className = 'plabel'; d.textContent = p.name; L.appendChild(d); return { p, d, v: new THREE.Vector3(p.at[0], p.at[1] - 2.6, p.at[2]) }; });
+const fileLabels = S.files.map((f) => { const d = document.createElement('div'); d.className = 'flabel'; d.textContent = f.name; L.appendChild(d); return { f, d }; });
+const sel = S.files.find((f) => f.name.startsWith('Liiketoiminta'));
+const ret = document.createElement('div'); ret.className = 'ret'; ret.innerHTML = '<i></i><i></i><i></i><i></i>'; L.appendChild(ret);
+function place() {
+  projLabels.forEach(({ d, v }) => { const p = E.project(v, S.camera, W, H); d.style.left = p.x + 'px'; d.style.top = p.y + 'px'; d.style.display = p.behind ? 'none' : ''; });
+  const boxes = [];
+  fileLabels.forEach(({ f, d }) => { const p = E.project(f.pos, S.camera, W, H); const w = f.name.length * 6.4 + 12; const fl = p.x + w + 10 > W; const b = fl ? { l: p.x - 10 - w, r: p.x - 10, t: p.y - 8, b: p.y + 8 } : { l: p.x + 10, r: p.x + 10 + w, t: p.y - 8, b: p.y + 8 };
+    const hit = boxes.some((o) => b.l < o.r && b.r > o.l && b.t < o.b && b.b > o.t); d.style.display = hit || p.behind ? 'none' : ''; if (!hit) boxes.push(b);
+    const flip = p.x + w + 10 > W; d.style.transform = flip ? 'translate(calc(-100% - 10px),-50%)' : '';
+    d.style.left = p.x + 'px'; d.style.top = p.y + 'px'; d.style.color = f === sel ? '#fff' : ''; d.style.fontWeight = f === sel ? '600' : ''; });
+  const p = E.project(sel.pos, S.camera, W, H); Object.assign(ret.style, { left: p.x + 'px', top: p.y + 'px', width: '30px', height: '30px' });
+}
+if (q.has('still')) { S.render(12); S.render(12); place(); await document.fonts.ready; window.__ready = true; }
+else {
+  const controls = new OrbitControls(S.camera, document.getElementById('c')); controls.target.set(1.8, -3.5, 0); controls.enableDamping = true; controls.minDistance = 10; controls.maxDistance = 90;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches; const t0 = performance.now();
+  const loop = () => { const t = reduce ? 12 : 12 + (performance.now() - t0) / 1000; controls.update(); S.render(t); place(); requestAnimationFrame(loop); };
+  loop(); addEventListener('resize', () => location.reload());
+}
+</script></body></html>

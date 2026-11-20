@@ -1,0 +1,107 @@
+<!doctype html><html lang="fi"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Deep Field</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="ui.css">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<style>
+.ui{overflow:auto}
+.wrap{position:absolute;inset:0;padding:36px 40px;display:grid;grid-template-columns:1.15fr 1fr 1fr;grid-template-rows:auto auto auto auto;align-content:start;gap:16px}
+.thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:4px}
+.thumbs > div{min-width:0}
+.thumbs > div > div{aspect-ratio:16/10;border-radius:6px;background-size:cover;background-position:center;border:1px solid var(--hair)}
+.thumbs small{display:block;margin-top:6px;font-size:11.5px;color:var(--tx-2)}
+.hd{grid-column:1/-1;display:flex;align-items:baseline;gap:18px}
+.hd h1{font-size:34px;font-weight:600;letter-spacing:-.025em}
+.hd p{color:var(--tx-2);max-width:620px;margin-left:auto;text-align:right;font-size:13.5px}
+.card{padding:18px 20px}
+.card h2{font-size:15px;font-weight:600;margin:8px 0 14px;letter-spacing:-.01em}
+.bodies{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.body .img{aspect-ratio:1;border-radius:8px;background-size:cover;background-position:center;border:1px solid var(--hair)}
+.body b{display:block;margin-top:10px;font-size:13.5px}
+.body small{display:block;font:11px/1.5 var(--f-mono);color:var(--tx-2);margin-top:3px}
+.sw{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:12px}
+.s .c{height:38px;border-radius:6px;border:1px solid var(--hair)}
+.s b{display:block;font-size:11.5px;margin-top:6px;font-weight:500}
+.s small{font:10.5px var(--f-mono);color:var(--tx-3)}
+.row{display:grid;grid-template-columns:90px 1fr;gap:12px;align-items:baseline;padding:9px 0;border-bottom:1px solid var(--hair)}
+.row:last-child{border:0}
+.rule{display:grid;grid-template-columns:22px 1fr;gap:8px;padding:7px 0;font-size:12.5px;color:var(--tx-2)}
+.rule b{color:var(--tx);font-weight:500}
+.rule .n{font:11px var(--f-mono);color:var(--tx-3);padding-top:1px}
+.comp{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:14px}
+</style></head><body>
+<canvas class="space" id="c"></canvas>
+<div class="ui"><div class="wrap">
+  <div class="hd"><span class="lbl">Design-järjestelmä</span><h1>Deep Field</h1><p>Realistinen avaruus, hillitty käyttöliittymä. 3D-renderöinti luo tunnelman, ja käyttöliittymä pysyy tarkkana ja rauhallisena kuin oikean avaruusaluksen näyttö.</p></div>
+
+  <div class="card pnl" style="grid-row:span 3">
+    <span class="lbl">01 · Miehistö</span><h2>Mallit ovat oikeita taivaankappaleita</h2>
+    <div class="bodies">
+      <div class="body"><div class="img" style="background-image:url(assets/avatar-star.png)"></div><b>Claude · tähti</b><small>K-tyyppi, 5 100 K<br>granulaatio, reunatummuminen<br>#F0A878 · 9,8:1</small></div>
+      <div class="body"><div class="img" style="background-image:url(assets/avatar-planet.png);background-size:150%"></div><b>ChatGPT · planeetta</b><small>valtamerimaailma<br>Rayleigh-ilmakehä, rengas<br>#7FD1BC · 10,9:1</small></div>
+      <div class="body"><div class="img" style="background-image:url(assets/avatar-pulsar.png)"></div><b>Grok · pulsari</b><small>neutronitähti<br>säteet, dipolikenttä<br>#AAB4FF · 9,9:1</small></div>
+    </div>
+    <div class="sep" style="margin:18px 0 14px"></div>
+    <span class="lbl">Väri</span>
+    <div class="sw" style="margin-top:10px">
+      <div class="s"><div class="c" style="background:#000"></div><b>Avaruus</b><small>#000000</small></div>
+      <div class="s"><div class="c" style="background:rgba(7,9,13,.62);backdrop-filter:blur(10px)"></div><b>Lasi</b><small>62 % · blur 18</small></div>
+      <div class="s"><div class="c" style="background:#E8EBF0"></div><b>Teksti</b><small>16,3:1</small></div>
+      <div class="s"><div class="c" style="background:#9BA3B1"></div><b>Toissijainen</b><small>7,7:1</small></div>
+      <div class="s"><div class="c" style="background:#6A7280"></div><b>Tunniste</b><small>4,0:1 iso</small></div>
+    </div>
+    <div class="sw" style="grid-template-columns:repeat(4,1fr)">
+      <div class="s"><div class="c" style="background:#fff"></div><b>Toiminto</b><small>valkoinen</small></div>
+      <div class="s"><div class="c" style="background:#57D18E"></div><b>OK</b><small>10,1:1</small></div>
+      <div class="s"><div class="c" style="background:#F2B44C"></div><b>Varoitus</b><small>10,6:1</small></div>
+      <div class="s"><div class="c" style="background:#F25A5F"></div><b>Kriittinen</b><small>5,9:1</small></div>
+    </div>
+    <div style="font-size:12px;color:var(--tx-2)">Väriä käytetään vain mallien tunnistamiseen ja hälytyksiin. Kaikki muu on mustavalkoista.</div>
+  </div>
+
+  <div class="card pnl"><span class="lbl">02 · Typografia</span><h2>Kaksi fonttia</h2>
+    <div class="row"><span class="lbl">Otsikko</span><span style="font-size:24px;font-weight:600;letter-spacing:-.02em">Inter 600</span></div>
+    <div class="row"><span class="lbl">Teksti</span><span style="font-size:14px">Inter 400: selkeä pienissäkin koossa.</span></div>
+    <div class="row"><span class="lbl">Data</span><span class="num" style="font-size:14px">T+00:41 · 1 240 tok · 0,031 €</span></div>
+    <div class="row"><span class="lbl">Tunniste</span><span class="lbl" style="color:var(--tx-2)">Missio · ristiintarkistus</span></div>
+  </div>
+
+  <div class="card pnl"><span class="lbl">03 · Komponentit</span><h2>Rakennuspalikat</h2>
+    <div class="comp"><div class="seg"><span class="on">Rinnakkain</span><span>Väittely</span></div><span class="btn pri">Lähetä ↵</span><span class="btn">Toissijainen</span></div>
+    <div class="comp"><span class="stat"><span><i class="dot"></i>&nbsp; valmis</span><span><i class="dot" style="background:var(--warn)"></i>&nbsp; hidas</span><span><i class="dot" style="background:var(--crit)"></i>&nbsp; alhaalla</span></span></div>
+    <div style="display:flex;align-items:center;gap:12px"><span class="lbl">Yksimielisyys</span><div style="flex:1;height:3px;background:rgba(255,255,255,.12);border-radius:2px"><i style="display:block;height:100%;width:82%;background:#fff"></i></div><span class="num" style="font-size:16px">82 %</span></div>
+  </div>
+
+  <div class="card pnl" style="grid-column:2/4"><span class="lbl">04 · Realismin säännöt</span><h2>Mikä tekee avaruudesta uskottavan</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 24px">
+      <div class="rule"><span class="n">01</span><span><b>Tähtien värit fysiikasta.</b> Lasketaan lämpötilasta (2 900–28 000 K), ei valita käsin. Useimmat ovat lähes valkoisia.</span></div>
+      <div class="rule"><span class="n">02</span><span><b>Kirkkaus potenssijakaumalla.</b> Tuhansia himmeitä tähtiä ja vain muutama kirkas.</span></div>
+      <div class="rule"><span class="n">03</span><span><b>JWST-diffraktiopiikit</b> (6 + 2) vain kirkkaimmissa tähdissä, aina kuvan suuntaisina.</span></div>
+      <div class="rule"><span class="n">04</span><span><b>Ilmakehä säteenkululla.</b> Rayleigh-sininen reuna, punertuma auringonnousussa ja kaupunkien valot yöpuolella.</span></div>
+      <div class="rule"><span class="n">05</span><span><b>Valo on HDR:ää.</b> Bloom vain yli 1,0:n kirkkauksille, sitten ACES-sävytys, filmirae ja vinjetti.</span></div>
+      <div class="rule"><span class="n">06</span><span><b>Ei täyttövaloa.</b> Avaruudessa varjot ovat mustia. Valo tulee tähdestä.</span></div>
+      <div class="rule"><span class="n">07</span><span><b>Käyttöliittymä ei hehku.</b> Lasipaneelit ja hiusviivat. Hehku kuuluu vain taivaankappaleille.</span></div>
+      <div class="rule"><span class="n">08</span><span><b>Liike on hidasta</b> ja pysähtyy, jos käyttäjä on valinnut vähennetyn liikkeen.</span></div>
+    </div>
+  </div>
+  <div class="card pnl" style="grid-column:2/4"><span class="lbl">05 · Näkymät</span>
+    <div class="thumbs" style="margin-top:12px">
+      <div><div style="background-image:url(../mockups/11-paanakyma-3d.jpg)"></div><small>Mission Control · päänäkymä</small></div>
+      <div><div style="background-image:url(../mockups/10-agenttikartta-3d.jpg)"></div><small>Agenttikartta</small></div>
+      <div><div style="background-image:url(../mockups/12-tiedostogalaksi-3d.jpg)"></div><small>Tiedostogalaksi</small></div>
+    </div>
+  </div>
+</div></div>
+<script type="module">
+import * as E from './engine.js';
+const { THREE } = E;
+const q = new URLSearchParams(location.search); const pr = +q.get('pr') || Math.min(devicePixelRatio, 2);
+const W = innerWidth, H = innerHeight;
+const renderer = E.createRenderer(document.getElementById('c'), { width: W, height: H, pixelRatio: pr });
+const scene = new THREE.Scene(); const camera = new THREE.PerspectiveCamera(50, W / H, 0.1, 3000); camera.lookAt(0.6, 0.3, -1);
+scene.add(E.createSky({ intensity: 0.8, nebula: 1.0 }));
+const stars = E.createStarfield({ count: 24000, seed: 91 }); stars.userData.setViewport(W, H, pr); scene.add(stars);
+const { composer } = E.createComposer(renderer, scene, camera, { bloom: 0.5, threshold: 0.95 });
+composer.render(); composer.render(); await document.fonts.ready; window.__ready = true;
+</script></body></html>

@@ -1,0 +1,79 @@
+/* ==========================================================================
+   DEEP FIELD UI: realistisen avaruusteeman käyttöliittymä
+   Periaate: käyttöliittymä on kuin oikean avaruusaluksen tai lennonjohdon näyttö.
+   Hillitty, tarkka ja mustavalkoinen. Väriä käytetään vain mallien tunnistamiseen
+   ja hälytyksiin (NASA HSI: "use color sparingly, reserve it for faults and alerts").
+   Ei neonia, ei hehkuvia reunoja, ei leluefektejä. 3D-avaruus tuo tunnelman.
+   ========================================================================== */
+:root {
+  --bg: #000000;
+  --glass: rgba(7, 9, 13, 0.62);
+  --glass-strong: rgba(7, 9, 13, 0.82);
+  --hair: rgba(255, 255, 255, 0.09);
+  --hair-strong: rgba(255, 255, 255, 0.16);
+  --tx: #E8EBF0;        /* pääteksti */
+  --tx-2: #9BA3B1;      /* toissijainen */
+  --tx-3: #6A7280;      /* tunnisteet, suuri koko */
+  --white: #FFFFFF;
+  /* mallit: luonnolliset, hillityt sävyt (taivaankappaleiden omat värit) */
+  --claude: #F0A878;    /* K-tyypin tähti */
+  --gpt: #7FD1BC;       /* valtamerimaailma */
+  --grok: #AAB4FF;      /* pulsari */
+  /* tilat */
+  --ok: #57D18E; --warn: #F2B44C; --crit: #F25A5F;
+  --f-ui: "Inter", system-ui, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, monospace;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: var(--bg); color: var(--tx); font-family: var(--f-ui); font-size: 13px; line-height: 1.45; -webkit-font-smoothing: antialiased; }
+canvas.space { position: fixed; inset: 0; width: 100vw; height: 100vh; display: block; z-index: 0; }
+.ui { position: fixed; inset: 0; z-index: 2; pointer-events: none; }
+.ui > * { pointer-events: auto; }
+
+/* Paneeli: tumma lasi, hiusviivareuna, pieni pyöristys (insinöörimäinen, ei pehmoinen) */
+.pnl { background: var(--glass); border: 1px solid var(--hair); border-radius: 8px; backdrop-filter: blur(18px) saturate(115%); -webkit-backdrop-filter: blur(18px) saturate(115%); }
+.lbl { font: 500 10px/1 var(--f-ui); letter-spacing: .16em; text-transform: uppercase; color: var(--tx-3); }
+.num { font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+.h { font-weight: 600; letter-spacing: -.005em; }
+.sep { height: 1px; background: var(--hair); }
+
+/* Yläpalkki */
+.top { position: absolute; left: 0; right: 0; top: 0; height: 52px; display: flex; align-items: center; gap: 18px; padding: 0 20px; background: linear-gradient(180deg, rgba(0,0,0,.75), rgba(0,0,0,0)); }
+.mark { font: 600 13px/1 var(--f-ui); letter-spacing: .32em; }
+.crumb { color: var(--tx-2); font-size: 12.5px; white-space: nowrap; }
+.crumb b { color: var(--tx); font-weight: 500; }
+.seg { display: flex; border: 1px solid var(--hair-strong); border-radius: 6px; overflow: hidden; }
+.seg span { padding: 6px 12px; font-size: 12px; color: var(--tx-2); border-right: 1px solid var(--hair); white-space: nowrap; }
+.seg span:last-child { border-right: 0; }
+.seg span.on { color: #000; background: var(--white); font-weight: 600; }
+.stat { display: flex; align-items: center; gap: 14px; color: var(--tx-2); font-size: 12px; white-space: nowrap; }
+.dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; background: var(--ok); }
+.btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 6px; border: 1px solid var(--hair-strong); color: var(--tx); font-size: 12px; background: rgba(255,255,255,.03); white-space: nowrap; }
+.btn.pri { background: var(--white); color: #000; border-color: var(--white); font-weight: 600; }
+
+/* Mallin tunnus: oikea 3D-renderöinti pyöreänä */
+.av { width: 26px; height: 26px; border-radius: 50%; background-size: 175%; background-position: center; flex: none; box-shadow: 0 0 0 1px var(--hair-strong); }
+.av.lg { width: 34px; height: 34px; }
+.av.claude { background-image: url(assets/avatar-star.png); }
+.av.gpt { background-image: url(assets/avatar-planet.png); background-size: 230%; }
+.av.grok { background-image: url(assets/avatar-pulsar.png); background-size: 150%; }
+
+/* 3D-kohteiden tunnisteet (kuten NASA Eyes): tähtäinkulmat + johtoviiva + teksti */
+.tag3d { position: absolute; transform: translate(0, -50%); display: flex; align-items: center; gap: 0; pointer-events: none; }
+.tag3d .ln { width: 46px; height: 1px; background: rgba(255,255,255,.45); }
+.tag3d .tx { padding-left: 8px; }
+.tag3d .nm { font-size: 13.5px; font-weight: 600; color: var(--white); display: flex; align-items: center; gap: 7px; text-shadow: 0 1px 8px rgba(0,0,0,.9); }
+.tag3d .rl { font: 500 9.5px/1 var(--f-ui); letter-spacing: .16em; text-transform: uppercase; color: var(--tx-2); margin-top: 4px; text-shadow: 0 1px 8px rgba(0,0,0,.9); }
+.tag3d .ss { font: 11px/1 var(--f-mono); color: var(--tx); margin-top: 6px; display: flex; align-items: center; gap: 6px; text-shadow: 0 1px 8px rgba(0,0,0,.9); }
+.tag3d.left { flex-direction: row-reverse; transform: translate(-100%, -50%); text-align: right; }
+.tag3d.left .tx { padding-left: 0; padding-right: 8px; }
+.tag3d.left .nm, .tag3d.left .ss { justify-content: flex-end; }
+.ret { position: absolute; transform: translate(-50%, -50%); pointer-events: none; }
+.ret i { position: absolute; width: 9px; height: 9px; border-color: rgba(255,255,255,.7); border-style: solid; border-width: 0; }
+.ret i:nth-child(1) { left: 0; top: 0; border-left-width: 1px; border-top-width: 1px; }
+.ret i:nth-child(2) { right: 0; top: 0; border-right-width: 1px; border-top-width: 1px; }
+.ret i:nth-child(3) { left: 0; bottom: 0; border-left-width: 1px; border-bottom-width: 1px; }
+.ret i:nth-child(4) { right: 0; bottom: 0; border-right-width: 1px; border-bottom-width: 1px; }
+
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
