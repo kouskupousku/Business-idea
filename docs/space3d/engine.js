@@ -474,6 +474,76 @@ export function createPlanet({ radius = 2, lightPos = new THREE.Vector3(), seed 
   return group;
 }
 
+// ---------------------------------------------------------------- jättiläisplaneetat (Claude = kaasujättiläinen, Grok = jääjättiläinen)
+// Vyöhykkeet + pyörteet (domain warping leveyspiirin suuntaan), myrskyt, reunatummuminen,
+// pehmeä terminaattori ja ohut ilmakehän reuna. Värit annetaan kolmena sävynä.
+export const GIANT_PRESETS = {
+  // Claude: lämmin meripihka (vrt. Jupiter/Saturnus), väri #F0A878
+  claude: { a: new THREE.Color(1.0, 0.58, 0.28), b: new THREE.Color(0.74, 0.32, 0.12), c: new THREE.Color(1.0, 0.80, 0.55), bands: 13.0, turb: 0.55, storms: 1.0, haze: new THREE.Color(1.0, 0.75, 0.5) },
+  // Grok: jäänsininen (vrt. Neptunus/Uranus), väri #8EC8FF
+  grok: { a: new THREE.Color(0.40, 0.68, 1.0), b: new THREE.Color(0.20, 0.42, 0.88), c: new THREE.Color(0.74, 0.90, 1.0), bands: 7.0, turb: 0.25, storms: 0.5, haze: new THREE.Color(0.55, 0.8, 1.0) },
+};
+export function createGiant({ radius = 2, lightPos = new THREE.Vector3(100, 40, 80), seed = 2, preset = GIANT_PRESETS.claude, rings = false } = {}) {
+  const group = new THREE.Group();
+  const u = { uL: { value: lightPos.clone() }, uA: { value: preset.a }, uB: { value: preset.b }, uC: { value: preset.c }, uBands: { value: preset.bands }, uTurb: { value: preset.turb }, uStorm: { value: preset.storms }, uSeed: { value: seed }, uTime: { value: 0 }, uHaze: { value: preset.haze } };
+  const mat = new THREE.ShaderMaterial({
+    uniforms: u,
+    vertexShader: `varying vec3 vN,vP,vW; void main(){ vP=position; vN=normalize(mat3(modelMatrix)*normal); vec4 w=modelMatrix*vec4(position,1.0); vW=w.xyz; gl_Position=projectionMatrix*viewMatrix*w; }`,
+    fragmentShader: NOISE + /* glsl */`
+      uniform vec3 uL,uA,uB,uC,uHaze; uniform float uBands,uTurb,uStorm,uSeed,uTime; varying vec3 vN,vP,vW;
+      void main(){
+        vec3 p=normalize(vP); vec3 N=normalize(vN); vec3 L=normalize(uL-vW); vec3 V=normalize(cameraPosition-vW);
+        // pyörteet: siirretään leveyttä virtauskentällä (venytetty pituussuunnassa)
+        vec3 q=vec3(p.x*1.2,p.y*4.0,p.z*1.2)+vec3(uTime*0.01,0.0,uSeed);
+        float w1=fbm(q*2.0,5), w2=fbm(q*6.0+vec3(3.1),4);
+        float lat=p.y+uTurb*0.08*w1+uTurb*0.03*w2;
+        float b=0.5+0.5*sin(lat*uBands*3.14159+fbm(vec3(lat*8.0,uSeed,0.0),3)*1.5);
+        float b2=0.5+0.5*sin(lat*uBands*7.1+1.7);
+        vec3 col=mix(uB,uA,b); col=mix(col,uC,smoothstep(0.65,1.0,b2)*0.55);
+        col*=0.86+0.28*fbm(vec3(p.x*18.0,p.y*60.0,p.z*18.0)+vec3(uSeed),4);   // hienot virtausjuovat
+        // myrsky (soikea pyörre eteläisellä pallonpuoliskolla)
+        vec3 sc=normalize(vec3(0.55,-0.32,0.77)); float sd=length((p-sc)*vec3(1.0,2.1,1.0));
+        float storm=smoothstep(0.17,0.05,sd)*uStorm; col=mix(col,uB*0.85+vec3(0.12,0.03,0.0),storm*0.75);
+        col=mix(col,uC,smoothstep(0.05,0.0,abs(sd-0.12))*uStorm*0.5);
+        float mu=clamp(dot(N,V),0.0,1.0); float limb=0.55+0.45*pow(mu,0.55);
+        float NL=dot(N,L); float day=smoothstep(-0.06,0.3,NL);
+        float lum=dot(col,vec3(0.299,0.587,0.114)); col=max(mix(vec3(lum),col,1.45),0.0);   // kylläisyys säilyy sävytyksen läpi
+        vec3 c=col*limb*max(NL,0.0)*1.15;
+        c+=uHaze*pow(1.0-mu,3.0)*smoothstep(-0.2,0.5,NL)*0.30;   // ylähaze reunalla
+        c*=day*0.985+0.015;
+        gl_FragColor=vec4(c,1.0);
+      }`
+  });
+  group.add(new THREE.Mesh(new THREE.SphereGeometry(radius, 128, 96), mat));
+  if (rings) {
+    const rIn = radius * 1.35, rOut = radius * 2.1;
+    const ringMat = new THREE.ShaderMaterial({
+      uniforms: { uL: u.uL, uIn: { value: rIn }, uOut: { value: rOut }, uC: { value: new THREE.Vector3() }, uR: { value: radius }, uTint: { value: preset.c } },
+      vertexShader: `varying vec3 vW; varying vec3 vLoc; void main(){ vLoc=position; vec4 w=modelMatrix*vec4(position,1.0); vW=w.xyz; gl_Position=projectionMatrix*viewMatrix*w; }`,
+      fragmentShader: NOISE + /* glsl */`
+        uniform vec3 uL,uC,uTint; uniform float uIn,uOut,uR; varying vec3 vW,vLoc;
+        void main(){ float r=length(vLoc.xy); float t=(r-uIn)/(uOut-uIn);
+          float bands=0.5+0.3*snoise(vec3(r*5.0,0.0,0.0))+0.2*snoise(vec3(r*23.0,1.0,0.0));
+          float edge=smoothstep(0.0,0.08,t)*smoothstep(1.0,0.85,t); float a=clamp(bands,0.0,1.0)*edge*0.55;
+          vec3 L=normalize(uL-vW); vec3 oc=vW-uC; float b=dot(oc,L); float c=dot(oc,oc)-uR*uR; float h=b*b-c; float sh=(h>0.0&&b<0.0)?0.1:1.0;
+          gl_FragColor=vec4(uTint*a*sh*1.1,a); }`,
+      transparent: true, side: THREE.DoubleSide, depthWrite: false
+    });
+    const ring = new THREE.Mesh(new THREE.RingGeometry(rIn, rOut, 256, 1), ringMat); ring.rotation.x = -Math.PI / 2 + 0.45; ring.rotation.y = -0.2; group.add(ring);
+    group.userData.ringC = ringMat.uniforms.uC;
+  }
+  group.userData.tick = (t) => { u.uTime.value = t; group.userData.ringC && group.getWorldPosition(group.userData.ringC.value); };
+  group.userData.setLight = (v) => u.uL.value.copy(v);
+  return group;
+}
+
+// Yhtenäinen tapa luoda mallin planeetta: Claude = kaasujättiläinen, ChatGPT = valtamerimaailma, Grok = jääjättiläinen
+export function createModelPlanet(model, { radius = 1.5, lightPos = new THREE.Vector3(100, 40, 80) } = {}) {
+  if (model === 'claude') return createGiant({ radius, lightPos, seed: 2, preset: GIANT_PRESETS.claude, rings: true });
+  if (model === 'grok') return createGiant({ radius, lightPos, seed: 7, preset: GIANT_PRESETS.grok, rings: false });
+  const p = createPlanet({ radius, lightPos, seed: 9, rings: false }); p.rotation.y = 1.2; return p;
+}
+
 // ---------------------------------------------------------------- pulsari (Grok)
 export function createPulsar({ size = 0.35, tilt = 0.5, color = new THREE.Color(0.56, 0.78, 1.0) } = {}) {
   const group = new THREE.Group();
@@ -653,6 +723,64 @@ export function createGalaxy({ count = 90000, radius = 30, arms = 2, seed = 11 }
     blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, side: THREE.DoubleSide
   });
   const dmesh = new THREE.Mesh(new THREE.CircleGeometry(radius * 1.1, 160), disk); dmesh.rotation.x = -Math.PI / 2; group.add(dmesh);
+  group.userData.sprites = [pts];
+  return group;
+}
+
+// ---------------------------------------------------------------- flokkulentti spiraaligalaksi (muistigalaksi)
+// Mallina Hubblen kuvat flokkulenteista galakseista (esim. NGC 4414): ei kahta selkeää haaraa vaan
+// paljon lyhyitä haarankappaleita, ruskeat pölykaistat, siniset tähtijoukot ja lämmin keltainen ydin.
+export function createFlocculentGalaxy({ radius = 30, seed = 4, tilt = 0.0 } = {}) {
+  const group = new THREE.Group();
+  const shared = /* glsl */`
+    uniform float uR,uSeed; varying vec2 vP;
+    // koordinaatit spiraalin suuntaisesti: u = kulma spiraalikehyksessä, v = log-säde
+    vec3 spiral(vec2 p){ float d=length(p); float a=atan(p.y,p.x); float sp=log(1.0+d/0.05)*1.25; float u=2.0*(a-sp); return vec3(u,log(d+0.02),d); }
+    float flocc(vec2 p,float s){ vec3 sc=spiral(p); float base=0.35*cos(sc.x); return base+fbm(vec3(cos(sc.x*0.5)*2.4,sin(sc.x*0.5)*2.4,sc.y*4.2)+vec3(uSeed+s),6); }
+  `;
+  const light = new THREE.ShaderMaterial({
+    uniforms: { uR: { value: radius }, uSeed: { value: seed } },
+    vertexShader: `varying vec2 vP; void main(){ vP=position.xy; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);} `,
+    fragmentShader: NOISE + shared + /* glsl */`
+      void main(){ vec2 p=vP/uR; float d=length(p);
+        float disc=exp(-d*3.0);
+        float arms=smoothstep(-0.05,0.55,flocc(p,0.0))*smoothstep(1.0,0.35,d);  // lyhyet haarankappaleet
+        float knots=pow(smoothstep(0.35,0.85,fbm(vec3(p*34.0,uSeed+9.0),4)),2.0)*arms; // siniset tähtijoukot
+        float fine=0.65+0.35*fbm(vec3(p*60.0,uSeed+2.0),3);
+        float bulge=exp(-d*d*110.0)*2.4+exp(-d*10.0)*0.32;
+        float warmT=smoothstep(0.55,0.12,d);                                     // sisäosat lämpimiä, ulko-osat sinertäviä
+        vec3 discCol=mix(vec3(0.80,0.84,0.96),vec3(1.0,0.86,0.66),warmT);
+        vec3 armCol=mix(vec3(0.74,0.82,1.0),vec3(1.0,0.90,0.74),warmT);
+        vec3 knotCol=vec3(0.66,0.80,1.0), coreCol=vec3(1.0,0.84,0.58);
+        float grain=0.55+0.45*fbm(vec3(p*140.0,uSeed+6.0),3);                  // hienojakoinen tähtirakeisuus
+        vec3 c=discCol*disc*0.26*fine + armCol*arms*disc*0.85*fine*grain + knotCol*knots*disc*1.6 + coreCol*bulge*0.65;
+        c*=smoothstep(1.02,0.72,d);
+        gl_FragColor=vec4(c,1.0);} `,
+    blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, side: THREE.DoubleSide
+  });
+  const lm = new THREE.Mesh(new THREE.CircleGeometry(radius * 1.05, 192), light); lm.rotation.x = -Math.PI / 2; group.add(lm);
+  // ruskeat pölykaistat haarankappaleiden välissä (normaali sekoitus → oikeasti tummentaa)
+  const dust = new THREE.ShaderMaterial({
+    uniforms: { uR: { value: radius }, uSeed: { value: seed } },
+    vertexShader: `varying vec2 vP; void main(){ vP=position.xy; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);} `,
+    fragmentShader: NOISE + shared + /* glsl */`
+      void main(){ vec2 p=vP/uR; float d=length(p);
+        float f=flocc(p,0.0); float f2=flocc(p*1.04,5.0);
+        float lane=smoothstep(0.05,-0.25,f)*smoothstep(-0.55,-0.15,f2);            // haarojen välissä, rihmamaisesti
+        float fil=pow(max(0.0,ridged(vec3(p*22.0,uSeed+4.0),4)-0.55),1.5)*1.6;
+        float m=clamp(lane*0.75+fil*0.35*smoothstep(0.6,0.1,d),0.0,1.0)*smoothstep(0.05,0.16,d)*smoothstep(0.98,0.6,d);
+        gl_FragColor=vec4(vec3(0.022,0.012,0.006),m*0.85);} `,   // tumma ruskea: vain tummentaa
+    transparent: true, depthWrite: false, side: THREE.DoubleSide
+  });
+  const dm = new THREE.Mesh(new THREE.CircleGeometry(radius, 192), dust); dm.rotation.x = -Math.PI / 2; dm.position.y = 0.04; group.add(dm);
+  // hajallaan olevia tähtiä levyssä (pieniä, himmeitä) kimallukseksi
+  const r = rng(seed + 50); const n = 26000; const pos = new Float32Array(n * 3), col = new Float32Array(n * 3), size = new Float32Array(n);
+  const gauss = () => { let a = 0, b = 0; while (a === 0) a = r(); while (b === 0) b = r(); return Math.sqrt(-2 * Math.log(a)) * Math.cos(2 * Math.PI * b); };
+  for (let i = 0; i < n; i++) { const d = Math.pow(r(), 0.8) * radius * 0.95; const a = r() * Math.PI * 2; pos.set([Math.cos(a) * d, gauss() * 0.15 * (1.2 - d / radius), Math.sin(a) * d], i * 3);
+    const T = d < radius * 0.2 ? 4000 + r() * 2000 : (r() < 0.6 ? 9000 + r() * 15000 : 4200 + r() * 2500); const c = kelvinToRGB(T).lerp(new THREE.Color(1, 1, 1), 0.3); const L = 0.3 + Math.pow(r(), 6) * 2.5;
+    col.set([c.r * L, c.g * L, c.b * L], i * 3); size[i] = 0.8 + Math.pow(r(), 5) * 2.2; }
+  const pts = createSprites(pos, col, size, { mode: 'world', falloff: 7.0, gain: 0.35, worldK: 34.0 }); group.add(pts);
+  group.rotation.x = tilt;
   group.userData.sprites = [pts];
   return group;
 }

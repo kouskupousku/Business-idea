@@ -107,10 +107,10 @@ if (still) document.getElementById('hint').remove();
 // 3D-tunnisteet
 const L = document.getElementById('labels');
 const defs = [
-  { k: 'claude', side: 'right', nm: 'Claude', rl: 'Kirjoittaja · tähti', ss: '<i class="dot"></i>luonnos v2 valmis', dy: 0 },
+  { k: 'claude', side: 'right', nm: 'Claude', rl: 'Kirjoittaja · kaasujättiläinen', ss: '<i class="dot"></i>luonnos v2 valmis', dy: 0 },
   { k: 'mission', side: 'left', nm: 'Asema', rl: 'Missio · koordinointi', ss: '<i class="dot" style="background:#fff"></i>odottaa tarkistuksia', dy: 46 },
-  { k: 'gpt', side: 'right', nm: 'ChatGPT', rl: 'Tarkistaja · planeetta', ss: '<i class="dot" style="background:#fff"></i>faktat 4/7', dy: 70 },
-  { k: 'grok', side: 'right', nm: 'Grok', rl: 'Tarkistaja · pulsari', ss: '<i class="dot" style="background:var(--warn)"></i>hakee lähteitä', dy: 0 },
+  { k: 'gpt', side: 'right', nm: 'ChatGPT', rl: 'Tarkistaja · valtamerimaailma', ss: '<i class="dot" style="background:#fff"></i>faktat 4/7', dy: 70 },
+  { k: 'grok', side: 'right', nm: 'Grok', rl: 'Tarkistaja · jääjättiläinen', ss: '<i class="dot" style="background:var(--warn)"></i>hakee lähteitä', dy: 0 },
 ];
 defs.forEach((d) => {
   d.ret = document.createElement('div'); d.ret.className = 'ret'; d.ret.innerHTML = '<i></i><i></i><i></i><i></i>'; L.appendChild(d.ret);

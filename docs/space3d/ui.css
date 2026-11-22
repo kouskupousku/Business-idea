@@ -60,11 +60,11 @@ canvas.space { position: fixed; inset: 0; width: 100vw; height: 100vh; display: 
 .btn.pri { background: var(--accent-btn); color: #fff; border-color: var(--accent-btn); font-weight: 600; }
 
 /* Mallin tunnus: oikea 3D-renderöinti pyöreänä */
-.av { width: 26px; height: 26px; border-radius: 50%; background-size: 175%; background-position: center; flex: none; box-shadow: 0 0 0 1px var(--hair-strong); }
+.av { width: 26px; height: 26px; border-radius: 50%; background-size: 150%; background-position: center; flex: none; box-shadow: 0 0 0 1px var(--hair-strong); }
 .av.lg { width: 34px; height: 34px; }
-.av.claude { background-image: url(assets/avatar-star.png); }
-.av.gpt { background-image: url(assets/avatar-planet.png); background-size: 230%; }
-.av.grok { background-image: url(assets/avatar-pulsar.png); background-size: 150%; }
+.av.claude { background-image: url(assets/avatar-claude.png); }
+.av.gpt { background-image: url(assets/avatar-gpt.png); background-size: 150%; }
+.av.grok { background-image: url(assets/avatar-grok.png); background-size: 150%; }
 
 /* 3D-kohteiden tunnisteet (kuten NASA Eyes): tähtäinkulmat + johtoviiva + teksti */
 .tag3d { position: absolute; transform: translate(0, -50%); display: flex; align-items: center; gap: 0; pointer-events: none; }

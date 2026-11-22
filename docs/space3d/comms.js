@@ -1,7 +1,7 @@
 // ============================================================================
 //  YHTEYSKANAVA: näkyy aina päänäkymän oikealla puolella.
 //  Näyttää reaaliajassa, kun mallit puhuvat toisilleen:
-//   1) pieni 3D-kiertoratanäkymä: kolme taivaankappaletta, valopulssi kulkee
+//   1) pieni 3D-näkymä: kolme omanväristä planeettaa, valopulssi kulkee
 //      lähettäjältä vastaanottajalle, puhuja saa liilan tähtäimen
 //   2) "nyt puhuu" -rivi: lähettäjä → vastaanottaja, viestin tyyppi, äänenaaltomittari
 //   3) viestivirta: uusin viesti liukuu sisään, kirjoitusindikaattori ennen saapumista
@@ -59,9 +59,10 @@ export function createComms(root, { pixelRatio = Math.min(devicePixelRatio, 2) }
   scene.add(E.createSky({ intensity: 0.45, nebula: 1.8, ...E.BRAND_NEBULA, nebDir: new THREE.Vector3(0.1, 0.35, -1) }));
   const stars = E.createStarfield({ count: 7000, seed: 71, spikes: false }); stars.userData.setViewport(W, H, renderer.getPixelRatio()); scene.add(stars);
   const P = { claude: new THREE.Vector3(-5.2, 0.4, -1.2), gpt: new THREE.Vector3(5.2, 0.2, -1.0), grok: new THREE.Vector3(0.2, -0.6, 3.6) };
-  const star = E.createStar({ radius: 1.15, temperature: 5100, seed: 4 }); star.position.copy(P.claude); scene.add(star);
-  const planet = E.createPlanet({ radius: 0.95, lightPos: P.claude, seed: 9 }); planet.position.copy(P.gpt); planet.rotation.y = 1.2; scene.add(planet);
-  const pulsar = E.createPulsar({ size: 0.13, tilt: 0.55 }); pulsar.position.copy(P.grok); scene.add(pulsar);
+  const SUN = new THREE.Vector3(-40, 30, 30);    // valo ylhäältä vasemmalta edestä
+  const star = E.createModelPlanet('claude', { radius: 1.0, lightPos: SUN }); star.position.copy(P.claude); scene.add(star);
+  const planet = E.createModelPlanet('gpt', { radius: 0.95, lightPos: SUN }); planet.position.copy(P.gpt); scene.add(planet);
+  const pulsar = E.createModelPlanet('grok', { radius: 0.85, lightPos: SUN }); pulsar.position.copy(P.grok); scene.add(pulsar);
   scene.add(new THREE.AmbientLight(0x8899bb, 0.05));
   const lilac = new THREE.Color(0.72, 0.58, 1.0);
   // kaikki parit: himmeät kaaret; aktiivinen kaari kirkastuu
@@ -92,7 +93,7 @@ export function createComms(root, { pixelRatio = Math.min(devicePixelRatio, 2) }
   const tagsEl = root.querySelector('.cm-tags');
   const tags = {};
   Object.keys(P).forEach((k) => { const d = document.createElement('div'); d.className = 'cm-tag'; d.innerHTML = `<span class="cm-ret"></span><b>${MODELS[k].name}</b>`; tagsEl.appendChild(d); tags[k] = d; });
-  const R = { claude: 1.9, gpt: 1.25, grok: 0.75 };   // renkaan säde maailmayksiköissä (kappale + hehku)
+  const R = { claude: 1.75, gpt: 1.2, grok: 1.1 };   // renkaan säde maailmayksiköissä (planeetta + rengas)
   const right = new THREE.Vector3().setFromMatrixColumn(camera.matrixWorld, 0);
   const placeTags = (speaker, listener) => {
     for (const k in P) { const p = E.project(P[k], camera, W, H); const e = E.project(P[k].clone().addScaledVector(right, R[k]), camera, W, H);

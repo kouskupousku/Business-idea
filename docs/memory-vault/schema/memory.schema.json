@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "mysterious/memory.schema.json",
+  "title": "Mysterious-muistin otsaketiedot (YAML frontmatter)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "owner", "topic", "stage", "created", "updated", "importance", "confidence", "summary"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^m-[0-9]{4,}$", "description": "Pysyvä tunniste. Myös tiedostonimi: muistit/<id>.md" },
+    "type": { "enum": ["fakta", "päätös", "mieltymys", "lähde", "konsensus", "projekti", "havainto", "ristiriita"] },
+    "owner": { "enum": ["shared", "claude", "gpt", "grok"], "description": "shared = kaikkien mallien yhteinen muisti" },
+    "authors": { "type": "array", "items": { "enum": ["claude", "gpt", "grok", "user"] } },
+    "topic": { "type": "string", "description": "Wikilinkki aihekarttaan, esim. \"[[Business-idea]]\". Määrää galaksin sektorin." },
+    "stage": { "enum": ["tuore", "aktiivinen", "vakiintunut", "arkistoitu"], "description": "Määrää etäisyyden ytimestä ja tähden värin" },
+    "created": { "type": "string", "format": "date-time" },
+    "updated": { "type": "string", "format": "date-time" },
+    "last_used": { "type": "string", "format": "date-time" },
+    "uses": { "type": "integer", "minimum": 0 },
+    "importance": { "type": "number", "minimum": 0, "maximum": 1, "description": "Tähden kirkkaus" },
+    "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+    "links": { "type": "array", "items": { "type": "string", "pattern": "^\\[\\[.+\\]\\]$" } },
+    "summary": { "type": "string", "maxLength": 140, "description": "Ainoa ihmiselle tarkoitettu kenttä: näytetään, kun tähteä klikataan" },
+    "embedding": { "type": "string", "description": "Polku upotusvektoriin hakemistossa .index/" },
+    "tokens": { "type": "integer", "minimum": 0, "description": "Rungon koko tokeneina (hakutulosten budjetointiin)" },
+    "sources": { "type": "array", "items": { "type": "string", "format": "uri" } },
+    "expires": { "type": "string", "format": "date-time", "description": "Aikasidonnainen tieto: vanhenemisvahti tarkistaa tämän jälkeen" }
+  }
+}

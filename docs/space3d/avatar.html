@@ -16,6 +16,7 @@ let obj, light = new THREE.Vector3(-30, 12, 20);
 if (body === 'star') { obj = E.createStar({ radius: 1, temperature: 5100, seed: 4 }); camera.position.set(0, 0, 11.5); }
 if (body === 'planet') { obj = E.createPlanet({ radius: 1, lightPos: light, seed: 9 }); obj.rotation.y = 1.2; camera.position.set(0, 0.5, 10.5); }
 if (body === 'pulsar') { obj = E.createPulsar({ size: 0.12, tilt: 0.55 }); camera.position.set(0, 0, 6.0); }
+if (['claude', 'gpt', 'grok'].includes(body)) { obj = E.createModelPlanet(body, { radius: 1, lightPos: new THREE.Vector3(-30, 18, 30) }); camera.position.set(0, 0.3, body === 'claude' ? 8.6 : 6.4); }
 if (body === 'station') { obj = E.createStation({ scale: 0.24 }); camera.position.set(2.6, 2.0, 4.6); scene.add(new THREE.AmbientLight(0x8899bb, 0.08)); const L = new THREE.DirectionalLight(0xfff2e0, 3.0); L.position.copy(light); scene.add(L); }
 camera.lookAt(0, 0, 0); scene.add(obj);
 const { composer } = E.createComposer(renderer, scene, camera, { bloom: 0.5, threshold: 0.95 });

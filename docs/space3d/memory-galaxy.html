@@ -1,0 +1,140 @@
+<!doctype html><html lang="fi"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mysterious Muistigalaksi</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="ui.css">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<style>
+.side{position:absolute;left:20px;top:64px;width:272px;padding:16px}
+.search{display:flex;align-items:center;gap:8px;padding:9px 11px;border-radius:6px;border:1px solid var(--accent-line);color:var(--tx-2);font-size:12.5px;margin:10px 0 6px;background:rgba(110,59,245,.08)}
+.hint2{font:10.5px var(--f-mono);color:var(--tx-3);margin-bottom:12px}
+.own{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 12px}
+.oc{display:inline-flex;align-items:center;gap:6px;padding:5px 9px 5px 6px;border-radius:999px;border:1px solid var(--hair-strong);font-size:12px;color:var(--tx-2)}
+.oc.on{border-color:var(--accent);color:#fff;background:var(--accent-soft)}
+.oc .av{width:16px;height:16px}
+.fr{display:flex;align-items:center;gap:10px;padding:6px 0;font-size:12.5px;color:var(--tx-2)}
+.fr .n{margin-left:auto;font:11.5px var(--f-mono);color:var(--tx-3)}
+.cb{width:13px;height:13px;border-radius:3px;border:1px solid var(--hair-strong)}
+.cb.on{background:var(--accent-btn);border-color:var(--accent-btn)}
+.legend{display:grid;gap:7px;margin-top:10px;font-size:11.5px;color:var(--tx-2)}
+.legend div{display:flex;align-items:center;gap:9px}
+.grad{width:54px;height:6px;border-radius:3px;background:linear-gradient(90deg,#9fc3ff,#fff4e0,#ffb46a)}
+.card{position:absolute;right:20px;top:64px;width:332px;padding:16px}
+.card h3{font-size:15.5px;font-weight:600;line-height:1.4;margin:10px 0 12px;letter-spacing:-.005em}
+.tags{display:flex;gap:6px;align-items:center}
+.tg{font:600 9.5px/1 var(--f-ui);letter-spacing:.14em;text-transform:uppercase;color:var(--accent);padding:4px 7px;border-radius:4px;background:var(--accent-soft)}
+.kvs{display:grid;grid-template-columns:auto 1fr;gap:7px 14px;font-size:12px;color:var(--tx-2);margin:4px 0 14px}
+.kvs b{color:var(--tx);font:500 11.5px var(--f-mono);text-align:right}
+.mach{font:11px/1.65 var(--f-mono);color:#A9A3C9;background:rgba(0,0,0,.45);border:1px solid var(--hair);border-radius:6px;padding:10px 11px;white-space:pre-wrap;word-break:break-all;margin:8px 0 14px}
+.rd{display:flex;gap:12px;font-size:12px;color:var(--tx-2);margin:8px 0 14px}
+.rd span{display:flex;align-items:center;gap:6px}
+.rd .av{width:18px;height:18px}
+.traffic{position:absolute;left:20px;right:20px;bottom:18px;padding:11px 16px;display:flex;align-items:center;gap:18px;overflow:hidden}
+.ev{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--tx-2);white-space:nowrap}
+.ev .av{width:16px;height:16px}
+.ev b{color:var(--tx);font-weight:500}
+.ev .ms{font:11px var(--f-mono);color:var(--tx-3)}
+.vsep{width:1px;height:18px;background:var(--hair)}
+#labels{position:absolute;inset:0;pointer-events:none}
+.sec{position:absolute;transform:translate(-50%,-50%);font:500 10px/1 var(--f-ui);letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.72);white-space:nowrap;text-shadow:0 1px 8px #000}
+.ml{position:absolute;transform:translate(9px,-50%);font-size:11.5px;color:rgba(232,235,240,.85);white-space:nowrap;text-shadow:0 1px 6px #000,0 0 2px #000}
+.ml.sel{color:#fff;font-weight:600}
+.pl{position:absolute;transform:translate(-50%,0);display:flex;flex-direction:column;align-items:center;gap:3px;text-shadow:0 1px 8px #000}
+.pl b{font-size:13px;font-weight:600}
+.pl span{font:500 9px/1 var(--f-ui);letter-spacing:.16em;text-transform:uppercase;color:var(--tx-2)}
+.ret{border-color:var(--accent)}
+.ret i{border-color:var(--accent)!important}
+@media (max-width:1180px){ .side{display:none} }
+@media (max-width:820px){ .card{left:12px;right:12px;width:auto;top:auto;bottom:12px;max-height:46vh;overflow:auto} .traffic,.crumb,.stat{display:none} .mach{display:none} .top{padding:0 12px} }
+</style></head><body>
+<canvas class="space" id="c"></canvas>
+<div class="ui">
+  <div id="labels"></div>
+  <div class="top">
+    <span class="mark"><img src="assets/logo.svg" alt="">MYSTERIOUS</span><span class="crumb">Muisti / <b>Galaksi</b></span>
+    <div class="seg" style="margin-left:12px"><span class="on">Galaksi</span><span>Lista</span><span>Aikajana</span></div>
+    <div class="stat" style="margin-left:auto"><span class="num">2 148 muistia · 5 aluetta · haku 38 ms</span><span class="btn">Avaa Obsidianissa</span></div>
+  </div>
+  <div class="side pnl">
+    <span class="lbl">Muistihaku</span>
+    <div class="search">Hae merkityksen perusteella…</div>
+    <div class="hint2">esim. "mitä päätettiin maksutavoista"</div>
+    <span class="lbl">Omistaja</span>
+    <div class="own"><span class="oc on"><i class="av all"></i>Kaikki</span><span class="oc"><i class="av all"></i>Yhteinen</span><span class="oc"><i class="av claude"></i>Claude</span><span class="oc"><i class="av gpt"></i>ChatGPT</span><span class="oc"><i class="av grok"></i>Grok</span></div>
+    <span class="lbl">Tyyppi</span>
+    <div class="fr" style="margin-top:6px"><i class="cb on"></i>Päätökset<span class="n">214</span></div>
+    <div class="fr"><i class="cb on"></i>Faktat ja havainnot<span class="n">1 106</span></div>
+    <div class="fr"><i class="cb on"></i>Mieltymykset<span class="n">58</span></div>
+    <div class="fr"><i class="cb on"></i>Lähteet<span class="n">391</span></div>
+    <div class="fr"><i class="cb"></i>Arkistoidut<span class="n">379</span></div>
+    <div class="sep" style="margin:10px 0 10px"></div>
+    <span class="lbl">Näin luet galaksia</span>
+    <div class="legend">
+      <div><span class="grad"></span>väri = ikä: tuore → vakiintunut</div>
+      <div><span style="width:54px;text-align:center;color:#fff">✦</span>kirkkaus = tärkeys</div>
+      <div><span style="width:54px;text-align:center;color:var(--tx-3)">◌</span>pöly = arkistoitu</div>
+      <div><span style="width:54px;text-align:center;color:#ffe9c4">●</span>ydin = pysyvä perusmuisti</div>
+    </div>
+  </div>
+  <div class="card pnl" id="card"></div>
+  <div class="traffic pnl">
+    <span class="lbl" style="color:var(--tx)">Muistiliikenne</span>
+    <span class="ev"><i class="av claude"></i><b>Claude</b> haki "maksutavat" → 6 osumaa <span class="ms">31 ms</span></span><span class="vsep"></span>
+    <span class="ev"><i class="av grok"></i><b>Grok</b> kirjoitti uuden lähteen <span class="ms">m-0412</span></span><span class="vsep"></span>
+    <span class="ev"><i class="av all"></i><b>Muistivahti</b> yhdisti 2 päällekkäistä muistia <span class="ms">03:00</span></span><span class="vsep"></span>
+    <span class="ev"><i class="av gpt"></i><b>ChatGPT</b> luki m-0233 <span class="ms">12 ms</span></span>
+  </div>
+</div>
+<script type="module">
+import { buildMemoryScene, TOPICS, NAMED } from './scene-memory.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import * as E from './engine.js';
+const { THREE } = E;
+const q = new URLSearchParams(location.search);
+let W = innerWidth, H = innerHeight; const pr = +q.get('pr') || Math.min(devicePixelRatio, 2);
+const S = buildMemoryScene(document.getElementById('c'), { width: W, height: H, pixelRatio: pr });
+const MODEL = { claude: 'Claude', gpt: 'ChatGPT', grok: 'Grok', shared: 'Yhteinen' };
+const card = document.getElementById('card');
+function showCard(m) {
+  const owner = m.owner === 'shared' ? '<i class="av all" style="width:16px;height:16px"></i>Yhteinen' : `<i class="av ${m.owner}" style="width:16px;height:16px"></i>${MODEL[m.owner]}`;
+  const rd = Object.entries(m.readers).map(([k, v]) => `<span><i class="av ${k}"></i>${v}×</span>`).join('');
+  card.innerHTML = `<div class="tags"><span class="tg">${m.type}</span><span class="num" style="color:var(--tx-3);font-size:11px">${m.id}</span><span style="margin-left:auto;display:flex;align-items:center;gap:6px;font-size:12px;color:var(--tx-2)">${owner}</span></div>
+    <h3>${m.summary}</h3>
+    <div class="kvs"><span>Luotu</span><b>${m.created}</b><span>Käytetty</span><b>${m.used}</b><span>Varmuus</span><b>${m.conf}</b><span>Linkit</span><b>${m.links} muistia</b></div>
+    <span class="lbl">Ketkä lukivat</span><div class="rd">${rd}</div>
+    <span class="lbl">Konemuoto · mallien luettavissa</span><div class="mach">${m.machine.join('\n')}</div>
+    <div style="display:flex;gap:8px"><span class="btn pri">Avaa</span><span class="btn">Muokkaa</span><span class="btn">Unohda</span></div>`;
+}
+let selected = NAMED[0]; showCard(selected);
+
+// tunnisteet
+const L = document.getElementById('labels');
+const secs = TOPICS.map((t) => { const d = document.createElement('div'); d.className = 'sec'; d.textContent = t.name; L.appendChild(d); return { d, v: S.topicPos(t, 0.8) }; });
+const core = document.createElement('div'); core.className = 'sec'; core.textContent = 'Ydinmuisti'; L.appendChild(core);
+const mls = S.mem.filter((m) => m.named).map((m) => { const d = document.createElement('div'); d.className = 'ml'; d.textContent = m.title; L.appendChild(d); return { m, d }; });
+const ret = document.createElement('div'); ret.className = 'ret'; ret.innerHTML = '<i></i><i></i><i></i><i></i>'; L.appendChild(ret);
+const pls = Object.entries(S.P).map(([k, v]) => { const d = document.createElement('div'); d.className = 'pl'; d.innerHTML = `<b>${MODEL[k]}</b><span>${{ claude: 'kaasujättiläinen', gpt: 'valtamerimaailma', grok: 'jääjättiläinen' }[k]}</span>`; L.appendChild(d); return { d, v }; });
+function place() {
+  const pj = (v) => E.project(v, S.camera, W, H);
+  secs.forEach(({ d, v }) => { const p = pj(v); Object.assign(d.style, { left: p.x + 'px', top: p.y + 'px', display: p.behind ? 'none' : '' }); });
+  const pc = pj(new THREE.Vector3(0, -2.6, 0)); Object.assign(core.style, { left: pc.x + 'px', top: pc.y + 'px' });
+  const boxes = [];
+  mls.forEach(({ m, d }) => { const p = pj(m.pos); const w = m.title.length * 6.6 + 14; const b = { l: p.x + 9, r: p.x + 9 + w, t: p.y - 8, b: p.y + 8 };
+    const hit = boxes.some((o) => b.l < o.r && b.r > o.l && b.t < o.b && b.b > o.t); d.style.display = hit ? 'none' : ''; if (!hit) boxes.push(b);
+    Object.assign(d.style, { left: p.x + 'px', top: p.y + 'px' }); d.classList.toggle('sel', m.id === selected.id); });
+  const ps = pj(selected.pos || S.mem.find((x) => x.id === selected.id).pos); Object.assign(ret.style, { left: ps.x + 'px', top: ps.y + 'px', width: '26px', height: '26px' });
+  pls.forEach(({ d, v }) => { const p = pj(v.clone().add(new THREE.Vector3(0, 2.4, 0))); Object.assign(d.style, { left: p.x + 'px', top: p.y - 40 + 'px' }); });
+}
+// klikkaus: lähin nimetty muisti ruudulla
+document.getElementById('c').addEventListener('click', (e) => {
+  let best = null, bd = 28; S.mem.filter((m) => m.named).forEach((m) => { const p = E.project(m.pos, S.camera, W, H); const d = Math.hypot(p.x - e.clientX, p.y - e.clientY); if (d < bd) { bd = d; best = m; } });
+  if (best) { selected = NAMED.find((n) => n.id === best.id); showCard(selected); }
+});
+if (q.has('still')) { S.render(12); S.render(12); place(); await document.fonts.ready; window.__ready = true; }
+else {
+  const controls = new OrbitControls(S.camera, document.getElementById('c')); controls.target.set(0, -4, 2); controls.enableDamping = true; controls.minDistance = 20; controls.maxDistance = 140;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches; const t0 = performance.now();
+  const loop = () => { requestAnimationFrame(loop); if (document.hidden) return; const t = reduce ? 12 : 12 + (performance.now() - t0) / 1000; controls.update(); S.render(t); place(); };
+  loop(); addEventListener('resize', () => { if (innerWidth !== W) location.reload(); });
+}
+</script></body></html>

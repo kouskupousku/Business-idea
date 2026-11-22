@@ -18,7 +18,7 @@
 6. Ideapankki: 110 ideaa (#1–#110), Claude päättää
 7. Mallikuvat 1–5 (toiminnot)
 8. 50 game changer -ideaa (#111–#160), Claude päättää
-9. Ulkoasu: Deep Field, realistinen 3D-avaruus, agenttikartta, päänäkymä, yhteyskanava ja tiedostogalaksi (mallikuvat ja videot 10–15)
+9. Ulkoasu: Deep Field, realistinen 3D-avaruus, mallit planeettoina, agenttikartta, päänäkymä, yhteyskanava, tiedostogalaksi ja muistigalaksi (mallikuvat ja videot 10–17)
 10. Vaiheistettu toteutussuunnitelma
 11. Avoimen lähdekoodin esikuvat
 12. Tekniset huomiot
@@ -55,7 +55,7 @@ Ominaisuus on valmis vasta, kun:
 - mikään salaisuus (API-avain) ei päädy selaimeen tai gitiin.
 
 ### Mitä EI tehdä
-- Ei kopioida muiden sovellusten ulkoasua eikä käytetä OpenAI:n, Anthropicin tai xAI:n logoja. Malleille on omat tunnukset (tähti, planeetta ja pulsari, ks. osio 9). Nimiä käytetään vain kertomaan, mikä malli vastasi.
+- Ei kopioida muiden sovellusten ulkoasua eikä käytetä OpenAI:n, Anthropicin tai xAI:n logoja. Malleille on omat tunnukset: omanväriset planeetat (ks. osio 9). Nimiä käytetään vain kertomaan, mikä malli vastasi.
 - Ei teeskennellä varmuutta: jos mallit ovat eri mieltä, se sanotaan.
 - Ei ominaisuuksia, jotka eivät tue kolmea tukipilaria.
 - **Sovelluksen nimi on Mysterious.** Brändivärit ovat musta ja liila. Logo tehdään erikseen toisessa palvelussa. Sen paikka on `docs/space3d/assets/logo.svg`, jossa on nyt paikkamerkki. Korvaa se oikealla logolla.
@@ -446,10 +446,11 @@ Kuvat ovat kansiossa `docs/mockups/` ja niiden HTML-lähteet kansiossa `docs/moc
 ### 9.2 Tiedostot (`docs/space3d/`)
 | Tiedosto | Mitä se on |
 |---|---|
-| `engine.js` | 3D-moottori: tähtitaivas, Linnunrata ja sumut, tähti, planeetta, ilmakehä, pulsari, avaruusasema, viestiyhteydet, galaksi, tähtijoukot, bloom ja jälkikäsittely. Kommentit suomeksi. |
+| `engine.js` | 3D-moottori: tähtitaivas, Linnunrata ja sumut, tähti (aurinko), mallien planeetat (`createModelPlanet`: kaasujättiläinen, valtamerimaailma, jääjättiläinen), ilmakehä, pulsari, avaruusasema, viestiyhteydet, galaksit (spiraali + flokkulentti), tähtijoukot, bloom ja jälkikäsittely. Kommentit suomeksi. |
 | `scene-agent.js` + `agent-map.html` | **Agenttikartta** (interaktiivinen: vedä = pyöritä, rullaa = zoomaa) |
 | `scene-horizon.js` + `mission-control.html` | **Päänäkymä**, jonka taustalla on planeetan horisontti |
 | `scene-galaxy.js` + `galaxy.html` | **Tiedostogalaksi** (interaktiivinen) |
+| `scene-memory.js` + `memory-galaxy.html` | **Muistigalaksi** (interaktiivinen, klikkaa tähteä) |
 | `design-system.html` | Design-järjestelmä yhdellä sivulla |
 | `ui.css` | Käyttöliittymän tokenit ja komponentit (paneelit, segmenttivalitsin, painikkeet, 3D-tunnisteet) |
 | `avatar.html` + `assets/avatar-*.png` | Mallien tunnuskuvat, jotka on renderöity samalla moottorilla |
@@ -479,12 +480,13 @@ Sivut avataan paikallisen palvelimen kautta, koska ES-moduulit eivät toimi `fil
 8. **Ei täyttövaloa:** avaruudessa varjot ovat lähes mustia, ja valo tulee tähdestä.
 9. **Oma bloom (`SoftBloomPass`):** three.js:n `UnrealBloomPass` tuottaa joillakin laitteilla (esim. ohjelmistorenderöijät) neliömäisiä artefakteja. Moottorin oma bloom tekee alasskaalauksen, sumennuksen ja ylösskaalauksen täsmällisillä pikselihauilla, joten tulos on sama kaikilla laitteilla.
 
-### 9.5 Mallien tunnukset: oikeat 3D-renderöinnit
-Mallit ovat taivaankappaleita, ja niiden tunnuskuvat renderöidään samalla moottorilla (`avatar.html`). Yritysten logoja ei käytetä.
-- **Claude = tähti** (K-tyyppi, 5 100 K)
-- **ChatGPT = valtamerimaailma** (ilmakehä ja rengas)
-- **Grok = pulsari** (neutronitähti, säteet ja dipolikenttä)
+### 9.5 Mallien tunnukset: jokainen malli on aina oman värinsä planeetta
+**Käyttäjän päätös:** jokainen malli esitetään aina omanvärisenä planeettana kaikissa näkymissä (agenttikartta, yhteyskanava, muistigalaksi ja kuvakkeet). Tunnuskuvat renderöidään samalla moottorilla (`avatar.html` → `assets/avatar-claude.png`, `-gpt.png`, `-grok.png`). Yritysten logoja ei käytetä.
+- **Claude = meripihkan oranssi kaasujättiläinen renkailla** (`createModelPlanet('claude')`), väri `#F0A878`
+- **ChatGPT = turkoosi valtamerimaailma** (meret, pilvet, ilmakehä), väri `#7FD1BC`
+- **Grok = jäänsininen jääjättiläinen** (vyöhykkeet, metaani-ilmakehä), väri `#8EC8FF`
 - **Missio = avaruusasema** (moduulit, ristikko, aurinkopaneelit ja radiaattorit)
+- Aurinko (tähti) on vain valonlähde, ei mikään malli. Uudet mallit (esim. Gemini) lisätään uutena planeettatyyppinä `GIANT_PRESETS`-asetuksiin tai omana funktionaan.
 
 ### 9.6 Agenttikartta (kuva 10, `agent-map.html`)
 - Missio on avaruusasema keskellä, ja mallit kiertävät sitä taivaankappaleina omilla radoillaan.
@@ -500,7 +502,7 @@ Mallit ovat taivaankappaleita, ja niiden tunnuskuvat renderöidään samalla moo
 
 ### 9.7.1 Yhteyskanava: mallien keskustelu aina oikealla (kuvat 14–15)
 Päänäkymän oikeassa reunassa on aina näkyvä paneeli (`comms.js`), jossa näkyy, kun mallit puhuvat toisilleen:
-1. **Pieni 3D-kiertoratanäkymä:** tähti (Claude), planeetta (ChatGPT) ja pulsari (Grok). Kun malli lähettää viestin, liila komeetta (kirkas kärki ja häntä) lentää lähettäjältä vastaanottajalle. Puhujaa kiertää liila rengas, ja vastaanottajalla on katkoviivarengas. Saapuessa vastaanottajan kohdalla välähtää.
+1. **Pieni 3D-näkymä:** kolme omanväristä planeettaa: Claude (oranssi), ChatGPT (turkoosi) ja Grok (jäänsininen). Kun malli lähettää viestin, liila komeetta (kirkas kärki ja häntä) lentää lähettäjältä vastaanottajalle. Puhujaa kiertää liila rengas, ja vastaanottajalla on katkoviivarengas. Saapuessa vastaanottajan kohdalla välähtää.
 2. **Nyt puhuu -rivi:** lähettäjä → vastaanottaja (3D-tunnuskuvat), viestin tyyppi (luonnos, tarkistus, vastaväite, kysymys, lähde, hyväksyntä, synteesi), äänenaaltomittari ja tokenilaskuri lähetyksen aikana.
 3. **Viestivirta:** "kirjoittaa…"-indikaattori, jonka jälkeen uusi viesti liukuu sisään liilalla korostuksella. Vanhemmat viestit himmenevät iän mukaan.
 4. **Puutu keskusteluun:** käyttäjä voi keskeyttää tai ohjata mallien keskustelua.
@@ -513,6 +515,14 @@ Toteutus: koko paneelin tila lasketaan ajasta (`setTime(t)`), joten animaatio on
 - Tiedostot ovat kirkkaita tähtiä joukkojen sisällä. Tähtikuviot yhdistävät yhdessä käytetyt tiedostot ja katkoviiva projektien väliset yhteydet.
 - Valittu tiedosto saa tähtäimen ja tietokortin. Alapalkki näyttää kontekstin ja tokenimittarin.
 
+### 9.8.1 Muistigalaksi: kaikkien mallien muistit (kuva 17, `memory-galaxy.html`)
+**Käyttäjän päätös:** kaikkien mallien muistit ovat yhdessä Linnunradan kaltaisessa spiraaligalaksissa. Esikuvana on Hubblen kuva flokkulentista galaksista: lyhyet haarankappaleet, ruskeat pölykaistat, siniset tähtijoukot ja lämmin ydin.
+- **Muisti on tähti.** Sektori = aihe, etäisyys ytimestä ja väri = ikä (tuore sininen ulkona, vakiintunut kultainen lähellä ydintä), kirkkaus = tärkeys, pölykaista = arkistoitu, kirkas ydin = pysyvä perusmuisti.
+- **Mallit ovat omanvärisiä planeettoja** galaksin yllä omien alueidensa kohdalla. Kun malli lukee tai kirjoittaa muistia, liila valopulssi kulkee planeetan ja tähden välillä.
+- **Tähden klikkaus** näyttää kortin, jossa on **lyhyt tiivistelmä ihmiselle** (enintään 140 merkkiä), tyyppi, omistaja, varmuus, käyttökerrat, ketkä mallit lukivat sekä **konemuoto**, jota mallit itse käyttävät. Linkitetyt muistit piirtyvät tähtikuvioksi.
+- Muut osat: merkityshaku, suodattimet (omistaja ja tyyppi), alapalkin muistiliikenne ja "Avaa Obsidianissa".
+- **Tekninen toteutus:** katso `docs/memory-vault/README.md`. Se on Obsidian-yhteensopiva holvi (Markdown + YAML + wikilinkit), mallien tiivis konemuoto (`F|D|P|R|S|C|X|J|O|L|T`), samat muistityökalut kaikille kolmelle mallille (`schema/tools.json`), kaksivaiheinen haku (tiivistelmät → koko muisti), muistivahti kirjoituksille ja yöllinen konsolidaatio ("uni"). Esimerkkimuistit kansiossa `docs/memory-vault/muistit/` täyttävät skeeman `schema/memory.schema.json`.
+
 ### 9.9 Suorituskyky, saavutettavuus ja varasuunnitelma
 - **Ilman WebGL:ää** (tai hyvin heikolla laitteella) näytetään valmiiksi renderöity pysäytyskuva taustana (`?still`-tilassa renderöity). Käyttöliittymä toimii silti kokonaan.
 - **Vähennetty liike:** animaatiot pysähtyvät, ja näkymä renderöidään yhtenä kuvana.
@@ -521,16 +531,17 @@ Toteutus: koko paneelin tila lasketaan ajasta (`setTime(t)`), joten animaatio on
 - **Jokaisella 3D-näkymällä on listanäkymä**, jossa sama tieto on tekstinä ruudunlukijoille ja näppäimistökäyttäjille.
 - Tekstikontrastit täyttävät WCAG AA -tason (taulukko 9.3).
 
-### 9.10 Mallikuvat ja videot 10–15
+### 9.10 Mallikuvat ja videot 10–17
 Kuvat ovat renderöity suoraan prototyypeistä (`docs/space3d/`), eivät piirretty erikseen.
 
 | # | Kuva | Mitä näyttää |
 |---|---|---|
-| 10 | ![Agenttikartta](docs/mockups/10-agenttikartta-3d.jpg) | Avaruusasema, tähti, planeetta ja pulsari kiertoradoilla, valopulssit, telemetria, aikajana |
+| 10 | ![Agenttikartta](docs/mockups/10-agenttikartta-3d.jpg) | Avaruusasema ja kolme mallien planeettaa kiertoradoilla, valopulssit, telemetria, aikajana |
 | 11 | ![Päänäkymä](docs/mockups/11-paanakyma-3d.jpg) | Mission Control: vastauskapselit planeetan horisontin yllä |
 | 12 | ![Tiedostogalaksi](docs/mockups/12-tiedostogalaksi-3d.jpg) | Spiraaligalaksi, projektit tähtijoukkoina, tiedostot tähtinä |
 | 13 | ![Deep Field](docs/mockups/13-deep-field.jpg) | Design-järjestelmä: miehistö, värit, fontit, komponentit, realismin säännöt |
 | 14 | [Video: päänäkymä + yhteyskanava](docs/mockups/14-yhteyskanava-paanakyma.mp4) | Koko päänäkymä, jossa yhteyskanava animoituu oikealla (22 s) |
+| 17 | ![Muistigalaksi](docs/mockups/17-muistigalaksi.jpg) | Muistigalaksi: muistit tähtinä, mallit planeettoina, valitun muistin kortti tiivistelmineen ja konemuotoineen |
 | 15 | ![Yhteyskanava](docs/mockups/15-yhteyskanava.gif) | Yhteyskanavan lähikuva: komeetat, puhuja, viestivirta ([MP4](docs/mockups/15-yhteyskanava.mp4)) |
 
 
