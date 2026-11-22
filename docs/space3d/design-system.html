@@ -1,6 +1,6 @@
 <!doctype html><html lang="fi"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Deep Field</title>
+<title>Mysterious Deep Field</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="ui.css">
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
@@ -33,14 +33,14 @@
 </style></head><body>
 <canvas class="space" id="c"></canvas>
 <div class="ui"><div class="wrap">
-  <div class="hd"><span class="lbl">Design-järjestelmä</span><h1>Deep Field</h1><p>Realistinen avaruus, hillitty käyttöliittymä. 3D-renderöinti luo tunnelman, ja käyttöliittymä pysyy tarkkana ja rauhallisena kuin oikean avaruusaluksen näyttö.</p></div>
+  <div class="hd"><img src="assets/logo.svg" alt="" style="width:34px;height:34px;align-self:center"><h1>Mysterious</h1><span class="lbl">Deep Field · design-järjestelmä</span><p>Realistinen avaruus, hillitty käyttöliittymä. 3D-renderöinti luo tunnelman, ja käyttöliittymä pysyy tarkkana ja rauhallisena kuin oikean avaruusaluksen näyttö.</p></div>
 
   <div class="card pnl" style="grid-row:span 3">
     <span class="lbl">01 · Miehistö</span><h2>Mallit ovat oikeita taivaankappaleita</h2>
     <div class="bodies">
       <div class="body"><div class="img" style="background-image:url(assets/avatar-star.png)"></div><b>Claude · tähti</b><small>K-tyyppi, 5 100 K<br>granulaatio, reunatummuminen<br>#F0A878 · 9,8:1</small></div>
       <div class="body"><div class="img" style="background-image:url(assets/avatar-planet.png);background-size:150%"></div><b>ChatGPT · planeetta</b><small>valtamerimaailma<br>Rayleigh-ilmakehä, rengas<br>#7FD1BC · 10,9:1</small></div>
-      <div class="body"><div class="img" style="background-image:url(assets/avatar-pulsar.png)"></div><b>Grok · pulsari</b><small>neutronitähti<br>säteet, dipolikenttä<br>#AAB4FF · 9,9:1</small></div>
+      <div class="body"><div class="img" style="background-image:url(assets/avatar-pulsar.png)"></div><b>Grok · pulsari</b><small>neutronitähti<br>säteet, dipolikenttä<br>#8EC8FF · 11,0:1</small></div>
     </div>
     <div class="sep" style="margin:18px 0 14px"></div>
     <span class="lbl">Väri</span>
@@ -52,12 +52,12 @@
       <div class="s"><div class="c" style="background:#6A7280"></div><b>Tunniste</b><small>4,0:1 iso</small></div>
     </div>
     <div class="sw" style="grid-template-columns:repeat(4,1fr)">
-      <div class="s"><div class="c" style="background:#fff"></div><b>Toiminto</b><small>valkoinen</small></div>
+      <div class="s"><div class="c" style="background:#6E3BF5"></div><b>Brändi · liila</b><small>#6E3BF5 · #B69CFF</small></div>
       <div class="s"><div class="c" style="background:#57D18E"></div><b>OK</b><small>10,1:1</small></div>
       <div class="s"><div class="c" style="background:#F2B44C"></div><b>Varoitus</b><small>10,6:1</small></div>
       <div class="s"><div class="c" style="background:#F25A5F"></div><b>Kriittinen</b><small>5,9:1</small></div>
     </div>
-    <div style="font-size:12px;color:var(--tx-2)">Väriä käytetään vain mallien tunnistamiseen ja hälytyksiin. Kaikki muu on mustavalkoista.</div>
+    <div style="font-size:12px;color:var(--tx-2)">Musta ja liila ovat brändivärit. Liilaa käytetään toimintoihin, aktiiviseen tilaan ja mallien välisiin yhteyksiin. Mallien omat värit ovat vain tunnisteina, ja tilavärit hälytyksiin.</div>
   </div>
 
   <div class="card pnl"><span class="lbl">02 · Typografia</span><h2>Kaksi fonttia</h2>
@@ -100,7 +100,7 @@ const q = new URLSearchParams(location.search); const pr = +q.get('pr') || Math.
 const W = innerWidth, H = innerHeight;
 const renderer = E.createRenderer(document.getElementById('c'), { width: W, height: H, pixelRatio: pr });
 const scene = new THREE.Scene(); const camera = new THREE.PerspectiveCamera(50, W / H, 0.1, 3000); camera.lookAt(0.6, 0.3, -1);
-scene.add(E.createSky({ intensity: 0.8, nebula: 1.0 }));
+scene.add(E.createSky({ intensity: 0.8, nebula: 1.4, ...E.BRAND_NEBULA }));
 const stars = E.createStarfield({ count: 24000, seed: 91 }); stars.userData.setViewport(W, H, pr); scene.add(stars);
 const { composer } = E.createComposer(renderer, scene, camera, { bloom: 0.5, threshold: 0.95 });
 composer.render(); composer.render(); await document.fonts.ready; window.__ready = true;

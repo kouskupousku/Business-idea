@@ -11,7 +11,7 @@ export function buildAgentScene(canvas, { width, height, pixelRatio, still = fal
   const asp = width / height; if (asp < 1.3) camera.position.multiplyScalar(Math.min(1.75, 1.45 / asp));
   camera.lookAt(0.2, 2.0, 0);
 
-  scene.add(E.createSky({ intensity: 0.75, nebula: 0.9 }));
+  scene.add(E.createSky({ intensity: 0.75, nebula: 1.3, ...E.BRAND_NEBULA }));
   const dbg = new URLSearchParams(location.search);
   const stars = E.createStarfield({ count: 26000, seed: 21, spikes: !dbg.has('nospikes') });
   stars.userData.setViewport(width, height, renderer.getPixelRatio());
@@ -40,10 +40,10 @@ export function buildAgentScene(canvas, { width, height, pixelRatio, still = fal
 
   // Viestiyhteydet
   const links = [
-    E.createLink(P.claude.clone().add(new THREE.Vector3(2.2, 0, 1.0)), P.mission, { color: new THREE.Color(1.0, 0.62, 0.4), lift: 2.2, pulses: 2, speed: 0.16 }),
-    E.createLink(P.mission, P.gpt.clone().add(new THREE.Vector3(-1.6, 0, 0.6)), { color: new THREE.Color(0.35, 0.9, 0.75), lift: 1.8, pulses: 1, speed: 0.2 }),
-    E.createLink(P.mission, P.grok.clone().add(new THREE.Vector3(-0.6, 0.2, -0.6)), { color: new THREE.Color(0.6, 0.66, 1.0), lift: 1.2, pulses: 1, speed: 0.22 }),
-    E.createLink(P.grok, P.gpt.clone().add(new THREE.Vector3(-0.8, -0.6, 1.2)), { color: new THREE.Color(0.6, 0.66, 1.0), lift: 2.5, pulses: 1, speed: 0.12, dashed: true }),
+    E.createLink(P.claude.clone().add(new THREE.Vector3(2.2, 0, 1.0)), P.mission, { color: new THREE.Color(0.72, 0.58, 1.0), lift: 2.2, pulses: 2, speed: 0.16 }),
+    E.createLink(P.mission, P.gpt.clone().add(new THREE.Vector3(-1.6, 0, 0.6)), { color: new THREE.Color(0.72, 0.58, 1.0), lift: 1.8, pulses: 1, speed: 0.2 }),
+    E.createLink(P.mission, P.grok.clone().add(new THREE.Vector3(-0.6, 0.2, -0.6)), { color: new THREE.Color(0.72, 0.58, 1.0), lift: 1.2, pulses: 1, speed: 0.22 }),
+    E.createLink(P.grok, P.gpt.clone().add(new THREE.Vector3(-0.8, -0.6, 1.2)), { color: new THREE.Color(0.72, 0.58, 1.0), lift: 2.5, pulses: 1, speed: 0.12, dashed: true }),
   ];
   links.forEach((l) => scene.add(l));
 

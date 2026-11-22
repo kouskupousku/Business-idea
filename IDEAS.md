@@ -1,4 +1,4 @@
-# Claude + ChatGPT + Grok: tuotesuunnitelma ja ideapankki
+# Mysterious: tuotesuunnitelma ja ideapankki (Claude + ChatGPT + Grok)
 
 > **Ohje Claudelle (lue ensin):**
 > Tämä tiedosto on sovelluksen tuotesuunnitelma ja ideapankki. Sovelluksessa Claude (Anthropic), ChatGPT (OpenAI) ja Grok (xAI) toimivat yhdessä.
@@ -9,7 +9,7 @@
 > 5. Noudata projektin olemassa olevia käytäntöjä (kieli, kehys, tiedostorakenne). Älä vaihda teknologioita kysymättä.
 > 6. API-avaimet pidetään aina ympäristömuuttujissa (`.env`), ei koskaan koodissa eikä gitissä.
 > 7. Osioissa **6** (110 ideaa) ja **8** (50 ideaa) **sinä päätät itse**, mitkä ideat ovat järkeviä (ks. osion 6 ohje). Näytä valintasi käyttäjälle ennen toteutusta.
-> 8. **Ulkoasu on päätetty: realistinen avaruus, Deep Field** (osio 9). Se ei ole valinnainen. Lähtökohtana on valmis 3D-moottori ja prototyypit kansiossa `docs/space3d/` sekä mallikuvat 10–13.
+> 8. **Nimi on Mysterious ja brändivärit musta ja liila.** **Ulkoasu on päätetty: realistinen avaruus, Deep Field** (osio 9). Se ei ole valinnainen. Lähtökohtana on valmis 3D-moottori ja prototyypit kansiossa `docs/space3d/` sekä mallikuvat 10–13.
 > 9. Mallikuvien 1–5 **toiminnot** pätevät edelleen, mutta niiden **ulkoasu** tehdään Deep Field -tyylillä (kuva 11 näyttää miten).
 
 ## Sisällys
@@ -18,7 +18,7 @@
 6. Ideapankki: 110 ideaa (#1–#110), Claude päättää
 7. Mallikuvat 1–5 (toiminnot)
 8. 50 game changer -ideaa (#111–#160), Claude päättää
-9. Ulkoasu: Deep Field, realistinen 3D-avaruus, agenttikartta, päänäkymä ja tiedostogalaksi (mallikuvat 10–13)
+9. Ulkoasu: Deep Field, realistinen 3D-avaruus, agenttikartta, päänäkymä, yhteyskanava ja tiedostogalaksi (mallikuvat ja videot 10–15)
 10. Vaiheistettu toteutussuunnitelma
 11. Avoimen lähdekoodin esikuvat
 12. Tekniset huomiot
@@ -58,7 +58,7 @@ Ominaisuus on valmis vasta, kun:
 - Ei kopioida muiden sovellusten ulkoasua eikä käytetä OpenAI:n, Anthropicin tai xAI:n logoja. Malleille on omat tunnukset (tähti, planeetta ja pulsari, ks. osio 9). Nimiä käytetään vain kertomaan, mikä malli vastasi.
 - Ei teeskennellä varmuutta: jos mallit ovat eri mieltä, se sanotaan.
 - Ei ominaisuuksia, jotka eivät tue kolmea tukipilaria.
-- "Trio AI" mallikuvissa on vain työnimi. Lopullisen nimen päättää käyttäjä.
+- **Sovelluksen nimi on Mysterious.** Brändivärit ovat musta ja liila. Logo tehdään erikseen toisessa palvelussa. Sen paikka on `docs/space3d/assets/logo.svg`, jossa on nyt paikkamerkki. Korvaa se oikealla logolla.
 
 ---
 
@@ -441,7 +441,7 @@ Kuvat ovat kansiossa `docs/mockups/` ja niiden HTML-lähteet kansiossa `docs/moc
 
 ### 9.1 Periaate: kaksi kerrosta
 1. **3D-maailma (tunnelma):** fysikaalisesti perusteltu avaruus, joka renderöidään reaaliajassa: tähtitaivas, Linnunrata, tähti, planeetta, pulsari, avaruusasema ja galaksi.
-2. **Käyttöliittymä (työ):** hillitty kuin oikean avaruusaluksen tai lennonjohdon näyttö. Tummat lasipaneelit, hiusviivat, valkoinen teksti ja tarkat luvut. **Väriä käytetään vain mallien tunnistamiseen ja hälytyksiin** (NASA:n ihmisen ja järjestelmän vuorovaikutuksen ohjeiden periaate). Käyttöliittymä ei hehku. Hehku kuuluu vain taivaankappaleille.
+2. **Käyttöliittymä (työ):** hillitty kuin oikean avaruusaluksen tai lennonjohdon näyttö. Mustat lasipaneelit, hiusviivat, valkoinen teksti ja tarkat luvut. **Liila on ainoa brändiväri**: sitä käytetään toimintoihin (painikkeet, valittu tila) ja mallien välisiin yhteyksiin. Muita värejä käytetään vain mallien tunnistamiseen ja hälytyksiin (NASA:n ihmisen ja järjestelmän vuorovaikutuksen ohjeiden periaate). Käyttöliittymä ei hehku. Hehku kuuluu vain taivaankappaleille.
 
 ### 9.2 Tiedostot (`docs/space3d/`)
 | Tiedosto | Mitä se on |
@@ -462,8 +462,8 @@ Sivut avataan paikallisen palvelimen kautta, koska ES-moduulit eivät toimi `fil
 | Tausta | `#000000` (3D-avaruus) | – |
 | Lasipaneeli | `rgba(7,9,13,.62)` + `backdrop-filter: blur(18px)` + reuna `rgba(255,255,255,.09)` | – |
 | Teksti / toissijainen / tunniste | `#E8EBF0` / `#9BA3B1` / `#6A7280` | 16,3:1 / 7,7:1 / 4,0:1 (vain iso) |
-| Toiminto | valkoinen tausta, musta teksti | 21:1 |
-| Claude · ChatGPT · Grok | `#F0A878` · `#7FD1BC` · `#AAB4FF` | 9,8 · 10,9 · 9,9:1 |
+| Brändi: liila | teksti ja viivat `#B69CFF` · painike `#6E3BF5` + valkoinen teksti | 8,5:1 · 5,8:1 |
+| Claude · ChatGPT · Grok | `#F0A878` · `#7FD1BC` · `#8EC8FF` | 9,8 · 10,9 · 11,0:1 |
 | OK · varoitus · kriittinen | `#57D18E` · `#F2B44C` · `#F25A5F` | 10,1 · 10,6 · 5,9:1 |
 
 **Fontit** (SIL Open Font License, ilmaisia): **Inter** käyttöliittymään ja **JetBrains Mono** dataan (tasalevyiset numerot). Tunnisteet ovat 10 px:n VERSAALEJA 0,16em:n välistyksellä. Kulmat ovat pieniä (6–8 px), mikä antaa insinöörimäisen eikä pehmoisen vaikutelman.
@@ -498,6 +498,15 @@ Mallit ovat taivaankappaleita, ja niiden tunnuskuvat renderöidään samalla moo
 - Kolme vastauskapselia on lasipaneeleina horisontin yläpuolella. Synteesi ja viestikenttä ovat alhaalla.
 - Puhelimella kapselit pinoutuvat ja ovat vieritettäviä.
 
+### 9.7.1 Yhteyskanava: mallien keskustelu aina oikealla (kuvat 14–15)
+Päänäkymän oikeassa reunassa on aina näkyvä paneeli (`comms.js`), jossa näkyy, kun mallit puhuvat toisilleen:
+1. **Pieni 3D-kiertoratanäkymä:** tähti (Claude), planeetta (ChatGPT) ja pulsari (Grok). Kun malli lähettää viestin, liila komeetta (kirkas kärki ja häntä) lentää lähettäjältä vastaanottajalle. Puhujaa kiertää liila rengas, ja vastaanottajalla on katkoviivarengas. Saapuessa vastaanottajan kohdalla välähtää.
+2. **Nyt puhuu -rivi:** lähettäjä → vastaanottaja (3D-tunnuskuvat), viestin tyyppi (luonnos, tarkistus, vastaväite, kysymys, lähde, hyväksyntä, synteesi), äänenaaltomittari ja tokenilaskuri lähetyksen aikana.
+3. **Viestivirta:** "kirjoittaa…"-indikaattori, jonka jälkeen uusi viesti liukuu sisään liilalla korostuksella. Vanhemmat viestit himmenevät iän mukaan.
+4. **Puutu keskusteluun:** käyttäjä voi keskeyttää tai ohjata mallien keskustelua.
+
+Toteutus: koko paneelin tila lasketaan ajasta (`setTime(t)`), joten animaatio on toistettava ja sen voi renderöidä videoksi. Oikeassa sovelluksessa esimerkkikeskustelu `SCRIPT` korvataan mallien todellisilla tapahtumilla (`events[]`, sama lista kuin agenttikartassa). Alle 1 180 px:n leveydellä (tabletti, puhelin) paneeli näkyy tiiviinä korttina näkymän yläosassa: 3D-kiertorata ja nyt puhuu -rivi. Viestivirta on silloin piilossa.
+
 ### 9.8 Tiedostogalaksi (kuva 12, `galaxy.html`)
 - Spiraaligalaksi: logaritmiset haarat, pölykaistat, ydin ja tähtienmuodostusalueet.
 - **Projektit ovat oikeita tähtijoukkotyyppejä:** vaaleanpunainen H II -alue (aktiivinen projekti), sininen nuori joukko ja kellertävä pallomainen joukko (vanha, vakiintunut).
@@ -512,7 +521,7 @@ Mallit ovat taivaankappaleita, ja niiden tunnuskuvat renderöidään samalla moo
 - **Jokaisella 3D-näkymällä on listanäkymä**, jossa sama tieto on tekstinä ruudunlukijoille ja näppäimistökäyttäjille.
 - Tekstikontrastit täyttävät WCAG AA -tason (taulukko 9.3).
 
-### 9.10 Mallikuvat 10–13
+### 9.10 Mallikuvat ja videot 10–15
 Kuvat ovat renderöity suoraan prototyypeistä (`docs/space3d/`), eivät piirretty erikseen.
 
 | # | Kuva | Mitä näyttää |
@@ -521,6 +530,8 @@ Kuvat ovat renderöity suoraan prototyypeistä (`docs/space3d/`), eivät piirret
 | 11 | ![Päänäkymä](docs/mockups/11-paanakyma-3d.jpg) | Mission Control: vastauskapselit planeetan horisontin yllä |
 | 12 | ![Tiedostogalaksi](docs/mockups/12-tiedostogalaksi-3d.jpg) | Spiraaligalaksi, projektit tähtijoukkoina, tiedostot tähtinä |
 | 13 | ![Deep Field](docs/mockups/13-deep-field.jpg) | Design-järjestelmä: miehistö, värit, fontit, komponentit, realismin säännöt |
+| 14 | [Video: päänäkymä + yhteyskanava](docs/mockups/14-yhteyskanava-paanakyma.mp4) | Koko päänäkymä, jossa yhteyskanava animoituu oikealla (22 s) |
+| 15 | ![Yhteyskanava](docs/mockups/15-yhteyskanava.gif) | Yhteyskanavan lähikuva: komeetat, puhuja, viestivirta ([MP4](docs/mockups/15-yhteyskanava.mp4)) |
 
 
 ## 10. Vaiheistettu toteutussuunnitelma

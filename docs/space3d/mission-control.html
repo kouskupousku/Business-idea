@@ -1,6 +1,6 @@
 <!doctype html><html lang="fi"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Mission Control</title>
+<title>Mysterious</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="ui.css">
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
@@ -9,7 +9,7 @@
 .ri{width:38px;height:38px;border-radius:8px;display:grid;place-items:center;color:var(--tx-3)}
 .ri.on{color:var(--white);background:rgba(255,255,255,.06);box-shadow:inset 0 0 0 1px var(--hair-strong)}
 .ri svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.4}
-.main{position:absolute;left:76px;right:24px;top:62px;bottom:20px;display:flex;flex-direction:column;gap:14px}
+.main{position:absolute;left:76px;right:392px;top:62px;bottom:20px;display:flex;flex-direction:column;gap:14px}
 .head{display:flex;align-items:center;gap:16px}
 .head h1{font-size:20px;font-weight:600;letter-spacing:-.015em}
 .cons{display:flex;align-items:center;gap:10px;margin-left:auto}
@@ -34,12 +34,21 @@
 .comp .ph{flex:1;color:var(--tx-3);font-size:14px}
 .chip{font:11.5px var(--f-mono);padding:3px 8px;border-radius:5px;border:1px solid var(--hair-strong);color:var(--tx)}
 .wm{display:flex;gap:4px}
-@media (max-width:900px){ .cols{display:flex;flex-direction:column;overflow:auto;height:auto;flex:1} .cap{flex:none} .head .lbl:first-child{display:none} .head h1{font-size:17px} .cons .lbl{display:none} .spacer{display:none} .rail{display:none} .main{left:12px;right:12px} .seg,.crumb,.stat span:nth-child(-n+3){display:none} .q{max-width:100%} .synth .btn:not(.pri){display:none} .comp .btn:not(.pri){display:none} .cons .bar{width:60px} }
+@media (max-width:1180px){
+  /* kapea näyttö: yhteyskanava tiiviinä korttina ylhäällä (3D-kiertorata + nyt puhuu), viestivirta piiloon */
+  .comms{left:76px;right:12px;width:auto;top:58px;bottom:auto;height:auto}
+  .comms .cm-feed,.comms .cm-foot{display:none}
+  .comms .cm-orbit{height:150px}
+  .comms .cm-now{border-bottom:0;padding-bottom:10px}
+  .comms .cm-wave{height:16px;margin:8px 0 6px}
+  .main{right:12px;left:76px;top:340px}
+}
+@media (max-width:900px){ .comms{left:12px} .main{top:392px} .cols{display:flex;flex-direction:column;overflow:auto;height:auto;flex:1} .cap{flex:none} .head .lbl:first-child{display:none} .head h1{font-size:17px} .cons .lbl{display:none} .spacer{display:none} .rail{display:none} .main{left:12px;right:12px} .seg,.crumb,.stat span:nth-child(-n+3){display:none} .q{max-width:100%} .synth .btn:not(.pri){display:none} .comp .btn:not(.pri){display:none} .cons .bar{width:60px} }
 </style></head><body>
 <canvas class="space" id="c"></canvas>
 <div class="ui">
   <div class="top">
-    <span class="mark">TRIO</span><span class="crumb">Keskustelut / <b>Kahvilan maksutavat</b></span>
+    <span class="mark"><img src="assets/logo.svg" alt="">MYSTERIOUS</span><span class="crumb">Keskustelut / <b>Kahvilan maksutavat</b></span>
     <div class="seg" style="margin-left:12px"><span class="on">Rinnakkain</span><span>Ristiintarkistus</span><span>Väittely</span><span>Ketju</span></div>
     <div class="stat" style="margin-left:auto">
       <span><i class="dot"></i>&nbsp; Claude</span><span><i class="dot"></i>&nbsp; ChatGPT</span><span><i class="dot" style="background:var(--warn)"></i>&nbsp; Grok · hidas</span>
@@ -55,6 +64,7 @@
     <div style="flex:1"></div>
     <div class="ri" title="Asetukset" style="margin-bottom:14px"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg></div>
   </div>
+  <aside class="comms pnl" id="comms"></aside>
   <div class="main">
     <div class="head"><span class="lbl">Keskustelu</span><h1>Kahvilan maksutavat</h1>
       <div class="cons"><span class="lbl">Yksimielisyys</span><div class="bar"><i style="display:block;height:100%;width:68%;background:var(--warn)"></i></div><span class="num" style="font-size:15px;color:var(--warn)">68 %</span></div></div>
@@ -77,13 +87,23 @@
 </div>
 <script type="module">
 import { buildHorizonScene } from './scene-horizon.js';
+import { createComms } from './comms.js';
 const q = new URLSearchParams(location.search);
 const pr = +q.get('pr') || Math.min(devicePixelRatio, 2);
 const S = buildHorizonScene(document.getElementById('c'), { width: innerWidth, height: innerHeight, pixelRatio: pr });
-if (q.has('still')) { S.render(12); S.render(12); await document.fonts.ready; window.__ready = true; }
-else {
+await document.fonts.ready;
+const showComms = true;
+const C = showComms ? createComms(document.getElementById('comms'), { pixelRatio: pr }) : null;
+const T0 = +q.get('t') || 3.9;
+if (q.has('still') || q.has('frames')) {
+  S.render(12); S.render(12); C && C.setTime(T0);
+  window.__setT = (t) => C && C.setTime(t);   // videon ruutujen renderöintiin: tausta pysyy, yhteyskanava animoituu
+  window.__ready = true;
+} else {
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches; const t0 = performance.now();
-  const loop = () => { const t = reduce ? 12 : 12 + (performance.now() - t0) / 1000; S.camera.position.x = Math.sin(t * 0.05) * 0.4; S.render(t); requestAnimationFrame(loop); };
+  const loop = () => { requestAnimationFrame(loop); if (document.hidden) return;
+    const t = reduce ? 12 : 12 + (performance.now() - t0) / 1000;
+    S.camera.position.x = Math.sin(t * 0.05) * 0.4; S.render(t); C && C.setTime(reduce ? T0 : t - 12 + T0); };
   loop(); addEventListener('resize', () => location.reload());
 }
 </script></body></html>

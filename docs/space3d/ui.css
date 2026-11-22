@@ -1,5 +1,6 @@
 /* ==========================================================================
-   DEEP FIELD UI: realistisen avaruusteeman käyttöliittymä
+   MYSTERIOUS · DEEP FIELD UI: realistisen avaruusteeman käyttöliittymä
+   Brändi: musta + liila. Liila on ainoa brändiväri: toiminnot, aktiivinen tila, yhteydet.
    Periaate: käyttöliittymä on kuin oikean avaruusaluksen tai lennonjohdon näyttö.
    Hillitty, tarkka ja mustavalkoinen. Väriä käytetään vain mallien tunnistamiseen
    ja hälytyksiin (NASA HSI: "use color sparingly, reserve it for faults and alerts").
@@ -15,10 +16,15 @@
   --tx-2: #9BA3B1;      /* toissijainen */
   --tx-3: #6A7280;      /* tunnisteet, suuri koko */
   --white: #FFFFFF;
+  /* brändi: liila (kontrastit tarkistettu) */
+  --accent: #B69CFF;      /* teksti, viivat, aktiivinen tila · 8,5:1 */
+  --accent-btn: #6E3BF5;  /* painikkeen tausta, valkoinen teksti 5,8:1 */
+  --accent-soft: rgba(150,110,255,.16);
+  --accent-line: rgba(182,156,255,.55);
   /* mallit: luonnolliset, hillityt sävyt (taivaankappaleiden omat värit) */
   --claude: #F0A878;    /* K-tyypin tähti */
   --gpt: #7FD1BC;       /* valtamerimaailma */
-  --grok: #AAB4FF;      /* pulsari */
+  --grok: #8EC8FF;      /* pulsari (jäänsininen, erottuu brändin liilasta) */
   /* tilat */
   --ok: #57D18E; --warn: #F2B44C; --crit: #F25A5F;
   --f-ui: "Inter", system-ui, sans-serif;
@@ -40,17 +46,18 @@ canvas.space { position: fixed; inset: 0; width: 100vw; height: 100vh; display: 
 
 /* Yläpalkki */
 .top { position: absolute; left: 0; right: 0; top: 0; height: 52px; display: flex; align-items: center; gap: 18px; padding: 0 20px; background: linear-gradient(180deg, rgba(0,0,0,.75), rgba(0,0,0,0)); }
-.mark { font: 600 13px/1 var(--f-ui); letter-spacing: .32em; }
+.mark { display: flex; align-items: center; gap: 10px; font: 600 12.5px/1 var(--f-ui); letter-spacing: .34em; }
+.mark img { width: 22px; height: 22px; display: block; }   /* logon paikka: korvaa assets/logo.svg oikealla logolla */
 .crumb { color: var(--tx-2); font-size: 12.5px; white-space: nowrap; }
 .crumb b { color: var(--tx); font-weight: 500; }
 .seg { display: flex; border: 1px solid var(--hair-strong); border-radius: 6px; overflow: hidden; }
 .seg span { padding: 6px 12px; font-size: 12px; color: var(--tx-2); border-right: 1px solid var(--hair); white-space: nowrap; }
 .seg span:last-child { border-right: 0; }
-.seg span.on { color: #000; background: var(--white); font-weight: 600; }
+.seg span.on { color: #fff; background: var(--accent-btn); font-weight: 600; }
 .stat { display: flex; align-items: center; gap: 14px; color: var(--tx-2); font-size: 12px; white-space: nowrap; }
 .dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; background: var(--ok); }
 .btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 6px; border: 1px solid var(--hair-strong); color: var(--tx); font-size: 12px; background: rgba(255,255,255,.03); white-space: nowrap; }
-.btn.pri { background: var(--white); color: #000; border-color: var(--white); font-weight: 600; }
+.btn.pri { background: var(--accent-btn); color: #fff; border-color: var(--accent-btn); font-weight: 600; }
 
 /* Mallin tunnus: oikea 3D-renderöinti pyöreänä */
 .av { width: 26px; height: 26px; border-radius: 50%; background-size: 175%; background-position: center; flex: none; box-shadow: 0 0 0 1px var(--hair-strong); }
@@ -77,3 +84,45 @@ canvas.space { position: fixed; inset: 0; width: 100vw; height: 100vh; display: 
 .ret i:nth-child(4) { right: 0; bottom: 0; border-right-width: 1px; border-bottom-width: 1px; }
 
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+/* ---------------------------------------------------------------- Yhteyskanava (oikea reuna) */
+.comms { position: absolute; right: 20px; top: 62px; bottom: 20px; width: 356px; display: flex; flex-direction: column; overflow: hidden; }
+.cm-head { display: flex; align-items: center; gap: 10px; padding: 14px 16px 10px; }
+.cm-live { display: inline-flex; align-items: center; gap: 6px; font: 600 9.5px/1 var(--f-ui); letter-spacing: .16em; color: var(--accent); padding: 3px 7px; border-radius: 4px; background: var(--accent-soft); }
+.cm-live i { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px var(--accent); }
+.cm-stats { margin-left: auto; font-size: 11px; color: var(--tx-3); }
+.cm-orbit { position: relative; height: 210px; margin: 0 10px; border-radius: 6px; overflow: hidden; border: 1px solid var(--hair); background: #000; flex: none; }
+.cm-orbit canvas { width: 100%; height: 100%; display: block; }
+.cm-tags { position: absolute; inset: 0; pointer-events: none; }
+.cm-tag { position: absolute; transform: translate(-50%, 0); display: flex; flex-direction: column; align-items: center; }
+.cm-tag b { font: 600 10.5px/1 var(--f-ui); color: var(--tx-2); margin-top: 26px; text-shadow: 0 1px 6px #000; letter-spacing: .02em; }
+.cm-ret { position: absolute; top: -21px; left: 50%; width: 42px; height: 42px; margin-left: -21px; border-radius: 50%; border: 1px solid transparent; }
+.cm-tag.on b { color: #fff; }
+.cm-tag.on .cm-ret { border: 1.5px solid var(--accent); box-shadow: 0 0 16px rgba(150,110,255,.55), inset 0 0 12px rgba(150,110,255,.3); }
+.cm-tag.to .cm-ret { border-color: rgba(255,255,255,.35); border-style: dashed; }
+.cm-now { padding: 12px 16px 12px; border-bottom: 1px solid var(--hair); }
+.cm-pair { display: flex; align-items: center; gap: 8px; }
+.cm-arrow { position: relative; width: 30px; height: 1px; background: rgba(255,255,255,.15); }
+.cm-arrow i { position: absolute; inset: 0; background: var(--accent); transform-origin: left; box-shadow: 0 0 6px var(--accent); }
+.cm-who { margin-left: 6px; display: flex; flex-direction: column; gap: 4px; }
+.cm-who b { font-size: 13px; font-weight: 600; }
+.cm-type { font: 600 9px/1 var(--f-ui); letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
+.cm-wave { display: flex; align-items: center; gap: 3px; height: 26px; margin: 12px 0 8px; }
+.cm-wave i { flex: 1; height: 100%; border-radius: 2px; background: linear-gradient(180deg, var(--accent), var(--accent-btn)); transform-origin: center; }
+.cm-status { font: 11px var(--f-mono); color: var(--tx-2); }
+.cm-blink { color: var(--accent); }
+.cm-feed { flex: 1; min-height: 0; overflow: hidden; padding: 4px 0; display: flex; flex-direction: column; }
+.cm-item { padding: 10px 16px; border-bottom: 1px solid var(--hair); }
+.cm-item.new { background: linear-gradient(90deg, var(--accent-soft), transparent 70%); box-shadow: inset 2px 0 0 var(--accent); }
+.cm-meta { display: flex; align-items: center; gap: 6px; font-size: 12px; }
+.cm-meta .av { width: 16px; height: 16px; }
+.cm-meta b { font-weight: 600; }
+.cm-to { color: var(--tx-3); }
+.cm-meta .cm-type { margin-left: 4px; }
+.cm-tok { margin-left: auto; font-size: 10.5px; color: var(--tx-3); }
+.cm-text { font-size: 12.5px; line-height: 1.5; color: #D9DDE4; margin-top: 5px; }
+.cm-dots { display: inline-flex; gap: 3px; margin-left: 4px; }
+.cm-dots i { width: 4px; height: 4px; border-radius: 50%; background: var(--accent); }
+.cm-foot { display: flex; gap: 8px; padding: 10px 12px; border-top: 1px solid var(--hair); }
+.cm-input { flex: 1; padding: 7px 10px; border-radius: 6px; border: 1px solid var(--hair-strong); color: var(--tx-3); font-size: 12px; }
+.av.all { background: radial-gradient(circle at 40% 40%, #C9B4FF, #6E3BF5 60%, #1A0B3D); }

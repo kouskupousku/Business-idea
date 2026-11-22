@@ -6,7 +6,7 @@ export function buildHorizonScene(canvas, { width, height, pixelRatio } = {}) {
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(42, width / height, 0.05, 4000);
   camera.position.set(0, 0, 0); camera.lookAt(0, -0.16, -1);
-  scene.add(E.createSky({ intensity: 0.9, nebula: 0.6 }));
+  scene.add(E.createSky({ intensity: 0.9, nebula: 1.1, ...E.BRAND_NEBULA, nebDir: new THREE.Vector3(0.75, 0.32, -0.58) }));
   const stars = E.createStarfield({ count: 30000, seed: 33 }); stars.userData.setViewport(width, height, renderer.getPixelRatio()); scene.add(stars);
   const sunPos = new THREE.Vector3(-230, -84, -520);
   const sun = E.createStar({ radius: 7, temperature: 5600, seed: 2 }); sun.position.copy(sunPos); scene.add(sun);

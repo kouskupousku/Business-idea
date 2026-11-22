@@ -18,7 +18,7 @@ export function buildGalaxyScene(canvas, { width, height, pixelRatio } = {}) {
   camera.position.set(6, 32, 44);
   const asp = width / height; if (asp < 1.3) camera.position.multiplyScalar(Math.min(1.7, 1.4 / asp));
   camera.lookAt(1.8, -3.5, 0);
-  scene.add(E.createSky({ intensity: 0.35, nebula: 0.4 }));
+  scene.add(E.createSky({ intensity: 0.35, nebula: 0.6, ...E.BRAND_NEBULA }));
   const stars = E.createStarfield({ count: 14000, seed: 61 }); stars.userData.setViewport(width, height, renderer.getPixelRatio()); scene.add(stars);
   const galaxy = E.createGalaxy({ count: 60000, radius: 30, seed: 17 });
   galaxy.rotation.y = 0.4; scene.add(galaxy);

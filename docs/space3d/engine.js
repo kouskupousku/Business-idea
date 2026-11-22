@@ -272,14 +272,16 @@ export function makeSpikeTexture(size = 256) {
   const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
 }
 
+// Mysteriousin brändisumu: H-alfa (punainen) + heijastussumu (sininen) → luonnollinen violetti
+export const BRAND_NEBULA = { nebColA: new THREE.Color(0.62, 0.22, 0.78), nebColB: new THREE.Color(0.42, 0.34, 0.95) };
 // Linnunrata + heikot sumut taustapallolla (proseduraalinen, kevyt)
-export function createSky({ radius = 1000, intensity = 1.0, nebula = 1.0 } = {}) {
+export function createSky({ radius = 1000, intensity = 1.0, nebula = 1.0, nebColA = new THREE.Color(0.85, 0.20, 0.22), nebColB = new THREE.Color(0.25, 0.55, 0.60), nebDir = new THREE.Vector3(0.55, 0.25, -0.80) } = {}) {
   const mat = new THREE.ShaderMaterial({
     side: THREE.BackSide, depthWrite: false,
-    uniforms: { uN: { value: GALACTIC_NORMAL }, uGC: { value: GALACTIC_CENTER }, uI: { value: intensity }, uNeb: { value: nebula } },
+    uniforms: { uN: { value: GALACTIC_NORMAL }, uGC: { value: GALACTIC_CENTER }, uI: { value: intensity }, uNeb: { value: nebula }, uNA: { value: nebColA }, uNB: { value: nebColB }, uND: { value: nebDir.clone().normalize() } },
     vertexShader: `varying vec3 vDir; void main(){ vDir=normalize(position); gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);} `,
     fragmentShader: NOISE + /* glsl */`
-      uniform vec3 uN,uGC; uniform float uI,uNeb; varying vec3 vDir;
+      uniform vec3 uN,uGC,uNA,uNB,uND; uniform float uI,uNeb; varying vec3 vDir;
       void main(){
         vec3 d=normalize(vDir);
         float b=asin(clamp(dot(d,uN),-1.0,1.0));
@@ -296,11 +298,11 @@ export function createSky({ radius = 1000, intensity = 1.0, nebula = 1.0 } = {})
         L*=1.0-0.85*dust;
         vec3 c=col*L;
         // heikko H-alfa -emissiosumu (punertava) ja OIII (sinivihreä) yhdessä suunnassa
-        vec3 nd=normalize(vec3(0.55,0.25,-0.80));
+        vec3 nd=uND;
         float nm=exp(-pow(acos(clamp(dot(d,nd),-1.0,1.0))/0.20,2.0));
         float neb=max(0.0,fbm(d*9.0+vec3(5.0),6)+0.15)*nm;
         float filaments=pow(max(0.0,ridged(d*16.0,5)-0.62),2.0)*nm*3.0;
-        c+=uNeb*(vec3(0.85,0.20,0.22)*neb*0.10+vec3(0.25,0.55,0.60)*filaments*0.08);
+        c+=uNeb*(uNA*neb*0.10+uNB*filaments*0.08);
         // syvä tausta ei ole täysin musta: hyvin heikko ilmanhehku/hajavalo
         c+=vec3(0.0025,0.0030,0.0045);
         gl_FragColor=vec4(c*uI,1.0);
@@ -473,7 +475,7 @@ export function createPlanet({ radius = 2, lightPos = new THREE.Vector3(), seed 
 }
 
 // ---------------------------------------------------------------- pulsari (Grok)
-export function createPulsar({ size = 0.35, tilt = 0.5, color = new THREE.Color(0.62, 0.68, 1.0) } = {}) {
+export function createPulsar({ size = 0.35, tilt = 0.5, color = new THREE.Color(0.56, 0.78, 1.0) } = {}) {
   const group = new THREE.Group();
   const core = new THREE.Mesh(new THREE.SphereGeometry(size, 48, 32), new THREE.MeshBasicMaterial({ color: color.clone().lerp(new THREE.Color(1, 1, 1), 0.6).multiplyScalar(5) }));
   group.add(core);
